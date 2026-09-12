@@ -7,40 +7,36 @@ import DataProvenanceTag from '../common/DataProvenanceTag';
 import { Flame, ExternalLink, Activity, Radio, AlertTriangle } from 'lucide-react';
 
 // Custom SVG map marker generator
-const createCustomIcon = (riskLevel, classification) => {
-  let color = '#10B981'; // LOW
-  if (riskLevel === 'CRITICAL' || classification === 'INDUSTRIAL FIRE') color = '#EF4444';
-  else if (riskLevel === 'HIGH' || classification === 'PERSISTENT THERMAL SOURCE') color = '#F97316';
-  else if (riskLevel === 'MEDIUM' || classification === 'AGRICULTURAL BURNING') color = '#F59E0B';
-  else if (classification === 'UNCERTAIN ANOMALY') color = '#6B7280';
+const createCustomIcon = (riskLevel, classification, isSelected = false) => {
+  // NASA FIRMS official palette: Bright flame orange, amber yellow, and crimson red
+  let color = '#F59E0B'; // Amber default (nominal)
+  if (riskLevel === 'CRITICAL' || classification === 'INDUSTRIAL FIRE') color = '#DC2626'; // Red
+  else if (riskLevel === 'HIGH' || classification === 'PERSISTENT THERMAL SOURCE') color = '#EA580C'; // Bright flame orange
+  else if (classification === 'UNCERTAIN ANOMALY') color = '#D97706'; // Warm amber
 
-  const isCritical = riskLevel === 'CRITICAL';
+  const size = isSelected ? 16 : 9;
+  const border = isSelected ? '2px solid #FFFFFF' : '1.5px solid #111827';
+  const glow = isSelected ? '0 0 10px #F97316' : '0 0 4px rgba(0,0,0,0.6)';
 
   const svgHtml = `
-    <div style="position: relative; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
-      ${isCritical ? `<div style="position: absolute; width: 36px; height: 36px; border-radius: 50%; background: rgba(239, 68, 68, 0.4); animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;"></div>` : ''}
-      <div style="
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        background: ${color};
-        border: 2px solid #0F1626;
-        box-shadow: 0 0 12px ${color};
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      ">
-        <div style="width: 6px; height: 6px; border-radius: 50%; background: #ffffff;"></div>
-      </div>
-    </div>
+    <div style="
+      width: ${size}px;
+      height: ${size}px;
+      border-radius: 50%;
+      background: ${color};
+      border: ${border};
+      box-shadow: ${glow};
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    "></div>
   `;
 
   return L.divIcon({
     html: svgHtml,
-    className: 'custom-thermal-marker',
-    iconSize: [28, 28],
-    iconAnchor: [14, 14],
-    popupAnchor: [0, -14]
+    className: 'nasa-firms-marker',
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+    popupAnchor: [0, -size / 2]
   });
 };
 
@@ -183,7 +179,7 @@ export default function GISMap({
             <Marker
               key={event.eventId}
               position={[lat, lon]}
-              icon={createCustomIcon(event.riskLevel, event.classification)}
+              icon={createCustomIcon(event.riskLevel, event.classification, isSelected)}
               eventHandlers={{
                 click: () => onSelectEvent && onSelectEvent(event)
               }}

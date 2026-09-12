@@ -1,6 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import {
+  Home,
+  BookOpen,
   LayoutDashboard,
   Flame,
   Factory,
@@ -12,7 +14,9 @@ import {
 } from 'lucide-react';
 
 const navItems = [
-  { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, badge: 'Live GIS' },
+  { path: '/', label: 'Home Overview', icon: Home },
+  { path: '/guide', label: 'User Guide & FAQ', icon: BookOpen, badge: 'Help' },
+  { path: '/dashboard', label: 'Tactical GIS Map', icon: LayoutDashboard, badge: 'Live' },
   { path: '/events', label: 'Thermal Events', icon: Flame },
   { path: '/facilities', label: 'Facilities', icon: Factory },
   { path: '/analytics', label: 'Analytics', icon: BarChart3 },
