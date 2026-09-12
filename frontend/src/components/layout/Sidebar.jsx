@@ -14,54 +14,39 @@ import {
 } from 'lucide-react';
 
 const navItems = [
-  { path: '/', label: 'Home Overview', icon: Home },
-  { path: '/guide', label: 'User Guide & FAQ', icon: BookOpen, badge: 'Help' },
-  { path: '/dashboard', label: 'Tactical GIS Map', icon: LayoutDashboard, badge: 'Live' },
-  { path: '/events', label: 'Thermal Events', icon: Flame },
-  { path: '/facilities', label: 'Facilities', icon: Factory },
-  { path: '/analytics', label: 'Analytics', icon: BarChart3 },
-  { path: '/monitoring', label: 'Monitoring', icon: Activity, badge: 'Telemetry' },
-  { path: '/settings', label: 'Settings', icon: Settings }
+  { path: '/', label: 'Overview', icon: Home },
+  { path: '/dashboard', label: 'Satellite Map', icon: LayoutDashboard },
+  { path: '/events', label: 'Thermal Detections', icon: Flame },
+  { path: '/facilities', label: 'Industrial Assets', icon: Factory },
+  { path: '/analytics', label: 'Statistics', icon: BarChart3 },
+  { path: '/guide', label: 'Documentation', icon: BookOpen }
 ];
 
 export default function Sidebar() {
   return (
-    <aside className="w-64 border-r border-slate-800 bg-[#080C16] flex flex-col justify-between shrink-0 h-[calc(100vh-4rem)] sticky top-16 select-none">
-      <div className="p-4 space-y-6">
-        {/* Navigation Group */}
-        <div>
-          <div className="px-3 mb-2 text-[10px] font-mono uppercase tracking-widest text-slate-400">
-            Intelligence Center
-          </div>
-          <nav className="space-y-1">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <NavLink
-                  key={item.path}
-                  to={item.path}
-                  className={({ isActive }) =>
-                    `flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium transition-all ${
-                      isActive
-                        ? 'bg-orange-500/15 text-orange-400 border border-orange-500/30 shadow-[0_0_12px_rgba(249,115,22,0.15)] font-semibold'
-                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
-                    }`
-                  }
-                >
-                  <div className="flex items-center gap-3">
-                    <Icon className="w-4 h-4 shrink-0" />
-                    <span>{item.label}</span>
-                  </div>
-                  {item.badge && (
-                    <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-cyan-950 text-cyan-400 border border-cyan-800/60">
-                      {item.badge}
-                    </span>
-                  )}
-                </NavLink>
-              );
-            })}
-          </nav>
-        </div>
+    <aside className="w-56 border-r border-slate-800 bg-[#0B0F19] flex flex-col justify-between shrink-0 h-[calc(100vh-4rem)] sticky top-16 select-none">
+      <div className="p-3 space-y-4">
+        <nav className="space-y-1">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-3 py-2 rounded-md text-xs font-medium transition-colors ${
+                    isActive
+                      ? 'bg-slate-800 text-white font-semibold'
+                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/50'
+                  }`
+                }
+              >
+                <Icon className="w-4 h-4 shrink-0 text-slate-400" />
+                <span>{item.label}</span>
+              </NavLink>
+            );
+          })}
+        </nav>
       </div>
 
       {/* Clean Footer Info */}

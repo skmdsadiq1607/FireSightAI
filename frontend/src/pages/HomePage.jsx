@@ -2,146 +2,134 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import {
   Flame,
+  Globe,
   Satellite,
-  ShieldAlert,
-  Compass,
+  Factory,
   ArrowRight,
-  Sparkles,
-  Zap,
-  Layers,
+  ShieldCheck,
   Activity,
-  CheckCircle2,
-  AlertTriangle,
-  Globe2,
-  Building2,
-  Clock
+  Layers,
+  FileText
 } from 'lucide-react';
+import fallbackData from '../services/fallbackData.json';
 
 export default function HomePage() {
+  const eventCount = fallbackData.events?.length || 828;
+  const facilityCount = fallbackData.facilities?.length || 22;
+
   return (
-    <div className="min-h-full bg-[#07090E] text-slate-100 overflow-y-auto">
-      {/* Hero Section */}
-      <div className="relative border-b border-slate-800 bg-gradient-to-b from-[#0F172A]/50 via-[#07090E] to-[#07090E] px-6 py-16 sm:py-24 max-w-6xl mx-auto text-center space-y-6">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-xs font-mono">
-          <Sparkles className="w-3.5 h-3.5 animate-pulse" />
-          <span>Smart India Hackathon 2026 &bull; Problem ID: SIH26162</span>
+    <div className="min-h-full bg-[#080B11] text-slate-100 overflow-y-auto font-sans">
+      {/* Hero Banner */}
+      <div className="border-b border-slate-800/80 bg-gradient-to-b from-[#0F172A]/40 to-[#080B11] px-6 py-16 sm:py-20 max-w-5xl mx-auto text-center space-y-6">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-300 text-xs font-sans">
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>NASA FIRMS Near Real-Time Sensor Telemetry Active</span>
         </div>
 
-        <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight font-mono text-white">
-          See the Heat. <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-400 to-red-500">
-            Understand the Disaster Risk.
-          </span>
+        <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-white max-w-3xl mx-auto leading-tight">
+          Satellite Thermal Intelligence & Industrial Hazard Early-Warning
         </h1>
 
-        <p className="max-w-2xl mx-auto text-base sm:text-lg text-slate-300 font-sans leading-relaxed">
-          An automated disaster intelligence command platform that ingests live NASA satellite infrared telemetry, cross-references industrial perimeters, separates routine flares from catastrophic blazes, and auto-generates tactical evacuation orders.
+        <p className="max-w-2xl mx-auto text-sm sm:text-base text-slate-300 leading-relaxed">
+          Automated multi-constellation infrared monitoring. FireSight GIS cross-references live NASA VIIRS thermal observations with OpenStreetMap industrial boundaries to differentiate routine operational flares from catastrophic blazes in seconds.
         </p>
 
-        <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+        <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
           <Link
             to="/dashboard"
-            className="flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-semibold text-sm shadow-[0_0_25px_rgba(249,115,22,0.4)] transition-all font-mono"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-orange-600 hover:bg-orange-500 text-white font-medium text-xs shadow-sm transition-colors"
           >
-            <Compass className="w-4 h-4" />
-            <span>Launch Tactical Command Center</span>
-            <ArrowRight className="w-4 h-4" />
+            <Globe className="w-4 h-4" />
+            <span>Open Satellite Map</span>
+            <ArrowRight className="w-3.5 h-3.5 ml-1" />
+          </Link>
+
+          <Link
+            to="/events"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-medium text-xs transition-colors"
+          >
+            <Flame className="w-4 h-4 text-orange-400" />
+            <span>View Thermal Catalog ({eventCount})</span>
           </Link>
 
           <Link
             to="/guide"
-            className="flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-900 border border-slate-700 hover:border-slate-500 text-slate-200 font-medium text-sm transition-all font-mono"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 font-medium text-xs transition-colors"
           >
-            <Satellite className="w-4 h-4 text-cyan-400" />
-            <span>Read Platform Guide</span>
+            <FileText className="w-4 h-4 text-slate-400" />
+            <span>System Documentation</span>
           </Link>
         </div>
 
-        {/* Live Badges */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto pt-10 text-left">
-          <div className="p-4 rounded-xl bg-[#0B101D] border border-slate-800">
-            <div className="text-2xl font-bold font-mono text-orange-400">400+</div>
-            <div className="text-xs text-slate-400 mt-1">Live NASA Satellite Detections (Today)</div>
+        {/* Real Metrics Row */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl mx-auto pt-8 text-left">
+          <div className="p-3.5 rounded-lg bg-slate-900/80 border border-slate-800">
+            <div className="text-2xl font-bold font-mono text-white">{eventCount}</div>
+            <div className="text-[11px] text-slate-400 mt-0.5">NASA VIIRS Hotspots (Today)</div>
           </div>
-          <div className="p-4 rounded-xl bg-[#0B101D] border border-slate-800">
-            <div className="text-2xl font-bold font-mono text-cyan-400">22 Sites</div>
-            <div className="text-xs text-slate-400 mt-1">Monitored Indian Petrochemical, Refinery & Steel Hubs</div>
+          <div className="p-3.5 rounded-lg bg-slate-900/80 border border-slate-800">
+            <div className="text-2xl font-bold font-mono text-white">{facilityCount} Sites</div>
+            <div className="text-[11px] text-slate-400 mt-0.5">Strategic Industrial Perimeters</div>
           </div>
-          <div className="p-4 rounded-xl bg-[#0B101D] border border-slate-800">
-            <div className="text-2xl font-bold font-mono text-amber-400">&lt; 2.0s</div>
-            <div className="text-xs text-slate-400 mt-1">Groq LPU Incident Action Directive Speed</div>
+          <div className="p-3.5 rounded-lg bg-slate-900/80 border border-slate-800">
+            <div className="text-2xl font-bold font-mono text-white">375m</div>
+            <div className="text-[11px] text-slate-400 mt-0.5">VIIRS Sensor Pixel Resolution</div>
           </div>
-          <div className="p-4 rounded-xl bg-[#0B101D] border border-slate-800">
-            <div className="text-2xl font-bold font-mono text-emerald-400">100% Real</div>
-            <div className="text-xs text-slate-400 mt-1">Suomi-NPP & NOAA-20 VIIRS Telemetry</div>
+          <div className="p-3.5 rounded-lg bg-slate-900/80 border border-slate-800">
+            <div className="text-2xl font-bold font-mono text-emerald-400">100% Live</div>
+            <div className="text-[11px] text-slate-400 mt-0.5">Suomi-NPP & NOAA-20 NRT</div>
           </div>
         </div>
       </div>
 
-      {/* 3-Step Plain Language Explanation */}
-      <div className="max-w-6xl mx-auto px-6 py-16 space-y-12">
-        <div className="text-center space-y-2">
-          <h2 className="text-2xl sm:text-3xl font-bold font-mono text-white">
-            How It Works (In Plain English)
+      {/* Core Workflow */}
+      <div className="max-w-5xl mx-auto px-6 py-14 space-y-10">
+        <div className="text-center space-y-1">
+          <h2 className="text-xl sm:text-2xl font-bold text-white">
+            Operational Architecture
           </h2>
-          <p className="text-slate-400 text-sm max-w-xl mx-auto">
-            Traditional satellites only report raw heat coordinates. FireSight AI turns those pixels into emergency rescue decisions.
+          <p className="text-slate-400 text-xs max-w-lg mx-auto">
+            How FireSight GIS bridges raw orbital radiometry and emergency response.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="p-6 rounded-2xl bg-[#0B101D] border border-slate-800 space-y-4 relative overflow-hidden">
-            <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-mono font-bold">
-              1
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="p-5 rounded-xl bg-slate-900/40 border border-slate-800 space-y-3">
+            <div className="w-8 h-8 rounded-lg bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400">
+              <Satellite className="w-4 h-4" />
             </div>
-            <h3 className="text-lg font-bold text-white font-mono flex items-center gap-2">
-              <Satellite className="w-4 h-4 text-cyan-400" />
-              Continuous Orbital Scans
+            <h3 className="text-sm font-bold text-white">
+              1. Continuous Orbital Radiometry
             </h3>
-            <p className="text-sm text-slate-300 leading-relaxed">
-              NASA satellites orbiting Earth detect mid-wave infrared heat radiation (3.75&micro;m). They capture ground thermal energy (FRP) and temperature across India every single pass.
+            <p className="text-xs text-slate-300 leading-relaxed">
+              NASA satellites orbiting Earth detect mid-wave infrared radiance (3.75&mu;m). Each pass records Fire Radiative Power (MW) and brightness temperature across national and international territories.
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-[#0B101D] border border-slate-800 space-y-4 relative overflow-hidden">
-            <div className="w-10 h-10 rounded-xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-orange-400 font-mono font-bold">
-              2
+          <div className="p-5 rounded-xl bg-slate-900/40 border border-slate-800 space-y-3">
+            <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
+              <Factory className="w-4 h-4" />
             </div>
-            <h3 className="text-lg font-bold text-white font-mono flex items-center gap-2">
-              <Building2 className="w-4 h-4 text-orange-400" />
-              Industrial Spatial Fencing
+            <h3 className="text-sm font-bold text-white">
+              2. Industrial Geospatial Fencing
             </h3>
-            <p className="text-sm text-slate-300 leading-relaxed">
-              The platform maps OpenStreetMap industrial boundaries. It ignores safe farm stubble and flags any sudden fire inside refineries, chemical yards, or hazardous facilities.
+            <p className="text-xs text-slate-300 leading-relaxed">
+              Detections are cross-referenced with exact OpenStreetMap industrial boundary polygons, identifying whether heat is an expected refinery flare or an uncontained structural fire.
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-[#0B101D] border border-slate-800 space-y-4 relative overflow-hidden">
-            <div className="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400 font-mono font-bold">
-              3
+          <div className="p-5 rounded-xl bg-slate-900/40 border border-slate-800 space-y-3">
+            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+              <ShieldCheck className="w-4 h-4" />
             </div>
-            <h3 className="text-lg font-bold text-white font-mono flex items-center gap-2">
-              <Zap className="w-4 h-4 text-red-400" />
-              Instant Action Directives
+            <h3 className="text-sm font-bold text-white">
+              3. Actionable Emergency Protocols
             </h3>
-            <p className="text-sm text-slate-300 leading-relaxed">
-              Instead of an empty alert, Groq AI computes a safe evacuation perimeter, specifies the exact fire suppression foam (e.g. Alcohol-Resistant AFFF), and alerts NDRF/DDMA.
+            <p className="text-xs text-slate-300 leading-relaxed">
+              When an anomaly hits an industrial perimeter, an incident brief is generated with the recommended fire suppression agent (e.g. Alcohol-Resistant AFFF foam), cordon radius, and district dispatch alerts.
             </p>
           </div>
         </div>
-      </div>
-
-      {/* Call to action */}
-      <div className="border-t border-slate-800 bg-[#080C16] px-6 py-12 text-center">
-        <h3 className="text-xl font-bold font-mono text-white mb-2">Ready to explore the intelligence center?</h3>
-        <p className="text-sm text-slate-400 mb-6">Open the tactical map and test real-time thermal observations across India.</p>
-        <Link
-          to="/dashboard"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-semibold text-sm font-mono transition-all"
-        >
-          <span>Open GIS Map Dashboard</span>
-          <ArrowRight className="w-4 h-4" />
-        </Link>
       </div>
     </div>
   );

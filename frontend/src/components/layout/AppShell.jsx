@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import TopBar from './TopBar';
-import Sidebar from './Sidebar';
 import { monitoringService, configService } from '../../services/api';
 
 export default function AppShell() {
-  const [dataMode, setDataMode] = useState('demo');
+  const [dataMode, setDataMode] = useState('live');
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
@@ -18,16 +17,6 @@ export default function AppShell() {
       })
       .catch(console.warn);
   }, []);
-
-  const handleToggleMode = async (newMode) => {
-    try {
-      setDataMode(newMode);
-      await configService.updateConfig({ dataMode: newMode });
-      handleRefresh();
-    } catch (err) {
-      console.error('Failed to switch data mode:', err);
-    }
-  };
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
@@ -42,19 +31,14 @@ export default function AppShell() {
   };
 
   return (
-    <div className="min-h-screen bg-[#07090E] text-slate-100 flex flex-col">
+    <div className="h-screen w-screen bg-[#07090E] text-slate-100 flex flex-col overflow-hidden select-none">
       <TopBar
         onRefresh={handleRefresh}
         isRefreshing={isRefreshing}
-        dataMode={dataMode}
-        onToggleMode={handleToggleMode}
       />
-      <div className="flex flex-1 overflow-hidden">
-        <Sidebar />
-        <main className="flex-1 overflow-y-auto bg-[#07090E]">
-          <Outlet context={{ refreshTrigger, dataMode, handleRefresh }} />
-        </main>
-      </div>
+      <main className="flex-1 overflow-hidden relative">
+        <Outlet context={{ refreshTrigger, dataMode, handleRefresh }} />
+      </main>
     </div>
   );
 }

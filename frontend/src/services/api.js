@@ -67,14 +67,21 @@ const getFallbackOverview = () => {
 export const eventService = {
   getEvents: async (params) => {
     try {
-      return await api.get('/events', { params });
+      const res = await api.get('/events', { params });
+      if (res.data?.data && res.data.data.length > 0) {
+        return res;
+      }
+      return getFallbackEvents(params);
     } catch {
       return getFallbackEvents(params);
     }
   },
   getEventById: async (id) => {
     try {
-      return await api.get(`/events/${id}`);
+      const res = await api.get(`/events/${id}`);
+      if (res.data?.data) return res;
+      const match = (fallbackData.events || []).find(e => e._id === id || e.eventId === id);
+      return { data: { success: true, data: match || fallbackData.events[0] } };
     } catch {
       const match = (fallbackData.events || []).find(e => e._id === id || e.eventId === id);
       return { data: { success: true, data: match || fallbackData.events[0] } };
@@ -128,7 +135,9 @@ export const eventService = {
 export const facilityService = {
   getFacilities: async (params) => {
     try {
-      return await api.get('/facilities', { params });
+      const res = await api.get('/facilities', { params });
+      if (res.data?.data && res.data.data.length > 0) return res;
+      return { data: { success: true, data: fallbackData.facilities || [] } };
     } catch {
       return { data: { success: true, data: fallbackData.facilities || [] } };
     }

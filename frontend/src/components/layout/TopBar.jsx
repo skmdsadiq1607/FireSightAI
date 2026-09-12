@@ -1,9 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Flame, Satellite, RefreshCw, Search, ShieldAlert, Cpu } from 'lucide-react';
-import api from '../../services/api';
+import { NavLink, useNavigate } from 'react-router-dom';
+import {
+  Flame,
+  Satellite,
+  RefreshCw,
+  Search,
+  BookOpen,
+  BarChart3,
+  Factory,
+  Globe
+} from 'lucide-react';
 
-export default function TopBar({ onRefresh, isRefreshing, dataMode = 'demo', onToggleMode }) {
+const navLinks = [
+  { path: '/dashboard', label: 'Satellite Map', icon: Globe },
+  { path: '/events', label: 'Thermal Catalog', icon: Flame },
+  { path: '/facilities', label: 'Industrial Assets', icon: Factory },
+  { path: '/analytics', label: 'Statistics', icon: BarChart3 },
+  { path: '/guide', label: 'Documentation', icon: BookOpen }
+];
+
+export default function TopBar({ onRefresh, isRefreshing }) {
   const [timeStr, setTimeStr] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
@@ -26,60 +42,81 @@ export default function TopBar({ onRefresh, isRefreshing, dataMode = 'demo', onT
   };
 
   return (
-    <header className="h-16 border-b border-slate-800 bg-[#0A0E1A]/90 backdrop-blur-md px-4 sm:px-6 flex items-center justify-between z-30 sticky top-0">
-      {/* Brand & Tagline */}
-      <div className="flex items-center gap-3">
-        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-orange-500/20 text-orange-400 border border-orange-500/40">
-          <Flame className="w-4 h-4" />
-        </div>
-
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="font-bold text-base tracking-wide text-white">
-              FireSight<span className="text-orange-400 font-semibold ml-0.5">GIS</span>
+    <header className="h-14 border-b border-slate-800 bg-[#0A0E1A] px-4 sm:px-6 flex items-center justify-between z-30 sticky top-0 shrink-0">
+      {/* Brand */}
+      <div className="flex items-center gap-6">
+        <NavLink to="/" className="flex items-center gap-2.5 group">
+          <div className="flex items-center justify-center w-7 h-7 rounded-md bg-gradient-to-br from-orange-500 to-amber-600 text-white shadow-sm">
+            <Flame className="w-4 h-4" />
+          </div>
+          <div className="flex items-baseline gap-1.5">
+            <span className="font-bold text-sm tracking-wide text-white">
+              FireSight<span className="text-orange-400 font-semibold">GIS</span>
             </span>
-            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
-              National Disaster Portal
+            <span className="text-[10px] text-slate-400 hidden sm:inline">
+              NASA FIRMS NRT
             </span>
           </div>
-        </div>
+        </NavLink>
+
+        {/* Primary Navigation Tabs */}
+        <nav className="hidden lg:flex items-center gap-1">
+          {navLinks.map((link) => {
+            const Icon = link.icon;
+            return (
+              <NavLink
+                key={link.path}
+                to={link.path}
+                className={({ isActive }) =>
+                  `flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs transition-colors ${
+                    isActive
+                      ? 'bg-slate-800 text-white font-medium shadow-sm'
+                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
+                  }`
+                }
+              >
+                <Icon className="w-3.5 h-3.5 text-slate-400" />
+                <span>{link.label}</span>
+              </NavLink>
+            );
+          })}
+        </nav>
       </div>
 
       {/* Global Search Bar */}
-      <form onSubmit={handleSearchSubmit} className="hidden md:flex items-center relative max-w-md w-full mx-6">
-        <Search className="w-4 h-4 text-slate-400 absolute left-3 pointer-events-none" />
+      <form onSubmit={handleSearchSubmit} className="hidden md:flex items-center relative max-w-xs w-full mx-4">
+        <Search className="w-3.5 h-3.5 text-slate-500 absolute left-3 pointer-events-none" />
         <input
           type="text"
-          placeholder="Search facility (e.g. Hazira, Jamnagar), event ID, or city..."
+          placeholder="Search facility, coordinates, or ID..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full bg-slate-900/80 border border-slate-700/70 rounded-lg pl-9 pr-4 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 font-mono"
+          className="w-full bg-slate-900/90 border border-slate-800 rounded-md pl-8 pr-3 py-1 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-slate-600 font-sans"
         />
       </form>
 
-      {/* Action Controls & Telemetry */}
-      <div className="flex items-center gap-3">
-        {/* 100% Live Satellite Badge */}
-        <div className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-semibold">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-          <span>100% LIVE SATELLITE</span>
+      {/* Controls & Telemetry */}
+      <div className="flex items-center gap-2.5">
+        {/* Live Satellite Sensor Indicator */}
+        <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-[11px] font-sans">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span className="text-slate-300">VIIRS 375m NRT</span>
         </div>
 
         {/* Live Clock */}
-        <div className="hidden lg:flex items-center gap-1 text-xs font-mono text-slate-400 bg-slate-900/60 border border-slate-800 px-3 py-1.5 rounded-lg">
-          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-          <span>{timeStr}</span>
+        <div className="hidden xl:block text-[11px] font-mono text-slate-400 bg-slate-900/60 border border-slate-800 px-2.5 py-1 rounded">
+          {timeStr}
         </div>
 
-        {/* Refresh Ingestion Trigger */}
+        {/* Refresh Feed */}
         <button
           onClick={onRefresh}
           disabled={isRefreshing}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-mono transition-all disabled:opacity-50"
-          title="Poll latest thermal anomalies"
+          className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700/80 text-xs transition-colors disabled:opacity-50"
+          title="Query latest NASA FIRMS satellite telemetry"
         >
-          <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-cyan-400' : ''}`} />
-          <span className="hidden sm:inline">Poll Feeds</span>
+          <RefreshCw className={`w-3 h-3 ${isRefreshing ? 'animate-spin text-orange-400' : ''}`} />
+          <span className="hidden sm:inline">Refresh</span>
         </button>
       </div>
     </header>

@@ -3,10 +3,10 @@ import { Filter, RotateCcw, Flame, Check } from 'lucide-react';
 
 export default function FilterBar({ filters, onFilterChange, onReset }) {
   return (
-    <div className="flex items-center gap-2.5 overflow-x-auto py-2.5 px-4 bg-[#0A0E1A]/80 border-b border-slate-800/80 backdrop-blur-md text-xs font-mono select-none">
-      <div className="flex items-center gap-1.5 text-slate-400 font-bold uppercase tracking-wider shrink-0 pr-2 border-r border-slate-800">
-        <Filter className="w-3.5 h-3.5 text-cyan-400" />
-        <span>Filters</span>
+    <div className="flex items-center gap-3 overflow-x-auto py-2 px-5 bg-[#0B0F19] border-b border-slate-800 text-xs text-slate-300 select-none">
+      <div className="flex items-center gap-1.5 text-slate-400 font-medium shrink-0 pr-3 border-r border-slate-800">
+        <Filter className="w-3.5 h-3.5 text-slate-400" />
+        <span>Filter</span>
       </div>
 
       {/* Classification Select */}
@@ -15,15 +15,15 @@ export default function FilterBar({ filters, onFilterChange, onReset }) {
         <select
           value={filters.classification || 'ALL'}
           onChange={(e) => onFilterChange('classification', e.target.value)}
-          className="bg-slate-900 border border-slate-700/80 rounded-lg px-2 py-1 text-slate-200 focus:outline-none focus:border-cyan-500"
+          className="bg-slate-900 border border-slate-700/60 rounded px-2 py-1 text-slate-200 focus:outline-none focus:border-slate-500 text-xs"
         >
-          <option value="ALL">All Classifications</option>
+          <option value="ALL">All</option>
           <option value="INDUSTRIAL FIRE">Industrial Fire</option>
           <option value="PERSISTENT THERMAL SOURCE">Persistent Source</option>
-          <option value="NATURAL / WILDFIRE">Natural / Wildfire</option>
-          <option value="AGRICULTURAL BURNING">Agricultural Burning</option>
-          <option value="ROUTINE INDUSTRIAL HEAT">Routine Industrial Heat</option>
-          <option value="UNCERTAIN ANOMALY">Uncertain Anomaly</option>
+          <option value="NATURAL / WILDFIRE">Wildfire</option>
+          <option value="AGRICULTURAL BURNING">Agricultural</option>
+          <option value="ROUTINE INDUSTRIAL HEAT">Routine Heat</option>
+          <option value="UNCERTAIN ANOMALY">Uncertain</option>
         </select>
       </div>
 
@@ -33,9 +33,9 @@ export default function FilterBar({ filters, onFilterChange, onReset }) {
         <select
           value={filters.riskLevel || 'ALL'}
           onChange={(e) => onFilterChange('riskLevel', e.target.value)}
-          className="bg-slate-900 border border-slate-700/80 rounded-lg px-2 py-1 text-slate-200 focus:outline-none focus:border-cyan-500"
+          className="bg-slate-900 border border-slate-700/60 rounded px-2 py-1 text-slate-200 focus:outline-none focus:border-slate-500 text-xs"
         >
-          <option value="ALL">All Risk Levels</option>
+          <option value="ALL">All</option>
           <option value="CRITICAL">Critical (81-100)</option>
           <option value="HIGH">High (61-80)</option>
           <option value="MEDIUM">Medium (31-60)</option>
@@ -49,14 +49,11 @@ export default function FilterBar({ filters, onFilterChange, onReset }) {
         <select
           value={filters.satellite || 'ALL'}
           onChange={(e) => onFilterChange('satellite', e.target.value)}
-          className="bg-slate-900 border border-slate-700/80 rounded-lg px-2 py-1 text-slate-200 focus:outline-none focus:border-cyan-500"
+          className="bg-slate-900 border border-slate-700/60 rounded px-2 py-1 text-slate-200 focus:outline-none focus:border-slate-500 text-xs"
         >
-          <option value="ALL">All Constellations</option>
-          <option value="NOAA-20">NOAA-20 VIIRS</option>
-          <option value="NOAA-21">NOAA-21 VIIRS</option>
-          <option value="Suomi-NPP">Suomi-NPP VIIRS</option>
-          <option value="Terra">Terra MODIS</option>
-          <option value="Aqua">Aqua MODIS</option>
+          <option value="ALL">All Sensors</option>
+          <option value="N20">NOAA-20 VIIRS</option>
+          <option value="N">Suomi-NPP VIIRS</option>
         </select>
       </div>
 
