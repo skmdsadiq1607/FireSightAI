@@ -2,13 +2,17 @@ const axios = require('axios');
 
 class GroqBriefingService {
   constructor() {
-    this.apiKey = process.env.GROQ_API_KEY || '';
     this.apiUrl = 'https://api.groq.com/openai/v1/chat/completions';
     this.model = 'openai/gpt-oss-20b';
   }
 
+  getApiKey() {
+    return process.env.GROQ_API_KEY || '';
+  }
+
   async generateIncidentDirective(event) {
-    if (!this.apiKey) {
+    const apiKey = this.getApiKey();
+    if (!apiKey) {
       throw new Error('GROQ_API_KEY is not configured.');
     }
 
@@ -64,7 +68,7 @@ Evacuation guidance and windward shelter-in-place instructions.`;
         },
         {
           headers: {
-            'Authorization': `Bearer ${this.apiKey}`,
+            'Authorization': `Bearer ${apiKey}`,
             'Content-Type': 'application/json'
           },
           timeout: 10000
