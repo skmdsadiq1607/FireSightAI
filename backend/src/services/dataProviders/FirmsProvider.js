@@ -28,7 +28,7 @@ class LiveFirmsProvider extends FirmsProvider {
       throw new Error('Valid FIRMS_MAP_KEY required for LiveFirmsProvider');
     }
 
-    const source = options.source || 'VIIRS_NOAA20_NRT';
+    const source = options.source || 'VIIRS_SNPP_NRT';
     const days = options.days || 1;
     const url = `${this.baseUrl}/${this.apiKey}/${source}/${this.regionBbox}/${days}`;
 
