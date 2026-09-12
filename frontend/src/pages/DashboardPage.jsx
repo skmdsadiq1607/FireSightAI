@@ -16,14 +16,22 @@ import {
   ChevronRight
 } from 'lucide-react';
 
+import fallbackData from '../services/fallbackData.json';
+
 export default function DashboardPage() {
   const { refreshTrigger, dataMode } = useOutletContext();
 
-  const [events, setEvents] = useState([]);
-  const [facilities, setFacilities] = useState([]);
-  const [stats, setStats] = useState(null);
-  const [selectedEvent, setSelectedEvent] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [events, setEvents] = useState(fallbackData.events || []);
+  const [facilities, setFacilities] = useState(fallbackData.facilities || []);
+  const [stats, setStats] = useState({
+    activeThermalEvents: (fallbackData.events || []).length,
+    facilitiesMonitored: (fallbackData.facilities || []).length,
+    persistentSources: (fallbackData.events || []).filter(e => e.isPersistent).length,
+    highCriticalRisk: (fallbackData.events || []).filter(e => e.riskScore >= 61).length,
+    systemStatus: 'ONLINE'
+  });
+  const [selectedEvent, setSelectedEvent] = useState((fallbackData.events || [])[0] || null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [filters, setFilters] = useState({
     classification: 'ALL',
