@@ -224,36 +224,19 @@ export default function GISMap({
         })}
       </MapContainer>
 
-      {/* Map Legend Overlay */}
-      <div className="absolute bottom-4 left-4 z-20 glass-panel p-3 rounded-xl space-y-2 text-xs font-mono select-none">
-        <div className="font-bold text-slate-300 text-[11px] uppercase tracking-wider flex items-center gap-1.5">
-          <Radio className="w-3 h-3 text-cyan-400" />
-          <span>Thermal Classifications</span>
+      {/* Clean Map Legend Overlay */}
+      <div className="absolute bottom-4 left-4 z-20 bg-[#0F1626]/90 border border-slate-700/70 p-2.5 rounded-lg shadow-lg text-[11px] font-sans select-none backdrop-blur-sm">
+        <div className="font-semibold text-slate-300 text-[11px] mb-1.5 flex items-center gap-1.5">
+          <span>Map Legend</span>
         </div>
-        <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-[11px] text-slate-300">
+        <div className="flex flex-col gap-1 text-[11px] text-slate-300">
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]" />
-            <span>Industrial Fire</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
+            <span>NASA Thermal Hotspot</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-orange-500 shadow-[0_0_8px_#f97316]" />
-            <span>Persistent Source</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-yellow-500 shadow-[0_0_8px_#f59e0b]" />
-            <span>Agricultural Burn</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981]" />
-            <span>Natural Wildfire</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-blue-400 shadow-[0_0_8px_#60a5fa]" />
-            <span>Routine Heat</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 border border-cyan-400 border-dashed" />
-            <span>OSM Perimeter</span>
+            <span className="w-2.5 h-2.5 border border-cyan-400 border-dashed rounded-sm" />
+            <span>Industrial Facility Boundary</span>
           </div>
         </div>
       </div>

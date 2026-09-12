@@ -29,23 +29,19 @@ export default function TopBar({ onRefresh, isRefreshing, dataMode = 'demo', onT
     <header className="h-16 border-b border-slate-800 bg-[#0A0E1A]/90 backdrop-blur-md px-4 sm:px-6 flex items-center justify-between z-30 sticky top-0">
       {/* Brand & Tagline */}
       <div className="flex items-center gap-3">
-        <div className="relative flex items-center justify-center w-9 h-9 rounded-lg bg-gradient-to-br from-orange-600 to-amber-600 shadow-[0_0_15px_rgba(249,115,22,0.4)]">
-          <Flame className="w-5 h-5 text-white" />
-          <Satellite className="w-3 h-3 text-cyan-200 absolute -top-1 -right-1" />
+        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-orange-500/20 text-orange-400 border border-orange-500/40">
+          <Flame className="w-4 h-4" />
         </div>
 
         <div>
           <div className="flex items-center gap-2">
-            <span className="font-bold text-lg tracking-wider text-white font-mono">
-              FIRESIGHT<span className="text-orange-500 font-black ml-1">AI</span>
+            <span className="font-bold text-base tracking-wide text-white">
+              FireSight<span className="text-orange-400 font-semibold ml-0.5">GIS</span>
             </span>
-            <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-orange-500/10 text-orange-400 border border-orange-500/30">
-              SIH-2026
+            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
+              National Disaster Portal
             </span>
           </div>
-          <p className="text-[11px] text-slate-400 font-medium hidden sm:block">
-            See the Heat. Understand the Risk.
-          </p>
         </div>
       </div>
 

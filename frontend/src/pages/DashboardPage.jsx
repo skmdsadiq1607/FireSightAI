@@ -104,48 +104,32 @@ export default function DashboardPage() {
 
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)] overflow-hidden">
-      {/* KPI Telemetry Ribbon */}
-      <div className="p-4 bg-[#080C16] border-b border-slate-800 grid grid-cols-2 md:grid-cols-5 gap-3 shrink-0">
-        <KPIStat
-          title="Active Thermal Anomalies"
-          value={stats?.activeThermalEvents ?? events.length}
-          unit="Hotspots"
-          icon={Flame}
-          color="orange"
-          subtext="NASA FIRMS VIIRS & MODIS"
-        />
-        <KPIStat
-          title="Industrial Assets Monitored"
-          value={stats?.facilitiesMonitored ?? facilities.length}
-          unit="Sites"
-          icon={Factory}
-          color="cyan"
-          subtext="OSM Industrial & Refinery Perimeters"
-        />
-        <KPIStat
-          title="Persistent Heat Sources"
-          value={stats?.persistentSources ?? 0}
-          unit="Multi-pass"
-          icon={RefreshCw}
-          color="purple"
-          subtext="Recurring across &ge;2 acquisition days"
-        />
-        <KPIStat
-          title="High / Critical Hazard"
-          value={stats?.highCriticalRisk ?? 0}
-          unit="Prioritized"
-          icon={AlertTriangle}
-          color="red"
-          subtext="Requires immediate field dispatch"
-        />
-        <KPIStat
-          title="Geospatial AI Processing"
-          value="ONLINE"
-          unit="v1.0"
-          icon={Radio}
-          color="emerald"
-          subtext="Hybrid Random Forest & Spatial Rules"
-        />
+      {/* Clean Operational Stat Bar */}
+      <div className="px-5 py-3 bg-[#0A0E1A] border-b border-slate-800 flex flex-wrap items-center justify-between gap-4 text-xs shrink-0">
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-orange-500"></span>
+            <span className="text-slate-400">Active Satellite Hotspots:</span>
+            <span className="text-white font-bold font-mono text-sm">{stats?.activeThermalEvents ?? events.length}</span>
+          </div>
+
+          <div className="hidden sm:flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-cyan-400"></span>
+            <span className="text-slate-400">Monitored Facilities:</span>
+            <span className="text-white font-bold font-mono text-sm">{stats?.facilitiesMonitored ?? facilities.length}</span>
+          </div>
+
+          <div className="hidden md:flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-red-500"></span>
+            <span className="text-slate-400">Critical Priority Alerts:</span>
+            <span className="text-red-400 font-bold font-mono text-sm">{stats?.highCriticalRisk ?? 0}</span>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2 text-slate-400 text-[11px] font-mono">
+          <span>Sensor:</span>
+          <span className="text-slate-200 bg-slate-800/80 px-2 py-0.5 rounded border border-slate-700">NASA VIIRS (Suomi-NPP / NOAA-20)</span>
+        </div>
       </div>
 
       {/* 100% Live Orbital Telemetry Stream Bar */}

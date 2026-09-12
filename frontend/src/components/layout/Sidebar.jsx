@@ -62,32 +62,15 @@ export default function Sidebar() {
             })}
           </nav>
         </div>
-
-        {/* Core Differentiation Callout Box */}
-        <div className="p-3.5 rounded-xl border border-slate-800 bg-slate-900/50 space-y-2">
-          <div className="flex items-center gap-1.5 text-xs font-bold text-orange-400">
-            <Flame className="w-3.5 h-3.5" />
-            <span>CORE PRINCIPLE</span>
-          </div>
-          <p className="text-[11px] text-slate-300 leading-relaxed font-mono">
-            Thermal Anomaly &ne; Confirmed Fire.
-          </p>
-          <div className="text-[10px] text-slate-400 space-y-1 font-mono pt-1 border-t border-slate-800">
-            <div>&bull; NASA FIRMS &rarr; Anomaly</div>
-            <div>&bull; OSM &rarr; Industrial Context</div>
-            <div>&bull; Multi-Day &rarr; Persistence</div>
-            <div>&bull; AI Engine &rarr; Risk Prioritization</div>
-          </div>
-        </div>
       </div>
 
-      {/* Footer Info */}
-      <div className="p-4 border-t border-slate-800/80 bg-slate-950/40">
-        <div className="flex items-center gap-2 text-slate-400 text-xs">
-          <ShieldCheck className="w-4 h-4 text-emerald-400" />
+      {/* Clean Footer Info */}
+      <div className="p-4 border-t border-slate-800 bg-slate-900/30">
+        <div className="flex items-center gap-2.5 text-slate-400 text-xs">
+          <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
           <div className="truncate">
-            <p className="text-slate-200 font-semibold text-[11px]">Smart India Hackathon</p>
-            <p className="text-[10px] text-slate-400 font-mono">Problem: SIH26162</p>
+            <p className="text-slate-200 font-medium text-xs">Disaster Management Portal</p>
+            <p className="text-[11px] text-slate-400">SIH 2026 &bull; SIH26162</p>
           </div>
         </div>
       </div>
