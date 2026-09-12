@@ -68,9 +68,45 @@ export default function GISMap({
   showThermal = true
 }) {
   const indiaCenter = [21.5, 78.9]; // Geographic center of India
+  const [baseMap, setBaseMap] = React.useState('dark'); // 'dark' or 'satellite'
+
+  const tileLayers = {
+    dark: {
+      url: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+      attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ | NASA FIRMS'
+    },
+    satellite: {
+      url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+      attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+    }
+  };
 
   return (
     <div className="w-full h-full relative rounded-xl overflow-hidden border border-slate-800">
+      {/* Basemap Switcher Control */}
+      <div className="absolute top-3 right-3 z-20 bg-[#0F1626]/90 border border-slate-700/80 rounded-lg p-1 flex items-center gap-1 shadow-xl font-mono text-[11px] backdrop-blur-md">
+        <button
+          onClick={() => setBaseMap('dark')}
+          className={`px-2.5 py-1 rounded transition-all ${
+            baseMap === 'dark'
+              ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 font-semibold'
+              : 'text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          Tactical Dark
+        </button>
+        <button
+          onClick={() => setBaseMap('satellite')}
+          className={`px-2.5 py-1 rounded transition-all ${
+            baseMap === 'satellite'
+              ? 'bg-orange-500/20 text-orange-300 border border-orange-500/40 font-semibold'
+              : 'text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          Satellite TrueColor
+        </button>
+      </div>
+
       <MapContainer
         center={indiaCenter}
         zoom={5}
@@ -79,10 +115,11 @@ export default function GISMap({
         className="w-full h-full z-10"
         scrollWheelZoom={true}
       >
-        {/* CartoDB Dark Matter High-Contrast Basemap */}
+        {/* Clean Watermark-Free TileLayer */}
         <TileLayer
-          attribution='&copy; <a href="https://carto.com/">CARTO</a> | NASA FIRMS | OpenStreetMap'
-          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+          key={baseMap}
+          attribution={tileLayers[baseMap].attribution}
+          url={tileLayers[baseMap].url}
         />
 
         <MapController selectedEvent={selectedEvent} />
