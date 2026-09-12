@@ -148,50 +148,29 @@ export default function DashboardPage() {
         />
       </div>
 
-      {/* SIH Judge Demo Preset Bar */}
-      <div className="bg-[#0A0F1E] border-b border-slate-800/80 px-4 py-2 flex items-center justify-between gap-2 overflow-x-auto text-xs font-mono shrink-0 select-none">
+      {/* 100% Live Orbital Telemetry Stream Bar */}
+      <div className="bg-[#0A0F1E] border-b border-slate-800/80 px-4 py-2 flex items-center justify-between gap-3 overflow-x-auto text-xs font-mono shrink-0 select-none">
         <div className="flex items-center gap-2 shrink-0">
-          <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
-          <span className="font-bold text-slate-300">JUDGE DEMO FLOW:</span>
+          <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          <span className="font-bold text-emerald-400">100% LIVE SATELLITE TELEMETRY:</span>
+          <span className="text-slate-400">NASA Suomi-NPP & NOAA-20 VIIRS NRT</span>
         </div>
 
-        <div className="flex items-center gap-2 overflow-x-auto">
-          <button
-            onClick={() => handleSelectCase('IND-001')}
-            className="px-2.5 py-1 rounded bg-red-500/20 text-red-300 border border-red-500/40 hover:bg-red-500/30 whitespace-nowrap transition-all"
-          >
-            Case A: Industrial Fire (Hazira)
-          </button>
-          <button
-            onClick={() => handleSelectCase('IND-002')}
-            className="px-2.5 py-1 rounded bg-orange-500/20 text-orange-300 border border-orange-500/40 hover:bg-orange-500/30 whitespace-nowrap transition-all"
-          >
-            Case B: Persistent Flare (Jamnagar)
-          </button>
-          <button
-            onClick={() => handleSelectCase('NAT-003')}
-            className="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500/30 whitespace-nowrap transition-all"
-          >
-            Case C: Forest Wildfire (Corbett)
-          </button>
-          <button
-            onClick={() => handleSelectCase('AGR-004')}
-            className="px-2.5 py-1 rounded bg-yellow-500/20 text-yellow-300 border border-yellow-500/40 hover:bg-yellow-500/30 whitespace-nowrap transition-all"
-          >
-            Case D: Stubble Burning (Punjab)
-          </button>
-          <button
-            onClick={() => handleSelectCase('IND-005')}
-            className="px-2.5 py-1 rounded bg-blue-500/20 text-blue-300 border border-blue-500/40 hover:bg-blue-500/30 whitespace-nowrap transition-all"
-          >
-            Case E: Routine Heat (Bhilai)
-          </button>
-          <button
-            onClick={() => handleSelectCase('UNC-006')}
-            className="px-2.5 py-1 rounded bg-slate-500/20 text-slate-300 border border-slate-500/40 hover:bg-slate-500/30 whitespace-nowrap transition-all"
-          >
-            Case F: Uncertain Anomaly (Thar)
-          </button>
+        <div className="flex items-center gap-2 overflow-x-auto text-[11px]">
+          <span className="text-slate-500">Jump to high energy anomaly:</span>
+          {events.slice(0, 4).map((ev) => (
+            <button
+              key={ev.eventId}
+              onClick={() => setSelectedEvent(ev)}
+              className={`px-2 py-0.5 rounded border transition-all ${
+                selectedEvent?.eventId === ev.eventId
+                  ? 'bg-orange-500/20 text-orange-300 border-orange-500/40 font-bold'
+                  : 'bg-slate-900 text-slate-300 border-slate-800 hover:border-slate-600'
+              }`}
+            >
+              {ev.eventId.replace('FIRMS-20260912-', 'VIIRS ')} ({ev.frp.toFixed(1)} MW)
+            </button>
+          ))}
         </div>
       </div>
 

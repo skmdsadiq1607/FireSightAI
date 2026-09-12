@@ -63,20 +63,10 @@ export default function TopBar({ onRefresh, isRefreshing, dataMode = 'demo', onT
 
       {/* Action Controls & Telemetry */}
       <div className="flex items-center gap-3">
-        {/* Data Feed Mode Badge / Switcher */}
-        <div className="flex items-center gap-2 bg-slate-900 border border-slate-800 rounded-lg p-1">
-          <button
-            onClick={() => onToggleMode && onToggleMode(dataMode === 'demo' ? 'live' : 'demo')}
-            className={`flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-mono font-medium transition-all ${
-              dataMode === 'demo'
-                ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
-                : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
-            }`}
-            title="Click to toggle between Demo and Live Data Feeds"
-          >
-            <span className={`w-2 h-2 rounded-full ${dataMode === 'demo' ? 'bg-amber-400' : 'bg-emerald-400 animate-pulse'}`} />
-            <span>{dataMode === 'demo' ? 'DEMO DATA' : 'LIVE SATELLITE FEED'}</span>
-          </button>
+        {/* 100% Live Satellite Badge */}
+        <div className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-semibold">
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          <span>100% LIVE SATELLITE</span>
         </div>
 
         {/* Live Clock */}

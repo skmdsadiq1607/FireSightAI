@@ -1,858 +1,6 @@
 {
   "events": [
     {
-      "_id": "6aa51cde05af5b9f3836d289",
-      "eventId": "FSA-2026-IND-001",
-      "source": "NASA_FIRMS_DEMO",
-      "satellite": "NOAA-20",
-      "instrument": "VIIRS",
-      "latitude": 21.108,
-      "longitude": 72.645,
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          72.645,
-          21.108
-        ]
-      },
-      "acquisitionDate": "2026-09-12",
-      "acquisitionTime": "0830",
-      "timestamp": "2026-09-12T08:30:00.000Z",
-      "brightnessTemperature": 374.8,
-      "frp": 84.6,
-      "confidence": "high",
-      "dayNight": "D",
-      "scan": 0.38,
-      "track": 0.37,
-      "facilityId": "6aa51cde05af5b9f3836d278",
-      "facilityName": "Hazira Petrochemical & Chemical Terminal Complex",
-      "facilityType": "petrochemical_refinery",
-      "facilityDistance": 100,
-      "insideIndustrialBoundary": true,
-      "nearestCity": "Surat",
-      "state": "Gujarat",
-      "persistenceClusterId": "CLUSTER-21.11-72.64-6656",
-      "persistenceCount": 3,
-      "persistenceDays": 1,
-      "isPersistent": true,
-      "baselineStatus": "SEVERE_ANOMALY",
-      "baselineFRPDelta": 457,
-      "classification": "INDUSTRIAL FIRE",
-      "classificationConfidence": 91,
-      "riskScore": 91,
-      "riskLevel": "CRITICAL",
-      "riskBreakdown": {
-        "thermalScore": 100,
-        "persistenceScore": 65,
-        "industrialScore": 100,
-        "recurrenceScore": 95,
-        "populationScore": 100
-      },
-      "explanation": {
-        "summary": "INDUSTRIAL FIRE classified with 91% confidence. Risk score: 91/100 (CRITICAL).",
-        "evidence": [
-          "FRP significantly exceeds facility maximum operating envelope",
-          "Located within industrial perimeter",
-          "Extreme thermal output (84.6 MW FRP, 374.8 K)",
-          "Multi-pass thermal persistence (1 days, 3 detections)",
-          "Geospatially located within active industrial perimeter (Hazira Petrochemical & Chemical Terminal Complex)",
-          "Severe thermal surge: +457% above historical facility baseline (15.2 MW mean)",
-          "Tier-1 Critical Infrastructure: High hydrocarbon / chemical inventory hazard risk"
-        ],
-        "recommendation": "Urgent on-ground thermal inspection & industrial safety protocol activation recommended."
-      },
-      "satelliteVerification": {
-        "status": "VERIFIED_ANOMALY",
-        "message": "High SWIR Band 12 (2.2 µm) reflectance spike detected at storage tank array, corroborating active combustion plume.",
-        "satelliteName": "Sentinel-2B MSI L2A",
-        "acquisitionDate": "2026-09-12",
-        "cloudCoverPercentage": 4.2,
-        "swirAnomalyDetected": true,
-        "swirReflectanceB12": 0.92,
-        "swirReflectanceB11": 0.74,
-        "thumbnailUrl": "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=800&q=80",
-        "falseColorSwirUrl": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80"
-      },
-      "status": "ACTIVE",
-      "createdAt": "2026-09-12T09:35:26.795Z",
-      "updatedAt": "2026-09-12T10:15:01.384Z",
-      "__v": 0
-    },
-    {
-      "_id": "6aa51cdf05af5b9f3836d291",
-      "eventId": "FSA-2026-IND-002",
-      "source": "NASA_FIRMS_DEMO",
-      "satellite": "NOAA-21",
-      "instrument": "VIIRS",
-      "latitude": 22.361,
-      "longitude": 69.865,
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          69.865,
-          22.361
-        ]
-      },
-      "acquisitionDate": "2026-09-12",
-      "acquisitionTime": "0715",
-      "timestamp": "2026-09-12T07:15:00.000Z",
-      "brightnessTemperature": 338.2,
-      "frp": 28.4,
-      "confidence": "nominal",
-      "dayNight": "D",
-      "scan": 0.42,
-      "track": 0.4,
-      "facilityId": "6aa51cde05af5b9f3836d279",
-      "facilityName": "Jamnagar Mega Refinery & Petrochemical Complex",
-      "facilityType": "petrochemical_refinery",
-      "facilityDistance": 100,
-      "insideIndustrialBoundary": true,
-      "nearestCity": "Jamnagar",
-      "state": "Gujarat",
-      "persistenceClusterId": "CLUSTER-22.36-69.86-7004",
-      "persistenceCount": 13,
-      "persistenceDays": 5,
-      "isPersistent": true,
-      "baselineStatus": "ELEVATED",
-      "baselineFRPDelta": 16,
-      "classification": "PERSISTENT THERMAL SOURCE",
-      "classificationConfidence": 88,
-      "riskScore": 83,
-      "riskLevel": "CRITICAL",
-      "riskBreakdown": {
-        "thermalScore": 72,
-        "persistenceScore": 95,
-        "industrialScore": 100,
-        "recurrenceScore": 50,
-        "populationScore": 100
-      },
-      "explanation": {
-        "summary": "PERSISTENT THERMAL SOURCE classified with 88% confidence. Risk score: 83/100 (CRITICAL).",
-        "evidence": [
-          "Consistent multi-day heat signature at known industrial point-source",
-          "Moderate thermal radiative power (28.4 MW FRP)",
-          "Persistent thermal source detected across 5 distinct satellite pass days (13 observations)",
-          "Geospatially located within active industrial perimeter (Jamnagar Mega Refinery & Petrochemical Complex)",
-          "Slightly elevated thermal signature: +16% above baseline",
-          "Tier-1 Critical Infrastructure: High hydrocarbon / chemical inventory hazard risk"
-        ],
-        "recommendation": "Urgent on-ground thermal inspection & industrial safety protocol activation recommended."
-      },
-      "satelliteVerification": {
-        "status": "VERIFIED_ANOMALY",
-        "message": "Localized point-source SWIR anomaly persistent at refinery flare battery; consistent with operational hydrocarbon flaring.",
-        "satelliteName": "Sentinel-2A MSI L2A",
-        "acquisitionDate": "2026-09-12",
-        "cloudCoverPercentage": 8.5,
-        "swirAnomalyDetected": true,
-        "swirReflectanceB12": 0.65,
-        "swirReflectanceB11": 0.48,
-        "thumbnailUrl": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80",
-        "falseColorSwirUrl": null
-      },
-      "status": "ACTIVE",
-      "createdAt": "2026-09-12T09:35:27.104Z",
-      "updatedAt": "2026-09-12T10:15:01.612Z",
-      "__v": 0
-    },
-    {
-      "_id": "6aa51cdf05af5b9f3836d299",
-      "eventId": "FSA-2026-NAT-003",
-      "source": "NASA_FIRMS_DEMO",
-      "satellite": "Suomi-NPP",
-      "instrument": "VIIRS",
-      "latitude": 29.531,
-      "longitude": 78.775,
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          78.775,
-          29.531
-        ]
-      },
-      "acquisitionDate": "2026-09-12",
-      "acquisitionTime": "0940",
-      "timestamp": "2026-09-12T09:40:00.000Z",
-      "brightnessTemperature": 326.5,
-      "frp": 18.2,
-      "confidence": "nominal",
-      "dayNight": "D",
-      "scan": 0.45,
-      "track": 0.43,
-      "facilityId": null,
-      "facilityName": null,
-      "facilityType": null,
-      "facilityDistance": null,
-      "insideIndustrialBoundary": false,
-      "nearestCity": "Rural / Remote",
-      "state": "India",
-      "persistenceClusterId": "CLUSTER-29.53-78.78-7285",
-      "persistenceCount": 3,
-      "persistenceDays": 1,
-      "isPersistent": true,
-      "baselineStatus": "NO_BASELINE",
-      "baselineFRPDelta": 0,
-      "classification": "NATURAL / WILDFIRE",
-      "classificationConfidence": 82,
-      "riskScore": 40,
-      "riskLevel": "MEDIUM",
-      "riskBreakdown": {
-        "thermalScore": 51,
-        "persistenceScore": 65,
-        "industrialScore": 5,
-        "recurrenceScore": 30,
-        "populationScore": 30
-      },
-      "explanation": {
-        "summary": "NATURAL / WILDFIRE classified with 82% confidence. Risk score: 40/100 (MEDIUM).",
-        "evidence": [
-          "Isolated heat anomaly in forest / non-industrial terrain",
-          "Absence of adjacent industrial infrastructure",
-          "Moderate thermal radiative power (18.2 MW FRP)",
-          "Multi-pass thermal persistence (1 days, 3 detections)",
-          "Remote / Non-industrial terrain (isolated from critical industrial assets)"
-        ],
-        "recommendation": "Continuous satellite surveillance; baseline thermal verification in progress."
-      },
-      "satelliteVerification": {
-        "status": "VERIFIED_ANOMALY",
-        "message": "Linear smoke plume visible in True Color RGB; high SWIR B12 front traversing dense canopy with low NDVI post-burn scar.",
-        "satelliteName": "Sentinel-2A MSI L2A",
-        "acquisitionDate": "2026-09-12",
-        "cloudCoverPercentage": 12,
-        "swirAnomalyDetected": true,
-        "swirReflectanceB12": 0.58,
-        "swirReflectanceB11": 0.42,
-        "thumbnailUrl": "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80",
-        "falseColorSwirUrl": null
-      },
-      "status": "ACTIVE",
-      "createdAt": "2026-09-12T09:35:27.368Z",
-      "updatedAt": "2026-09-12T10:15:01.835Z",
-      "__v": 0
-    },
-    {
-      "_id": "6aa51cdf05af5b9f3836d2a0",
-      "eventId": "FSA-2026-AGR-004",
-      "source": "NASA_FIRMS_DEMO",
-      "satellite": "NOAA-20",
-      "instrument": "VIIRS",
-      "latitude": 30.245,
-      "longitude": 75.834,
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          75.834,
-          30.245
-        ]
-      },
-      "acquisitionDate": "2026-09-12",
-      "acquisitionTime": "0810",
-      "timestamp": "2026-09-12T08:10:00.000Z",
-      "brightnessTemperature": 322.1,
-      "frp": 12.8,
-      "confidence": "nominal",
-      "dayNight": "D",
-      "scan": 0.39,
-      "track": 0.38,
-      "facilityId": null,
-      "facilityName": null,
-      "facilityType": null,
-      "facilityDistance": null,
-      "insideIndustrialBoundary": false,
-      "nearestCity": "Rural / Remote",
-      "state": "India",
-      "persistenceClusterId": "CLUSTER-30.25-75.83-7483",
-      "persistenceCount": 3,
-      "persistenceDays": 1,
-      "isPersistent": true,
-      "baselineStatus": "NO_BASELINE",
-      "baselineFRPDelta": 0,
-      "classification": "AGRICULTURAL BURNING",
-      "classificationConfidence": 86,
-      "riskScore": 24,
-      "riskLevel": "LOW",
-      "riskBreakdown": {
-        "thermalScore": 38,
-        "persistenceScore": 65,
-        "industrialScore": 5,
-        "recurrenceScore": 30,
-        "populationScore": 30
-      },
-      "explanation": {
-        "summary": "AGRICULTURAL BURNING classified with 86% confidence. Risk score: 24/100 (LOW).",
-        "evidence": [
-          "Spatial correlation with seasonal agrarian stubble burning corridor",
-          "Low-to-moderate FRP characteristic of open biomass combustion",
-          "Low thermal signature (12.8 MW FRP)",
-          "Multi-pass thermal persistence (1 days, 3 detections)",
-          "Remote / Non-industrial terrain (isolated from critical industrial assets)"
-        ],
-        "recommendation": "Continuous satellite surveillance; baseline thermal verification in progress."
-      },
-      "satelliteVerification": {
-        "status": "UNAVAILABLE",
-        "message": "Verification not requested yet"
-      },
-      "status": "ACTIVE",
-      "createdAt": "2026-09-12T09:35:27.570Z",
-      "updatedAt": "2026-09-12T10:15:02.020Z",
-      "__v": 0
-    },
-    {
-      "_id": "6aa51cdf05af5b9f3836d2a7",
-      "eventId": "FSA-2026-IND-005",
-      "source": "NASA_FIRMS_DEMO",
-      "satellite": "NOAA-21",
-      "instrument": "VIIRS",
-      "latitude": 21.189,
-      "longitude": 81.398,
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          81.398,
-          21.189
-        ]
-      },
-      "acquisitionDate": "2026-09-12",
-      "acquisitionTime": "0745",
-      "timestamp": "2026-09-12T07:45:00.000Z",
-      "brightnessTemperature": 332.6,
-      "frp": 22.1,
-      "confidence": "nominal",
-      "dayNight": "D",
-      "scan": 0.41,
-      "track": 0.39,
-      "facilityId": "6aa51cde05af5b9f3836d27a",
-      "facilityName": "Bhilai Steel Plant (SAIL)",
-      "facilityType": "steel_metallurgy",
-      "facilityDistance": 100,
-      "insideIndustrialBoundary": true,
-      "nearestCity": "Bhilai",
-      "state": "Chhattisgarh",
-      "persistenceClusterId": "CLUSTER-21.19-81.40-7688",
-      "persistenceCount": 3,
-      "persistenceDays": 1,
-      "isPersistent": true,
-      "baselineStatus": "NORMAL",
-      "baselineFRPDelta": 5,
-      "classification": "ROUTINE INDUSTRIAL HEAT",
-      "classificationConfidence": 84,
-      "riskScore": 29,
-      "riskLevel": "LOW",
-      "riskBreakdown": {
-        "thermalScore": 59,
-        "persistenceScore": 65,
-        "industrialScore": 100,
-        "recurrenceScore": 20,
-        "populationScore": 75
-      },
-      "explanation": {
-        "summary": "ROUTINE INDUSTRIAL HEAT classified with 84% confidence. Risk score: 29/100 (LOW).",
-        "evidence": [
-          "Thermal output within established historical baseline",
-          "Moderate thermal radiative power (22.1 MW FRP)",
-          "Multi-pass thermal persistence (1 days, 3 detections)",
-          "Geospatially located within active industrial perimeter (Bhilai Steel Plant (SAIL))",
-          "Thermal signature matches routine industrial operating baseline (21.0 ± 3.5 MW)",
-          "Major Industrial Asset: Elevated occupational & infrastructural vulnerability",
-          "Risk down-weighted: Anomaly aligns with controlled industrial operational process"
-        ],
-        "recommendation": "Continuous satellite surveillance; baseline thermal verification in progress."
-      },
-      "satelliteVerification": {
-        "status": "UNAVAILABLE",
-        "message": "Verification not requested yet"
-      },
-      "status": "ACTIVE",
-      "createdAt": "2026-09-12T09:35:27.770Z",
-      "updatedAt": "2026-09-12T10:15:02.206Z",
-      "__v": 0
-    },
-    {
-      "_id": "6aa51ce005af5b9f3836d2af",
-      "eventId": "FSA-2026-UNC-006",
-      "source": "NASA_FIRMS_DEMO",
-      "satellite": "NOAA-20",
-      "instrument": "VIIRS",
-      "latitude": 27.214,
-      "longitude": 71.912,
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          71.912,
-          27.214
-        ]
-      },
-      "acquisitionDate": "2026-09-12",
-      "acquisitionTime": "0855",
-      "timestamp": "2026-09-12T08:55:00.000Z",
-      "brightnessTemperature": 312.4,
-      "frp": 3.2,
-      "confidence": "low",
-      "dayNight": "D",
-      "scan": 0.48,
-      "track": 0.46,
-      "facilityId": null,
-      "facilityName": null,
-      "facilityType": null,
-      "facilityDistance": null,
-      "insideIndustrialBoundary": false,
-      "nearestCity": "Rural / Remote",
-      "state": "India",
-      "persistenceClusterId": "CLUSTER-27.21-71.91-7924",
-      "persistenceCount": 3,
-      "persistenceDays": 1,
-      "isPersistent": true,
-      "baselineStatus": "NO_BASELINE",
-      "baselineFRPDelta": 0,
-      "classification": "UNCERTAIN ANOMALY",
-      "classificationConfidence": 60,
-      "riskScore": 28,
-      "riskLevel": "LOW",
-      "riskBreakdown": {
-        "thermalScore": 10,
-        "persistenceScore": 65,
-        "industrialScore": 5,
-        "recurrenceScore": 30,
-        "populationScore": 30
-      },
-      "explanation": {
-        "summary": "UNCERTAIN ANOMALY classified with 60% confidence. Risk score: 28/100 (LOW).",
-        "evidence": [
-          "Low thermal signature near detection threshold; solar reflectance candidate",
-          "Low thermal signature (3.2 MW FRP)",
-          "Multi-pass thermal persistence (1 days, 3 detections)",
-          "Remote / Non-industrial terrain (isolated from critical industrial assets)"
-        ],
-        "recommendation": "Continuous satellite surveillance; baseline thermal verification in progress."
-      },
-      "satelliteVerification": {
-        "status": "UNAVAILABLE",
-        "message": "Verification not requested yet"
-      },
-      "status": "ACTIVE",
-      "createdAt": "2026-09-12T09:35:28.017Z",
-      "updatedAt": "2026-09-12T10:15:02.421Z",
-      "__v": 0
-    },
-    {
-      "_id": "6aa51ce005af5b9f3836d2b6",
-      "eventId": "FSA-2026-IND-007",
-      "source": "NASA_FIRMS_DEMO",
-      "satellite": "NOAA-20",
-      "instrument": "VIIRS",
-      "latitude": 22.825,
-      "longitude": 69.712,
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          69.712,
-          22.825
-        ]
-      },
-      "acquisitionDate": "2026-09-12",
-      "acquisitionTime": "0730",
-      "timestamp": "2026-09-12T07:30:00.000Z",
-      "brightnessTemperature": 349.5,
-      "frp": 41.2,
-      "confidence": "high",
-      "dayNight": "D",
-      "scan": 0.4,
-      "track": 0.38,
-      "facilityId": "6aa51cde05af5b9f3836d27b",
-      "facilityName": "Mundra Special Economic Zone & Power Complex",
-      "facilityType": "power_plant",
-      "facilityDistance": 100,
-      "insideIndustrialBoundary": true,
-      "nearestCity": "Mundra",
-      "state": "Gujarat",
-      "persistenceClusterId": "CLUSTER-22.82-69.71-8134",
-      "persistenceCount": 3,
-      "persistenceDays": 1,
-      "isPersistent": true,
-      "baselineStatus": "SEVERE_ANOMALY",
-      "baselineFRPDelta": 129,
-      "classification": "ROUTINE INDUSTRIAL HEAT",
-      "classificationConfidence": 84,
-      "riskScore": 37,
-      "riskLevel": "MEDIUM",
-      "riskBreakdown": {
-        "thermalScore": 84,
-        "persistenceScore": 65,
-        "industrialScore": 100,
-        "recurrenceScore": 95,
-        "populationScore": 75
-      },
-      "explanation": {
-        "summary": "ROUTINE INDUSTRIAL HEAT classified with 84% confidence. Risk score: 37/100 (MEDIUM).",
-        "evidence": [
-          "Thermal output within established historical baseline",
-          "High thermal radiative power (41.2 MW FRP)",
-          "Multi-pass thermal persistence (1 days, 3 detections)",
-          "Geospatially located within active industrial perimeter (Mundra Special Economic Zone & Power Complex)",
-          "Severe thermal surge: +129% above historical facility baseline (18.0 MW mean)",
-          "Major Industrial Asset: Elevated occupational & infrastructural vulnerability",
-          "Risk down-weighted: Anomaly aligns with controlled industrial operational process"
-        ],
-        "recommendation": "Continuous satellite surveillance; baseline thermal verification in progress."
-      },
-      "satelliteVerification": {
-        "status": "UNAVAILABLE",
-        "message": "Verification not requested yet"
-      },
-      "status": "ACTIVE",
-      "createdAt": "2026-09-12T09:35:28.225Z",
-      "updatedAt": "2026-09-12T10:15:02.606Z",
-      "__v": 0
-    },
-    {
-      "_id": "6aa51ce005af5b9f3836d2be",
-      "eventId": "FSA-2026-IND-008",
-      "source": "NASA_FIRMS_DEMO",
-      "satellite": "NOAA-21",
-      "instrument": "VIIRS",
-      "latitude": 29.398,
-      "longitude": 76.968,
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          76.968,
-          29.398
-        ]
-      },
-      "acquisitionDate": "2026-09-12",
-      "acquisitionTime": "0815",
-      "timestamp": "2026-09-12T08:15:00.000Z",
-      "brightnessTemperature": 335.7,
-      "frp": 26.5,
-      "confidence": "nominal",
-      "dayNight": "D",
-      "scan": 0.42,
-      "track": 0.41,
-      "facilityId": "6aa51cde05af5b9f3836d27c",
-      "facilityName": "Panipat Refinery & Petrochemical Hub (IOCL)",
-      "facilityType": "petrochemical_refinery",
-      "facilityDistance": 0,
-      "insideIndustrialBoundary": true,
-      "nearestCity": "Panipat",
-      "state": "Haryana",
-      "persistenceClusterId": "CLUSTER-29.40-76.97-8387",
-      "persistenceCount": 3,
-      "persistenceDays": 1,
-      "isPersistent": true,
-      "baselineStatus": "ELEVATED",
-      "baselineFRPDelta": 20,
-      "classification": "ROUTINE INDUSTRIAL HEAT",
-      "classificationConfidence": 84,
-      "riskScore": 33,
-      "riskLevel": "MEDIUM",
-      "riskBreakdown": {
-        "thermalScore": 68,
-        "persistenceScore": 65,
-        "industrialScore": 100,
-        "recurrenceScore": 50,
-        "populationScore": 100
-      },
-      "explanation": {
-        "summary": "ROUTINE INDUSTRIAL HEAT classified with 84% confidence. Risk score: 33/100 (MEDIUM).",
-        "evidence": [
-          "Thermal output within established historical baseline",
-          "Moderate thermal radiative power (26.5 MW FRP)",
-          "Multi-pass thermal persistence (1 days, 3 detections)",
-          "Geospatially located within active industrial perimeter (Panipat Refinery & Petrochemical Hub (IOCL))",
-          "Slightly elevated thermal signature: +20% above baseline",
-          "Tier-1 Critical Infrastructure: High hydrocarbon / chemical inventory hazard risk",
-          "Risk down-weighted: Anomaly aligns with controlled industrial operational process"
-        ],
-        "recommendation": "Continuous satellite surveillance; baseline thermal verification in progress."
-      },
-      "satelliteVerification": {
-        "status": "UNAVAILABLE",
-        "message": "Verification not requested yet"
-      },
-      "status": "ACTIVE",
-      "createdAt": "2026-09-12T09:35:28.468Z",
-      "updatedAt": "2026-09-12T10:15:02.830Z",
-      "__v": 0
-    },
-    {
-      "_id": "6aa51ce005af5b9f3836d2c6",
-      "eventId": "FSA-2026-IND-009",
-      "source": "NASA_FIRMS_DEMO",
-      "satellite": "Suomi-NPP",
-      "instrument": "VIIRS",
-      "latitude": 17.689,
-      "longitude": 83.218,
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          83.218,
-          17.689
-        ]
-      },
-      "acquisitionDate": "2026-09-12",
-      "acquisitionTime": "0750",
-      "timestamp": "2026-09-12T07:50:00.000Z",
-      "brightnessTemperature": 342.3,
-      "frp": 34,
-      "confidence": "nominal",
-      "dayNight": "D",
-      "scan": 0.4,
-      "track": 0.39,
-      "facilityId": "6aa51cde05af5b9f3836d27d",
-      "facilityName": "Visakhapatnam Petroleum Refinery (HPCL)",
-      "facilityType": "petrochemical_refinery",
-      "facilityDistance": 0,
-      "insideIndustrialBoundary": true,
-      "nearestCity": "Visakhapatnam",
-      "state": "Andhra Pradesh",
-      "persistenceClusterId": "CLUSTER-17.69-83.22-8634",
-      "persistenceCount": 3,
-      "persistenceDays": 1,
-      "isPersistent": true,
-      "baselineStatus": "ANOMALOUS",
-      "baselineFRPDelta": 36,
-      "classification": "ROUTINE INDUSTRIAL HEAT",
-      "classificationConfidence": 84,
-      "riskScore": 36,
-      "riskLevel": "MEDIUM",
-      "riskBreakdown": {
-        "thermalScore": 78,
-        "persistenceScore": 65,
-        "industrialScore": 100,
-        "recurrenceScore": 75,
-        "populationScore": 100
-      },
-      "explanation": {
-        "summary": "ROUTINE INDUSTRIAL HEAT classified with 84% confidence. Risk score: 36/100 (MEDIUM).",
-        "evidence": [
-          "Thermal output within established historical baseline",
-          "High thermal radiative power (34.0 MW FRP)",
-          "Multi-pass thermal persistence (1 days, 3 detections)",
-          "Geospatially located within active industrial perimeter (Visakhapatnam Petroleum Refinery (HPCL))",
-          "Elevated thermal activity: +36% relative to historical baseline",
-          "Tier-1 Critical Infrastructure: High hydrocarbon / chemical inventory hazard risk",
-          "Risk down-weighted: Anomaly aligns with controlled industrial operational process"
-        ],
-        "recommendation": "Continuous satellite surveillance; baseline thermal verification in progress."
-      },
-      "satelliteVerification": {
-        "status": "UNAVAILABLE",
-        "message": "Verification not requested yet"
-      },
-      "status": "ACTIVE",
-      "createdAt": "2026-09-12T09:35:28.720Z",
-      "updatedAt": "2026-09-12T10:15:03.052Z",
-      "__v": 0
-    },
-    {
-      "_id": "6aa51ce005af5b9f3836d2ce",
-      "eventId": "FSA-2026-IND-010",
-      "source": "NASA_FIRMS_DEMO",
-      "satellite": "NOAA-20",
-      "instrument": "VIIRS",
-      "latitude": 24.195,
-      "longitude": 82.664,
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          82.664,
-          24.195
-        ]
-      },
-      "acquisitionDate": "2026-09-12",
-      "acquisitionTime": "0805",
-      "timestamp": "2026-09-12T08:05:00.000Z",
-      "brightnessTemperature": 337.8,
-      "frp": 29.8,
-      "confidence": "nominal",
-      "dayNight": "D",
-      "scan": 0.41,
-      "track": 0.4,
-      "facilityId": "6aa51cde05af5b9f3836d27e",
-      "facilityName": "Singrauli Super Thermal Power Station (NTPC)",
-      "facilityType": "power_plant",
-      "facilityDistance": 0,
-      "insideIndustrialBoundary": true,
-      "nearestCity": "Shaktinagar",
-      "state": "Uttar Pradesh",
-      "persistenceClusterId": "CLUSTER-24.20-82.66-8889",
-      "persistenceCount": 3,
-      "persistenceDays": 1,
-      "isPersistent": true,
-      "baselineStatus": "ELEVATED",
-      "baselineFRPDelta": 15,
-      "classification": "ROUTINE INDUSTRIAL HEAT",
-      "classificationConfidence": 84,
-      "riskScore": 33,
-      "riskLevel": "MEDIUM",
-      "riskBreakdown": {
-        "thermalScore": 75,
-        "persistenceScore": 65,
-        "industrialScore": 100,
-        "recurrenceScore": 50,
-        "populationScore": 75
-      },
-      "explanation": {
-        "summary": "ROUTINE INDUSTRIAL HEAT classified with 84% confidence. Risk score: 33/100 (MEDIUM).",
-        "evidence": [
-          "Thermal output within established historical baseline",
-          "Moderate thermal radiative power (29.8 MW FRP)",
-          "Multi-pass thermal persistence (1 days, 3 detections)",
-          "Geospatially located within active industrial perimeter (Singrauli Super Thermal Power Station (NTPC))",
-          "Slightly elevated thermal signature: +15% above baseline",
-          "Major Industrial Asset: Elevated occupational & infrastructural vulnerability",
-          "Risk down-weighted: Anomaly aligns with controlled industrial operational process"
-        ],
-        "recommendation": "Continuous satellite surveillance; baseline thermal verification in progress."
-      },
-      "satelliteVerification": {
-        "status": "UNAVAILABLE",
-        "message": "Verification not requested yet"
-      },
-      "status": "ACTIVE",
-      "createdAt": "2026-09-12T09:35:28.969Z",
-      "updatedAt": "2026-09-12T10:15:03.277Z",
-      "__v": 0
-    },
-    {
-      "_id": "6aa51ce105af5b9f3836d2d6",
-      "eventId": "FSA-2026-NAT-011",
-      "source": "NASA_FIRMS_DEMO",
-      "satellite": "NOAA-21",
-      "instrument": "VIIRS",
-      "latitude": 21.684,
-      "longitude": 86.342,
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          86.342,
-          21.684
-        ]
-      },
-      "acquisitionDate": "2026-09-12",
-      "acquisitionTime": "0915",
-      "timestamp": "2026-09-12T09:15:00.000Z",
-      "brightnessTemperature": 329.4,
-      "frp": 21.7,
-      "confidence": "nominal",
-      "dayNight": "D",
-      "scan": 0.44,
-      "track": 0.42,
-      "facilityId": null,
-      "facilityName": null,
-      "facilityType": null,
-      "facilityDistance": null,
-      "insideIndustrialBoundary": false,
-      "nearestCity": "Rural / Remote",
-      "state": "India",
-      "persistenceClusterId": "CLUSTER-21.68-86.34-9121",
-      "persistenceCount": 3,
-      "persistenceDays": 1,
-      "isPersistent": true,
-      "baselineStatus": "NO_BASELINE",
-      "baselineFRPDelta": 0,
-      "classification": "NATURAL / WILDFIRE",
-      "classificationConfidence": 82,
-      "riskScore": 42,
-      "riskLevel": "MEDIUM",
-      "riskBreakdown": {
-        "thermalScore": 58,
-        "persistenceScore": 65,
-        "industrialScore": 5,
-        "recurrenceScore": 30,
-        "populationScore": 30
-      },
-      "explanation": {
-        "summary": "NATURAL / WILDFIRE classified with 82% confidence. Risk score: 42/100 (MEDIUM).",
-        "evidence": [
-          "Isolated heat anomaly in forest / non-industrial terrain",
-          "Absence of adjacent industrial infrastructure",
-          "Moderate thermal radiative power (21.7 MW FRP)",
-          "Multi-pass thermal persistence (1 days, 3 detections)",
-          "Remote / Non-industrial terrain (isolated from critical industrial assets)"
-        ],
-        "recommendation": "Continuous satellite surveillance; baseline thermal verification in progress."
-      },
-      "satelliteVerification": {
-        "status": "UNAVAILABLE",
-        "message": "Verification not requested yet"
-      },
-      "status": "ACTIVE",
-      "createdAt": "2026-09-12T09:35:29.203Z",
-      "updatedAt": "2026-09-12T10:15:03.498Z",
-      "__v": 0
-    },
-    {
-      "_id": "6aa51ce105af5b9f3836d2dd",
-      "eventId": "FSA-2026-AGR-012",
-      "source": "NASA_FIRMS_DEMO",
-      "satellite": "NOAA-20",
-      "instrument": "VIIRS",
-      "latitude": 29.789,
-      "longitude": 76.985,
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          76.985,
-          29.789
-        ]
-      },
-      "acquisitionDate": "2026-09-12",
-      "acquisitionTime": "0825",
-      "timestamp": "2026-09-12T08:25:00.000Z",
-      "brightnessTemperature": 319.6,
-      "frp": 9.4,
-      "confidence": "nominal",
-      "dayNight": "D",
-      "scan": 0.43,
-      "track": 0.41,
-      "facilityId": null,
-      "facilityName": null,
-      "facilityType": null,
-      "facilityDistance": 43508,
-      "insideIndustrialBoundary": false,
-      "nearestCity": "Rural / Remote",
-      "state": "India",
-      "persistenceClusterId": "CLUSTER-29.79-76.98-9320",
-      "persistenceCount": 3,
-      "persistenceDays": 1,
-      "isPersistent": true,
-      "baselineStatus": "NO_BASELINE",
-      "baselineFRPDelta": 0,
-      "classification": "AGRICULTURAL BURNING",
-      "classificationConfidence": 86,
-      "riskScore": 22,
-      "riskLevel": "LOW",
-      "riskBreakdown": {
-        "thermalScore": 28,
-        "persistenceScore": 65,
-        "industrialScore": 5,
-        "recurrenceScore": 30,
-        "populationScore": 30
-      },
-      "explanation": {
-        "summary": "AGRICULTURAL BURNING classified with 86% confidence. Risk score: 22/100 (LOW).",
-        "evidence": [
-          "Spatial correlation with seasonal agrarian stubble burning corridor",
-          "Low-to-moderate FRP characteristic of open biomass combustion",
-          "Low thermal signature (9.4 MW FRP)",
-          "Multi-pass thermal persistence (1 days, 3 detections)",
-          "Remote / Non-industrial terrain (isolated from critical industrial assets)"
-        ],
-        "recommendation": "Continuous satellite surveillance; baseline thermal verification in progress."
-      },
-      "satelliteVerification": {
-        "status": "UNAVAILABLE",
-        "message": "Verification not requested yet"
-      },
-      "status": "ACTIVE",
-      "createdAt": "2026-09-12T09:35:29.397Z",
-      "updatedAt": "2026-09-12T10:15:03.679Z",
-      "__v": 0
-    },
-    {
       "_id": "6aa527fae2119e9da3c3ebb2",
       "eventId": "FIRMS-20260912-22.097-96.603",
       "source": "NASA_FIRMS_LIVE",
@@ -28028,6 +27176,7 @@
   ],
   "facilities": [
     {
+      "_id": "6aa56e28b2ce0a7f00a6970a",
       "osmId": "osm-way-hazira-ind",
       "name": "Hazira Petrochemical & Chemical Terminal Complex",
       "facilityType": "petrochemical_refinery",
@@ -28090,12 +27239,12 @@
       "activeEventsCount": 0,
       "highestActiveRisk": "NONE",
       "provenance": "OSM Overpass Verified + GIDC Registry",
-      "_id": "6aa56e28b2ce0a7f00a6970a",
       "__v": 0,
       "createdAt": "2026-09-12T15:22:16.807Z",
       "updatedAt": "2026-09-12T15:22:16.807Z"
     },
     {
+      "_id": "6aa56e28b2ce0a7f00a6970b",
       "osmId": "osm-way-jamnagar-ref",
       "name": "Jamnagar Mega Refinery & Petrochemical Complex (RIL)",
       "facilityType": "petrochemical_refinery",
@@ -28158,12 +27307,12 @@
       "activeEventsCount": 0,
       "highestActiveRisk": "NONE",
       "provenance": "OSM Overpass Verified + Industry Baseline",
-      "_id": "6aa56e28b2ce0a7f00a6970b",
       "__v": 0,
       "createdAt": "2026-09-12T15:22:16.808Z",
       "updatedAt": "2026-09-12T15:22:16.808Z"
     },
     {
+      "_id": "6aa56e28b2ce0a7f00a6970c",
       "osmId": "osm-way-bhilai-steel",
       "name": "Bhilai Steel Plant (SAIL)",
       "facilityType": "steel_metallurgy",
@@ -28226,12 +27375,12 @@
       "activeEventsCount": 0,
       "highestActiveRisk": "NONE",
       "provenance": "OSM Overpass Verified",
-      "_id": "6aa56e28b2ce0a7f00a6970c",
       "__v": 0,
       "createdAt": "2026-09-12T15:22:16.808Z",
       "updatedAt": "2026-09-12T15:22:16.808Z"
     },
     {
+      "_id": "6aa56e28b2ce0a7f00a6970d",
       "osmId": "osm-way-mundra-port",
       "name": "Mundra Special Economic Zone & Power Complex",
       "facilityType": "power_plant",
@@ -28294,12 +27443,12 @@
       "activeEventsCount": 0,
       "highestActiveRisk": "NONE",
       "provenance": "OSM Overpass Verified",
-      "_id": "6aa56e28b2ce0a7f00a6970d",
       "__v": 0,
       "createdAt": "2026-09-12T15:22:16.808Z",
       "updatedAt": "2026-09-12T15:22:16.808Z"
     },
     {
+      "_id": "6aa56e28b2ce0a7f00a6970e",
       "osmId": "osm-way-panipat-ref",
       "name": "Panipat Refinery & Petrochemical Hub (IOCL)",
       "facilityType": "petrochemical_refinery",
@@ -28342,12 +27491,12 @@
       "activeEventsCount": 0,
       "highestActiveRisk": "NONE",
       "provenance": "OSM Overpass Verified",
-      "_id": "6aa56e28b2ce0a7f00a6970e",
       "__v": 0,
       "createdAt": "2026-09-12T15:22:16.808Z",
       "updatedAt": "2026-09-12T15:22:16.808Z"
     },
     {
+      "_id": "6aa56e28b2ce0a7f00a6970f",
       "osmId": "osm-way-vizag-hpcl",
       "name": "Visakhapatnam Petroleum Refinery (HPCL)",
       "facilityType": "petrochemical_refinery",
@@ -28390,12 +27539,12 @@
       "activeEventsCount": 0,
       "highestActiveRisk": "NONE",
       "provenance": "OSM Overpass Verified",
-      "_id": "6aa56e28b2ce0a7f00a6970f",
       "__v": 0,
       "createdAt": "2026-09-12T15:22:16.808Z",
       "updatedAt": "2026-09-12T15:22:16.808Z"
     },
     {
+      "_id": "6aa56e28b2ce0a7f00a69710",
       "osmId": "osm-way-singrauli-power",
       "name": "Singrauli Super Thermal Power Station (NTPC)",
       "facilityType": "power_plant",
@@ -28438,12 +27587,12 @@
       "activeEventsCount": 0,
       "highestActiveRisk": "NONE",
       "provenance": "OSM Overpass Verified",
-      "_id": "6aa56e28b2ce0a7f00a69710",
       "__v": 0,
       "createdAt": "2026-09-12T15:22:16.808Z",
       "updatedAt": "2026-09-12T15:22:16.808Z"
     },
     {
+      "_id": "6aa56e28b2ce0a7f00a69711",
       "osmId": "osm-way-paradeep-ref",
       "name": "Paradip Refinery & Petrochemical Complex (IOCL)",
       "facilityType": "petrochemical_refinery",
@@ -28486,12 +27635,12 @@
       "activeEventsCount": 0,
       "highestActiveRisk": "NONE",
       "provenance": "OSM Overpass Verified + MoPNG Registry",
-      "_id": "6aa56e28b2ce0a7f00a69711",
       "__v": 0,
       "createdAt": "2026-09-12T15:22:16.808Z",
       "updatedAt": "2026-09-12T15:22:16.808Z"
     },
     {
+      "_id": "6aa56e28b2ce0a7f00a69712",
       "osmId": "osm-way-haldia-ref",
       "name": "Haldia Petrochemicals & Refinery Complex (IOCL/HPL)",
       "facilityType": "petrochemical_refinery",
@@ -28534,12 +27683,12 @@
       "activeEventsCount": 0,
       "highestActiveRisk": "NONE",
       "provenance": "OSM Overpass Verified",
-      "_id": "6aa56e28b2ce0a7f00a69712",
       "__v": 0,
       "createdAt": "2026-09-12T15:22:16.808Z",
       "updatedAt": "2026-09-12T15:22:16.808Z"
     },
     {
+      "_id": "6aa56e28b2ce0a7f00a69713",
       "osmId": "osm-way-mumbai-mahul",
       "name": "Mumbai Refineries Complex - Mahul & Trombay (BPCL/HPCL)",
       "facilityType": "petrochemical_refinery",
@@ -28582,12 +27731,12 @@
       "activeEventsCount": 0,
       "highestActiveRisk": "NONE",
       "provenance": "OSM Overpass Verified",
-      "_id": "6aa56e28b2ce0a7f00a69713",
       "__v": 0,
       "createdAt": "2026-09-12T15:22:16.808Z",
       "updatedAt": "2026-09-12T15:22:16.808Z"
     },
     {
+      "_id": "6aa56e28b2ce0a7f00a69714",
       "osmId": "osm-way-kochi-ref",
       "name": "Kochi Petroleum Refinery (BPCL)",
       "facilityType": "petrochemical_refinery",
@@ -28630,12 +27779,12 @@
       "activeEventsCount": 0,
       "highestActiveRisk": "NONE",
       "provenance": "OSM Overpass Verified",
-      "_id": "6aa56e28b2ce0a7f00a69714",
       "__v": 0,
       "createdAt": "2026-09-12T15:22:16.808Z",
       "updatedAt": "2026-09-12T15:22:16.808Z"
     },
     {
+      "_id": "6aa56e28b2ce0a7f00a69715",
       "osmId": "osm-way-mangalore-mrpl",
       "name": "Mangalore Refinery & Petrochemicals Complex (MRPL/ONGC)",
       "facilityType": "petrochemical_refinery",
@@ -28678,12 +27827,12 @@
       "activeEventsCount": 0,
       "highestActiveRisk": "NONE",
       "provenance": "OSM Overpass Verified",
-      "_id": "6aa56e28b2ce0a7f00a69715",
       "__v": 0,
       "createdAt": "2026-09-12T15:22:16.808Z",
       "updatedAt": "2026-09-12T15:22:16.808Z"
     },
     {
+      "_id": "6aa56e28b2ce0a7f00a69716",
       "osmId": "osm-way-dahej-pcpir",
       "name": "Dahej Petroleum, Chemicals & Petrochemicals Zone (PCPIR)",
       "facilityType": "chemical_manufacturing",
@@ -28726,12 +27875,12 @@
       "activeEventsCount": 0,
       "highestActiveRisk": "NONE",
       "provenance": "OSM Overpass Verified + GIDC PCPIR",
-      "_id": "6aa56e28b2ce0a7f00a69716",
       "__v": 0,
       "createdAt": "2026-09-12T15:22:16.808Z",
       "updatedAt": "2026-09-12T15:22:16.808Z"
     },
     {
+      "_id": "6aa56e28b2ce0a7f00a69717",
       "osmId": "osm-way-mathura-ref",
       "name": "Mathura Petroleum Refinery (IOCL)",
       "facilityType": "petrochemical_refinery",
@@ -28774,12 +27923,12 @@
       "activeEventsCount": 0,
       "highestActiveRisk": "NONE",
       "provenance": "OSM Overpass Verified",
-      "_id": "6aa56e28b2ce0a7f00a69717",
       "__v": 0,
       "createdAt": "2026-09-12T15:22:16.808Z",
       "updatedAt": "2026-09-12T15:22:16.808Z"
     },
     {
+      "_id": "6aa56e28b2ce0a7f00a69718",
       "osmId": "osm-way-bathinda-hmel",
       "name": "Guru Gobind Singh Refinery (HMEL HPCL-Mittal)",
       "facilityType": "petrochemical_refinery",
@@ -28822,12 +27971,12 @@
       "activeEventsCount": 0,
       "highestActiveRisk": "NONE",
       "provenance": "OSM Overpass Verified",
-      "_id": "6aa56e28b2ce0a7f00a69718",
       "__v": 0,
       "createdAt": "2026-09-12T15:22:16.808Z",
       "updatedAt": "2026-09-12T15:22:16.808Z"
     },
     {
+      "_id": "6aa56e28b2ce0a7f00a69719",
       "osmId": "osm-way-tata-steel-jsr",
       "name": "Tata Steel Jamshedpur Works",
       "facilityType": "steel_metallurgy",
@@ -28870,12 +28019,12 @@
       "activeEventsCount": 0,
       "highestActiveRisk": "NONE",
       "provenance": "OSM Overpass Verified + Tata Steel Registry",
-      "_id": "6aa56e28b2ce0a7f00a69719",
       "__v": 0,
       "createdAt": "2026-09-12T15:22:16.808Z",
       "updatedAt": "2026-09-12T15:22:16.808Z"
     },
     {
+      "_id": "6aa56e28b2ce0a7f00a6971a",
       "osmId": "osm-way-rourkela-steel",
       "name": "Rourkela Steel Plant (SAIL)",
       "facilityType": "steel_metallurgy",
@@ -28918,12 +28067,12 @@
       "activeEventsCount": 0,
       "highestActiveRisk": "NONE",
       "provenance": "OSM Overpass Verified",
-      "_id": "6aa56e28b2ce0a7f00a6971a",
       "__v": 0,
       "createdAt": "2026-09-12T15:22:16.808Z",
       "updatedAt": "2026-09-12T15:22:16.808Z"
     },
     {
+      "_id": "6aa56e28b2ce0a7f00a6971b",
       "osmId": "osm-way-bokaro-steel",
       "name": "Bokaro Steel Plant (SAIL)",
       "facilityType": "steel_metallurgy",
@@ -28966,12 +28115,12 @@
       "activeEventsCount": 0,
       "highestActiveRisk": "NONE",
       "provenance": "OSM Overpass Verified",
-      "_id": "6aa56e28b2ce0a7f00a6971b",
       "__v": 0,
       "createdAt": "2026-09-12T15:22:16.808Z",
       "updatedAt": "2026-09-12T15:22:16.808Z"
     },
     {
+      "_id": "6aa56e28b2ce0a7f00a6971c",
       "osmId": "osm-way-bina-ref",
       "name": "Bharat Oman Refineries Complex - Bina (BPCL)",
       "facilityType": "petrochemical_refinery",
@@ -29014,12 +28163,12 @@
       "activeEventsCount": 0,
       "highestActiveRisk": "NONE",
       "provenance": "OSM Overpass Verified",
-      "_id": "6aa56e28b2ce0a7f00a6971c",
       "__v": 0,
       "createdAt": "2026-09-12T15:22:16.808Z",
       "updatedAt": "2026-09-12T15:22:16.808Z"
     },
     {
+      "_id": "6aa56e28b2ce0a7f00a6971d",
       "osmId": "osm-way-numaligarh-ref",
       "name": "Numaligarh Petroleum Refinery (NRL)",
       "facilityType": "petrochemical_refinery",
@@ -29062,12 +28211,12 @@
       "activeEventsCount": 0,
       "highestActiveRisk": "NONE",
       "provenance": "OSM Overpass Verified",
-      "_id": "6aa56e28b2ce0a7f00a6971d",
       "__v": 0,
       "createdAt": "2026-09-12T15:22:16.808Z",
       "updatedAt": "2026-09-12T15:22:16.808Z"
     },
     {
+      "_id": "6aa56e28b2ce0a7f00a6971e",
       "osmId": "osm-way-manali-cpcl",
       "name": "Chennai Petroleum Corporation Complex - Manali (CPCL)",
       "facilityType": "petrochemical_refinery",
@@ -29110,12 +28259,12 @@
       "activeEventsCount": 0,
       "highestActiveRisk": "NONE",
       "provenance": "OSM Overpass Verified",
-      "_id": "6aa56e28b2ce0a7f00a6971e",
       "__v": 0,
       "createdAt": "2026-09-12T15:22:16.808Z",
       "updatedAt": "2026-09-12T15:22:16.808Z"
     },
     {
+      "_id": "6aa56e28b2ce0a7f00a6971f",
       "osmId": "osm-way-jindal-toranagallu",
       "name": "JSW Steel Vijayanagar Mega Works (Toranagallu)",
       "facilityType": "steel_metallurgy",
@@ -29158,7 +28307,6 @@
       "activeEventsCount": 0,
       "highestActiveRisk": "NONE",
       "provenance": "OSM Overpass Verified + JSW Registry",
-      "_id": "6aa56e28b2ce0a7f00a6971f",
       "__v": 0,
       "createdAt": "2026-09-12T15:22:16.808Z",
       "updatedAt": "2026-09-12T15:22:16.808Z"
