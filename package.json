@@ -7,7 +7,7 @@
     "seed": "npm --prefix backend run seed",
     "backend": "npm --prefix backend run dev",
     "frontend": "npm --prefix frontend run dev",
-    "ai": "cd ai-service && uvicorn app.main:app --reload --host 0.0.0.0 --port 8000",
+    "ai": "cd ai-service && python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000",
     "dev:all": "concurrently -n \"BACKEND,FRONTEND,AI\" -c \"cyan,magenta,yellow\" \"npm run backend\" \"npm run frontend\" \"npm run ai\"",
     "test": "npm --prefix backend test"
   },
