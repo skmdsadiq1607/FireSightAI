@@ -31,12 +31,12 @@ export default function AppShell() {
   };
 
   return (
-    <div className="h-screen w-screen bg-[#07090E] text-slate-100 flex flex-col overflow-hidden select-none">
+    <div className="h-screen w-screen bg-[#07090E] text-slate-100 flex flex-col overflow-hidden">
       <TopBar
         onRefresh={handleRefresh}
         isRefreshing={isRefreshing}
       />
-      <main className="flex-1 overflow-hidden relative">
+      <main className="flex-1 overflow-y-auto relative">
         <Outlet context={{ refreshTrigger, dataMode, handleRefresh }} />
       </main>
     </div>
