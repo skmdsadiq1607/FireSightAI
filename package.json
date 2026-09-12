@@ -1,0 +1,19 @@
+{
+  "name": "firesight-ai",
+  "version": "1.0.0",
+  "description": "FireSight AI: Advanced AI-Based Detection & Classification of Industrial Fires and Persistent Thermal Sources (SIH 2026)",
+  "scripts": {
+    "install:all": "npm install && npm --prefix backend install && npm --prefix frontend install",
+    "seed": "npm --prefix backend run seed",
+    "backend": "npm --prefix backend run dev",
+    "frontend": "npm --prefix frontend run dev",
+    "ai": "cd ai-service && uvicorn app.main:app --reload --host 0.0.0.0 --port 8000",
+    "dev:all": "concurrently -n \"BACKEND,FRONTEND,AI\" -c \"cyan,magenta,yellow\" \"npm run backend\" \"npm run frontend\" \"npm run ai\"",
+    "test": "npm --prefix backend test"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.4"
+  },
+  "author": "FireSight AI Team",
+  "license": "MIT"
+}
