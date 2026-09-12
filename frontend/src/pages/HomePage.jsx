@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import {
   Flame,
@@ -64,8 +64,8 @@ export default function HomePage() {
             <div className="text-xs text-slate-400 mt-1">Live NASA Satellite Detections (Today)</div>
           </div>
           <div className="p-4 rounded-xl bg-[#0B101D] border border-slate-800">
-            <div className="text-2xl font-bold font-mono text-cyan-400">7 Sites</div>
-            <div className="text-xs text-slate-400 mt-1">Monitored Indian Petrochemical & Refinery Hubs</div>
+            <div className="text-2xl font-bold font-mono text-cyan-400">22 Sites</div>
+            <div className="text-xs text-slate-400 mt-1">Monitored Indian Petrochemical, Refinery & Steel Hubs</div>
           </div>
           <div className="p-4 rounded-xl bg-[#0B101D] border border-slate-800">
             <div className="text-2xl font-bold font-mono text-amber-400">&lt; 2.0s</div>
