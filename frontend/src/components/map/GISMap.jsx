@@ -129,12 +129,12 @@ export default function GISMap({
   });
 
   return (
-    <div className="w-full h-full relative overflow-hidden bg-[#0A0D14]">
+    <div className="w-full h-full relative overflow-hidden bg-[#090A0F]">
       {/* Top Floating GIS Toolbar */}
       <div className="absolute top-3 left-3 z-20 flex flex-wrap items-center gap-2 max-w-[calc(100%-1.5rem)]">
         {/* World Region Selector */}
-        <div className="bg-[#0A0E1A]/95 border border-slate-800 rounded-lg p-1 flex items-center gap-1 shadow-lg backdrop-blur-md text-xs font-sans">
-          <span className="text-[11px] text-slate-400 px-2 flex items-center gap-1 font-medium">
+        <div className="bg-[#12131A]/90 border border-white/[0.1] rounded-lg p-1 flex items-center gap-1 shadow-xl backdrop-blur-md text-xs font-sans">
+          <span className="text-[11px] text-zinc-400 px-2 flex items-center gap-1 font-medium">
             <Globe className="w-3.5 h-3.5 text-orange-400" />
             <span className="hidden sm:inline">Region:</span>
           </span>
@@ -142,7 +142,7 @@ export default function GISMap({
             <button
               key={reg.name}
               onClick={() => setTargetView({ center: reg.center, zoom: reg.zoom })}
-              className="px-2 py-1 rounded text-[11px] text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
+              className="px-2 py-1 rounded text-[11px] text-zinc-300 hover:text-white hover:bg-white/[0.08] transition-colors"
             >
               {reg.name}
             </button>
@@ -150,36 +150,36 @@ export default function GISMap({
         </div>
 
         {/* Quick Filter Mode */}
-        <div className="bg-[#0A0E1A]/95 border border-slate-800 rounded-lg p-1 flex items-center gap-1 shadow-lg backdrop-blur-md text-xs font-sans">
+        <div className="bg-[#12131A]/90 border border-white/[0.1] rounded-lg p-1 flex items-center gap-1 shadow-xl backdrop-blur-md text-xs font-sans">
           <button
             onClick={() => setFilterMode('ALL')}
-            className={`px-2 py-1 rounded text-[11px] transition-colors ${
+            className={`px-2.5 py-1 rounded text-[11px] transition-colors ${
               filterMode === 'ALL'
-                ? 'bg-slate-800 text-white font-medium'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-white/[0.1] text-white font-medium'
+                : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04]'
             }`}
           >
-            All Hotspots ({events.length})
+            All ({events.length})
           </button>
           <button
             onClick={() => setFilterMode('HIGH_FRP')}
-            className={`px-2 py-1 rounded text-[11px] transition-colors ${
+            className={`px-2.5 py-1 rounded text-[11px] transition-colors ${
               filterMode === 'HIGH_FRP'
-                ? 'bg-orange-600/30 text-orange-300 border border-orange-500/40 font-medium'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-orange-500/20 text-orange-300 border border-orange-500/30 font-medium'
+                : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04]'
             }`}
           >
-            High Radiative Power (&gt;20 MW)
+            High Heat (&gt;20 MW)
           </button>
           <button
             onClick={() => setFilterMode('INDUSTRIAL')}
-            className={`px-2 py-1 rounded text-[11px] transition-colors ${
+            className={`px-2.5 py-1 rounded text-[11px] transition-colors ${
               filterMode === 'INDUSTRIAL'
-                ? 'bg-cyan-600/30 text-cyan-300 border border-cyan-500/40 font-medium'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-medium'
+                : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04]'
             }`}
           >
-            Industrial Proximity
+            Industrial Perimeters
           </button>
         </div>
       </div>
@@ -187,13 +187,13 @@ export default function GISMap({
       {/* Top Right Floating Layer & Basemap Controls */}
       <div className="absolute top-3 right-3 z-20 flex items-center gap-2">
         {/* Marker Symbol Toggle (Flame vs Pixel Footprint) */}
-        <div className="bg-[#0A0E1A]/95 border border-slate-800 rounded-lg p-1 flex items-center gap-1 shadow-lg backdrop-blur-md text-xs font-sans">
+        <div className="bg-[#12131A]/90 border border-white/[0.1] rounded-lg p-1 flex items-center gap-1 shadow-xl backdrop-blur-md text-xs font-sans">
           <button
             onClick={() => setMarkerStyle('flame')}
             className={`px-2 py-1 rounded text-[11px] flex items-center gap-1 transition-colors ${
               markerStyle === 'flame'
-                ? 'bg-orange-500/20 text-orange-300 border border-orange-500/40 font-semibold'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-orange-500/20 text-orange-300 border border-orange-500/30 font-medium'
+                : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04]'
             }`}
             title="Render crisp NASA FIRMS flame markers"
           >
@@ -204,8 +204,8 @@ export default function GISMap({
             onClick={() => setMarkerStyle('pixel')}
             className={`px-2 py-1 rounded text-[11px] flex items-center gap-1 transition-colors ${
               markerStyle === 'pixel'
-                ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 font-semibold'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-medium'
+                : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04]'
             }`}
             title="Render classic 375m sensor pixel grid"
           >
@@ -215,11 +215,11 @@ export default function GISMap({
         </div>
 
         {/* Basemap Switcher */}
-        <div className="bg-[#0A0E1A]/95 border border-slate-800 rounded-lg p-1 flex items-center gap-1 shadow-lg backdrop-blur-md text-xs font-sans">
+        <div className="bg-[#12131A]/90 border border-white/[0.1] rounded-lg p-1 flex items-center gap-1 shadow-xl backdrop-blur-md text-xs font-sans">
           <button
             onClick={() => setBaseMap('dark')}
             className={`px-2.5 py-1 rounded text-[11px] transition-colors ${
-              baseMap === 'dark' ? 'bg-slate-800 text-white font-medium' : 'text-slate-400 hover:text-slate-200'
+              baseMap === 'dark' ? 'bg-white/[0.1] text-white font-medium' : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04]'
             }`}
           >
             Dark
@@ -227,10 +227,10 @@ export default function GISMap({
           <button
             onClick={() => setBaseMap('satellite')}
             className={`px-2.5 py-1 rounded text-[11px] transition-colors ${
-              baseMap === 'satellite' ? 'bg-slate-800 text-white font-medium' : 'text-slate-400 hover:text-slate-200'
+              baseMap === 'satellite' ? 'bg-white/[0.1] text-white font-medium' : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04]'
             }`}
           >
-            Satellite TrueColor
+            Satellite
           </button>
         </div>
       </div>

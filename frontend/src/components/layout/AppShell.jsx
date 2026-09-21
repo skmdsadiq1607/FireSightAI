@@ -31,7 +31,7 @@ export default function AppShell() {
   };
 
   return (
-    <div className="h-screen w-screen bg-[#07090E] text-slate-100 flex flex-col overflow-hidden">
+    <div className="h-screen w-screen bg-[#090A0F] text-zinc-100 flex flex-col overflow-hidden antialiased">
       <TopBar
         onRefresh={handleRefresh}
         isRefreshing={isRefreshing}

@@ -4,54 +4,59 @@
 
 @layer base {
   body {
-    background-color: #07090E;
-    color: #F1F5F9;
-    font-family: 'Inter', sans-serif;
+    background-color: #090A0F;
+    color: #F4F4F5;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     overflow-x: hidden;
   }
 
-  /* Sleek dark scrollbar */
+  /* Sleek modern scrollbar */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: #0B0F19;
+    background: #090A0F;
   }
   ::-webkit-scrollbar-thumb {
-    background: #1E2D4A;
+    background: #27272A;
     border-radius: 3px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #2A3F66;
+    background: #3F3F46;
   }
 }
 
 /* Custom leaflet map dark adjustments */
 .leaflet-container {
-  background: #090D16 !important;
+  background: #090A0F !important;
   font-family: 'Inter', sans-serif !important;
 }
 
 .leaflet-control-zoom a {
-  background-color: #0F1626 !important;
-  color: #94A3B8 !important;
-  border-color: #1E2D4A !important;
+  background-color: #12131A !important;
+  color: #A1A1AA !important;
+  border-color: #27272A !important;
 }
 .leaflet-control-zoom a:hover {
-  background-color: #1E2D4A !important;
-  color: #F8FAFC !important;
+  background-color: #18181B !important;
+  color: #FFFFFF !important;
 }
 
 .leaflet-popup-content-wrapper {
-  background-color: #0F1626 !important;
-  color: #F8FAFC !important;
-  border: 1px solid #1E2D4A !important;
-  border-radius: 8px !important;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.7) !important;
+  background-color: #12131A !important;
+  color: #F4F4F5 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.8) !important;
+  padding: 0 !important;
+}
+.leaflet-popup-content {
+  margin: 12px 14px !important;
+  line-height: 1.5 !important;
 }
 .leaflet-popup-tip {
-  background-color: #0F1626 !important;
+  background-color: #12131A !important;
 }
 
 /* Radar pulse animation for critical thermal alerts */

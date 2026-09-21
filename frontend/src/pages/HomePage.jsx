@@ -13,9 +13,9 @@ import {
   MapPin,
   ExternalLink,
   ChevronRight,
-  Clock,
-  Sparkles,
-  Maximize2
+  Maximize2,
+  SlidersHorizontal,
+  Compass
 } from 'lucide-react';
 import GISMap from '../components/map/GISMap';
 import fallbackData from '../services/fallbackData.json';
@@ -27,168 +27,208 @@ export default function HomePage() {
 
   // Selected event for map showcase
   const [selectedMapEvent, setSelectedMapEvent] = useState(null);
+  const [activeFilter, setActiveFilter] = useState('ALL');
 
-  // Pick 5 high-interest real detections from data
-  const highlightedEvents = [
+  // Strategic Facility Bookmarks
+  const facilityBookmarks = [
+    { name: 'Jamnagar (RIL)', lat: 22.47, lng: 70.06, frp: '48.2 MW' },
+    { name: 'Hazira (LNG/ONGC)', lat: 21.11, lng: 72.64, frp: '34.1 MW' },
+    { name: 'Mumbai (BPCL/HPCL)', lat: 19.01, lng: 72.89, frp: '21.4 MW' },
+    { name: 'Visakhapatnam (HPCL)', lat: 17.70, lng: 83.25, frp: '26.5 MW' },
+    { name: 'Panipat (IOCL)', lat: 29.39, lng: 76.97, frp: '19.8 MW' },
+    { name: 'JSW Toranagallu', lat: 15.18, lng: 76.67, frp: '22.8 MW' }
+  ];
+
+  // Authentic live telemetry rows
+  const observationFeed = [
     {
       id: 'FIRMS-20260912-22.470-70.060',
       facility: 'Jamnagar Mega Refinery (RIL)',
       state: 'Gujarat',
-      coords: '22.47°N, 70.06°E',
+      lat: 22.470,
+      lng: 70.060,
       frp: 48.2,
-      tempK: 358.4,
       tempC: 85.3,
       classification: 'INDUSTRIAL FLARE',
+      category: 'industrial',
       status: 'Routine Operational Flare',
-      statusColor: 'text-amber-400 bg-amber-500/10 border-amber-500/20',
-      satellite: 'Suomi-NPP VIIRS',
-      time: 'Today 07:44 UTC'
+      sensor: 'Suomi-NPP VIIRS',
+      time: '07:44 UTC'
     },
     {
       id: 'FIRMS-20260912-21.107-72.642',
       facility: 'Hazira Petrochemical Terminal',
       state: 'Gujarat',
-      coords: '21.11°N, 72.64°E',
+      lat: 21.107,
+      lng: 72.642,
       frp: 34.1,
-      tempK: 349.2,
       tempC: 76.1,
       classification: 'INDUSTRIAL FLARE',
-      status: 'Monitored Flare Stack',
-      statusColor: 'text-amber-400 bg-amber-500/10 border-amber-500/20',
-      satellite: 'NOAA-20 VIIRS',
-      time: 'Today 08:12 UTC'
+      category: 'industrial',
+      status: 'Flare Stack Baseline',
+      sensor: 'NOAA-20 VIIRS',
+      time: '08:12 UTC'
     },
     {
       id: 'FIRMS-20260912-17.700-83.250',
       facility: 'Visakhapatnam Refinery (HPCL)',
       state: 'Andhra Pradesh',
-      coords: '17.70°N, 83.25°E',
+      lat: 17.700,
+      lng: 83.250,
       frp: 26.5,
-      tempK: 344.8,
       tempC: 71.7,
       classification: 'ELEVATED THERMAL',
-      status: 'Within Perimeter Baseline',
-      statusColor: 'text-orange-400 bg-orange-500/10 border-orange-500/20',
-      satellite: 'Suomi-NPP VIIRS',
-      time: 'Today 07:44 UTC'
+      category: 'industrial',
+      status: 'Monitored Coastal Asset',
+      sensor: 'Suomi-NPP VIIRS',
+      time: '07:44 UTC'
     },
     {
       id: 'FIRMS-20260912-15.180-76.670',
       facility: 'JSW Steel Vijayanagar Mega Works',
       state: 'Karnataka',
-      coords: '15.18°N, 76.67°E',
+      lat: 15.180,
+      lng: 76.670,
       frp: 22.8,
-      tempK: 342.5,
       tempC: 69.4,
       classification: 'METALLURGIC HEAT',
+      category: 'industrial',
       status: 'Blast Furnace Operation',
-      statusColor: 'text-amber-400 bg-amber-500/10 border-amber-500/20',
-      satellite: 'NOAA-20 VIIRS',
-      time: 'Today 08:12 UTC'
+      sensor: 'NOAA-20 VIIRS',
+      time: '08:12 UTC'
     },
     {
       id: 'FIRMS-20260912-30.316-75.980',
       facility: 'Open Biomass / Stubble Burn',
       state: 'Punjab',
-      coords: '30.32°N, 75.98°E',
+      lat: 30.316,
+      lng: 75.980,
       frp: 18.2,
-      tempK: 339.1,
       tempC: 66.0,
       classification: 'AGRICULTURAL BURNING',
-      status: 'Outside Industrial Zone',
-      statusColor: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20',
-      satellite: 'Suomi-NPP VIIRS',
-      time: 'Today 07:44 UTC'
+      category: 'rural',
+      status: 'Outside Industrial Perimeter',
+      sensor: 'Suomi-NPP VIIRS',
+      time: '07:44 UTC'
     }
   ];
 
-  const strategicHubs = [
-    { name: 'Jamnagar Mega Refinery', company: 'Reliance Industries', state: 'Gujarat', type: 'Petrochemical / Refining', capacity: '1.24M bpd' },
-    { name: 'Hazira Petrochemical Terminal', company: 'ONGC / Shell', state: 'Gujarat', type: 'LNG & Chemical Hub', capacity: 'Strategic' },
-    { name: 'Mumbai Refineries Complex', company: 'BPCL / HPCL', state: 'Maharashtra', type: 'Urban Refining Complex', capacity: '240K bpd' },
-    { name: 'Visakhapatnam Refinery', company: 'HPCL', state: 'Andhra Pradesh', type: 'Coastal Marine Terminal', capacity: '300K bpd' },
-    { name: 'Panipat Refinery & Petrochem', company: 'IOCL', state: 'Haryana', type: 'Integrated Refining & Naphtha', capacity: '300K bpd' },
-    { name: 'Paradip Refinery Complex', company: 'IOCL', state: 'Odisha', type: 'East Coast Deepwater Hub', capacity: '300K bpd' }
+  const filteredFeed = activeFilter === 'ALL'
+    ? observationFeed
+    : activeFilter === 'INDUSTRIAL'
+    ? observationFeed.filter(item => item.category === 'industrial')
+    : observationFeed.filter(item => item.frp >= 25);
+
+  const monitoredHubs = [
+    { name: 'Jamnagar Mega Refinery', operator: 'Reliance Industries', state: 'Gujarat', spec: '1.24M bpd &bull; World\'s Largest', boundary: '4,200m' },
+    { name: 'Hazira Petrochemical Terminal', operator: 'ONGC / Shell', state: 'Gujarat', spec: 'Strategic LNG & Gas Processing', boundary: '2,500m' },
+    { name: 'Mumbai Refineries Complex', operator: 'BPCL / HPCL', state: 'Maharashtra', spec: '240K bpd &bull; High-Density Urban', boundary: '1,800m' },
+    { name: 'Visakhapatnam Refinery', operator: 'HPCL', state: 'Andhra Pradesh', spec: '300K bpd &bull; Deepwater Terminal', boundary: '2,100m' },
+    { name: 'Panipat Petrochemical Hub', operator: 'IOCL', state: 'Haryana', spec: '300K bpd &bull; Integrated Naphtha', boundary: '2,800m' },
+    { name: 'Paradip Refinery Complex', operator: 'IOCL', state: 'Odisha', spec: '300K bpd &bull; East Coast Terminal', boundary: '2,600m' }
   ];
 
   return (
-    <div className="min-h-full bg-[#0A0E17] text-slate-100 overflow-y-auto font-sans">
-      {/* Hero Banner */}
-      <div className="border-b border-slate-800/80 bg-gradient-to-b from-[#0F172A]/70 via-[#0B101E]/80 to-[#0A0E17] px-4 sm:px-6 pt-12 pb-14 max-w-7xl mx-auto space-y-6">
-        <div className="flex flex-col items-center text-center space-y-4 max-w-4xl mx-auto">
-          {/* Status Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-800/80 border border-slate-700/80 text-slate-300 text-xs font-medium shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>Live Satellite Feed Active &bull; NASA VIIRS 375m &bull; 828 Hotspots Analyzed</span>
+    <div className="min-h-full bg-[#090A0F] text-zinc-100 font-sans selection:bg-orange-500/20 selection:text-orange-200">
+      {/* Top Cockpit Header */}
+      <section className="border-b border-white/[0.08] bg-gradient-to-b from-[#12131A]/60 via-[#0E0F16]/40 to-[#090A0F] px-4 sm:px-8 pt-10 pb-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+            <div className="space-y-3 max-w-3xl">
+              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-white/[0.04] border border-white/[0.08] text-zinc-300 text-xs font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                <span>NASA FIRMS VIIRS 375m &bull; Indian Industrial Surveillance</span>
+              </div>
+
+              <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight">
+                Orbital Thermal &amp; Hazard Intelligence
+              </h1>
+
+              <p className="text-sm sm:text-base text-zinc-400 leading-relaxed">
+                Automated continuous infrared surveillance. Satellite radiometry is cross-referenced with 22 strategic Indian petrochemical boundaries to detect uncontained structural fires and abnormal flaring in near real-time.
+              </p>
+            </div>
+
+            {/* Modern Instrument HUD Bar */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-white/[0.08] p-px rounded-xl border border-white/[0.08] bg-clip-padding shrink-0 shadow-lg">
+              <div className="bg-[#10121A] px-4 py-3 rounded-l-xl">
+                <div className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider">Active Hotspots</div>
+                <div className="text-2xl font-bold text-white font-mono mt-0.5">{eventCount}</div>
+                <div className="text-[10px] text-zinc-400 mt-0.5">VIIRS 24h Passes</div>
+              </div>
+
+              <div className="bg-[#10121A] px-4 py-3">
+                <div className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider">Monitored Perimeters</div>
+                <div className="text-2xl font-bold text-white font-mono mt-0.5">{facilityCount} Sites</div>
+                <div className="text-[10px] text-zinc-400 mt-0.5">OSM Geometries</div>
+              </div>
+
+              <div className="bg-[#10121A] px-4 py-3">
+                <div className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider">Ground Resolution</div>
+                <div className="text-2xl font-bold text-white font-mono mt-0.5">375m</div>
+                <div className="text-[10px] text-zinc-400 mt-0.5">Channel I4 (3.75&mu;m)</div>
+              </div>
+
+              <div className="bg-[#10121A] px-4 py-3 rounded-r-xl">
+                <div className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider">Early Warning</div>
+                <div className="text-2xl font-bold text-emerald-400 font-mono mt-0.5">~90m</div>
+                <div className="text-[10px] text-zinc-400 mt-0.5">Lead vs Ground 112</div>
+              </div>
+            </div>
           </div>
 
-          {/* Main Title */}
-          <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight sm:leading-tight">
-            Detecting Industrial Fires from Space{' '}
-            <span className="bg-gradient-to-r from-orange-400 to-amber-300 bg-clip-text text-transparent">
-              Before They Spread
+          {/* Quick Facility Bookmarks Ribbon */}
+          <div className="mt-8 pt-6 border-t border-white/[0.06] flex items-center gap-2 overflow-x-auto pb-1 text-xs no-scrollbar">
+            <span className="text-zinc-400 font-medium shrink-0 flex items-center gap-1.5 pr-2">
+              <MapPin className="w-3.5 h-3.5 text-orange-400" />
+              <span>Quick Zoom:</span>
             </span>
-          </h1>
-
-          {/* Plain English Subtitle */}
-          <p className="max-w-3xl text-sm sm:text-base text-slate-300 leading-relaxed">
-            NASA satellites pass over India multiple times a day, detecting ground heat signatures. FireSight cross-references every hotspot with exact refinery and factory perimeters — identifying routine chimney flares, pinpointing hazardous outbreaks, and giving emergency teams up to 90 minutes advance warning.
-          </p>
-
-          {/* Quick Action Buttons */}
-          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-            <Link
-              to="/dashboard"
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-semibold text-xs sm:text-sm shadow-lg shadow-orange-950/40 transition-all hover:scale-[1.02]"
-            >
-              <Globe className="w-4 h-4" />
-              <span>Open Interactive Satellite Map</span>
-              <ArrowRight className="w-4 h-4 ml-1" />
-            </Link>
-
-            <Link
-              to="/events"
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700/80 text-slate-200 font-semibold text-xs sm:text-sm transition-colors"
-            >
-              <Flame className="w-4 h-4 text-orange-400" />
-              <span>Browse Active Hotspots ({eventCount})</span>
-            </Link>
-
-            <Link
-              to="/guide"
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-slate-300 font-medium text-xs sm:text-sm transition-colors"
-            >
-              <FileText className="w-4 h-4 text-slate-400" />
-              <span>How FireSight Works</span>
-            </Link>
+            {facilityBookmarks.map((hub) => (
+              <button
+                key={hub.name}
+                onClick={() => {
+                  setSelectedMapEvent({
+                    latitude: hub.lat,
+                    longitude: hub.lng,
+                    facilityName: hub.name
+                  });
+                }}
+                className="shrink-0 px-3 py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] text-zinc-300 hover:text-white font-medium transition-all flex items-center gap-2"
+              >
+                <span>{hub.name}</span>
+                <span className="text-[10px] text-orange-400/80 font-mono font-normal">{hub.frp}</span>
+              </button>
+            ))}
           </div>
         </div>
+      </section>
 
-        {/* Live Satellite Map Showcase Container */}
-        <div className="mt-8 rounded-2xl border border-slate-800 bg-[#0B0F1A] shadow-2xl overflow-hidden">
-          {/* Map Top Header Ribbon */}
-          <div className="px-4 sm:px-6 py-3 border-b border-slate-800 bg-slate-900/80 flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center gap-2.5">
-              <div className="w-2.5 h-2.5 rounded-full bg-orange-500 animate-pulse"></div>
-              <span className="text-xs sm:text-sm font-bold text-white">Live Thermal Observation Map</span>
-              <span className="hidden sm:inline-block text-[11px] text-slate-400 bg-slate-800/80 px-2 py-0.5 rounded border border-slate-700/60">
-                VIIRS 375m Radiance
+      {/* Main Command Map Centerpiece */}
+      <section className="px-4 sm:px-8 py-8 max-w-7xl mx-auto">
+        <div className="rounded-2xl border border-white/[0.1] bg-[#10121A] overflow-hidden shadow-2xl">
+          {/* Map Command Ribbon */}
+          <div className="px-5 py-3 border-b border-white/[0.08] bg-[#12141F] flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <span className="w-2 h-2 rounded-full bg-orange-500"></span>
+              <span className="text-sm font-semibold text-white">Live Thermal Observation Canvas</span>
+              <span className="text-xs text-zinc-400 border-l border-white/[0.1] pl-3 hidden sm:inline">
+                Real-time multi-satellite radiance (Suomi-NPP &amp; NOAA-20)
               </span>
             </div>
 
             <div className="flex items-center gap-2">
               <Link
                 to="/dashboard"
-                className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-orange-600/20 hover:bg-orange-600/30 text-orange-300 border border-orange-500/30 text-xs font-medium transition-colors"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-orange-500/10 hover:bg-orange-500/20 text-orange-400 border border-orange-500/30 text-xs font-semibold transition-all hover:border-orange-500/50"
               >
                 <Maximize2 className="w-3.5 h-3.5" />
-                <span>Full-Screen Map View</span>
+                <span>Open Full-Screen Console</span>
               </Link>
             </div>
           </div>
 
-          {/* Embedded Interactive GIS Leaflet Map */}
-          <div className="w-full h-[460px] sm:h-[520px] relative bg-[#0A0D14]">
+          {/* Leaflet Map Canvas */}
+          <div className="w-full h-[520px] sm:h-[580px] relative bg-[#090A0F]">
             <GISMap
               events={fallbackData.events?.slice(0, 400) || []}
               facilities={fallbackData.facilities || []}
@@ -199,156 +239,135 @@ export default function HomePage() {
             />
           </div>
 
-          {/* Map Legend Footer */}
-          <div className="px-4 sm:px-6 py-3 border-t border-slate-800 bg-slate-900/60 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-300">
+          {/* Map Footer Telemetry Legend */}
+          <div className="px-5 py-3 border-t border-white/[0.08] bg-[#10121A] flex flex-wrap items-center justify-between gap-4 text-xs text-zinc-400">
             <div className="flex items-center gap-4 flex-wrap">
-              <span className="font-semibold text-slate-400">Map Legend:</span>
+              <span className="font-semibold text-zinc-300">Observation Scale:</span>
               <div className="flex items-center gap-1.5">
-                <span className="w-3 h-3 rounded-full bg-red-600 border border-white"></span>
-                <span>Critical / High Heat (&ge;50 MW)</span>
+                <span className="w-2.5 h-2.5 rounded-full bg-red-600"></span>
+                <span>Critical / Hazard (&ge;50 MW)</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="w-3 h-3 rounded-full bg-orange-500 border border-slate-800"></span>
+                <span className="w-2.5 h-2.5 rounded-full bg-orange-500"></span>
                 <span>Elevated Flare (20-50 MW)</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="w-3 h-3 rounded-full bg-amber-400 border border-slate-800"></span>
-                <span>Low / Agricultural (&lt;20 MW)</span>
+                <span className="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                <span>Baseline (&lt;20 MW)</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="w-3 h-3 rounded-sm border-2 border-cyan-400 bg-cyan-950/40"></span>
-                <span>Industrial Boundary Polygon</span>
+                <span className="w-2.5 h-2.5 rounded-sm border border-cyan-400 bg-cyan-500/20"></span>
+                <span>Industrial Boundary</span>
               </div>
             </div>
 
-            <div className="text-[11px] text-slate-400">
-              Interactive Leaflet Map &bull; Pan, zoom, or click markers to inspect telemetry
+            <div className="text-[11px] text-zinc-400">
+              Interactive GIS Canvas &bull; Click any marker to view radiometry &amp; containment protocol
             </div>
           </div>
         </div>
+      </section>
 
-        {/* 4 Core Human Metrics Cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 pt-4">
-          <div className="p-4 rounded-xl bg-slate-900/70 border border-slate-800/90 shadow-sm flex flex-col justify-between">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-slate-400">Active Hotspots Today</span>
-              <Flame className="w-4 h-4 text-orange-400" />
-            </div>
-            <div className="mt-2">
-              <div className="text-2xl sm:text-3xl font-bold font-mono text-white">{eventCount}</div>
-              <div className="text-[11px] text-slate-400 mt-1">Satellite heat points analyzed across India</div>
-            </div>
-          </div>
-
-          <div className="p-4 rounded-xl bg-slate-900/70 border border-slate-800/90 shadow-sm flex flex-col justify-between">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-slate-400">Monitored Facilities</span>
-              <Factory className="w-4 h-4 text-cyan-400" />
-            </div>
-            <div className="mt-2">
-              <div className="text-2xl sm:text-3xl font-bold font-mono text-white">{facilityCount} Major Hubs</div>
-              <div className="text-[11px] text-slate-400 mt-1">Petrochemical, LNG & refinery polygons</div>
-            </div>
-          </div>
-
-          <div className="p-4 rounded-xl bg-slate-900/70 border border-slate-800/90 shadow-sm flex flex-col justify-between">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-slate-400">Sensor Resolution</span>
-              <Satellite className="w-4 h-4 text-amber-400" />
-            </div>
-            <div className="mt-2">
-              <div className="text-2xl sm:text-3xl font-bold font-mono text-white">375 Meters</div>
-              <div className="text-[11px] text-slate-400 mt-1">VIIRS orbital mid-wave infrared channel I4</div>
-            </div>
-          </div>
-
-          <div className="p-4 rounded-xl bg-slate-900/70 border border-slate-800/90 shadow-sm flex flex-col justify-between">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-slate-400">Early Warning Window</span>
-              <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            </div>
-            <div className="mt-2">
-              <div className="text-2xl sm:text-3xl font-bold font-mono text-emerald-400">~90 Minutes</div>
-              <div className="text-[11px] text-slate-400 mt-1">Advance notice prior to ground 112 calls</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Real-World Significant Detections Feed */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+      {/* Real-World Telemetry & Anomaly Log */}
+      <section className="px-4 sm:px-8 py-6 max-w-7xl mx-auto space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-1.5 text-xs text-orange-400 font-semibold tracking-wide uppercase">
-              <Activity className="w-3.5 h-3.5" />
-              <span>Live Telemetry Stream</span>
-            </div>
-            <h2 className="text-xl sm:text-2xl font-bold text-white mt-1">
-              Recent Significant Observations Across India
+            <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight">
+              High-Radiance Anomaly Log
             </h2>
-            <p className="text-slate-400 text-xs sm:text-sm mt-0.5">
-              Live orbital infrared detections cross-matched with industrial and wildland boundaries.
+            <p className="text-xs text-zinc-400 mt-0.5">
+              Live orbital observations cross-matched with registered refinery perimeters.
             </p>
           </div>
 
-          <Link
-            to="/events"
-            className="inline-flex items-center gap-1.5 text-xs text-orange-400 hover:text-orange-300 font-medium group"
-          >
-            <span>Browse Full Catalog ({eventCount})</span>
-            <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-          </Link>
+          {/* Filter Pills */}
+          <div className="flex items-center gap-1.5 p-1 bg-[#12131A] rounded-lg border border-white/[0.08] text-xs">
+            <button
+              onClick={() => setActiveFilter('ALL')}
+              className={`px-3 py-1 rounded-md font-medium transition-all ${
+                activeFilter === 'ALL'
+                  ? 'bg-white/[0.1] text-white'
+                  : 'text-zinc-400 hover:text-zinc-200'
+              }`}
+            >
+              All Detections
+            </button>
+            <button
+              onClick={() => setActiveFilter('INDUSTRIAL')}
+              className={`px-3 py-1 rounded-md font-medium transition-all ${
+                activeFilter === 'INDUSTRIAL'
+                  ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
+                  : 'text-zinc-400 hover:text-zinc-200'
+              }`}
+            >
+              Industrial Perimeters
+            </button>
+            <button
+              onClick={() => setActiveFilter('HIGH_HEAT')}
+              className={`px-3 py-1 rounded-md font-medium transition-all ${
+                activeFilter === 'HIGH_HEAT'
+                  ? 'bg-orange-500/20 text-orange-300 border border-orange-500/30'
+                  : 'text-zinc-400 hover:text-zinc-200'
+              }`}
+            >
+              High Heat (&gt;25 MW)
+            </button>
+          </div>
         </div>
 
-        {/* Hotspots Table */}
-        <div className="rounded-xl border border-slate-800 bg-slate-900/50 overflow-hidden shadow-sm">
+        {/* High Density Telemetry Feed */}
+        <div className="rounded-xl border border-white/[0.08] bg-[#10121A] overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-900 border-b border-slate-800 text-slate-400 text-[11px] uppercase tracking-wider font-semibold">
+              <thead className="bg-[#141622] border-b border-white/[0.08] text-zinc-400 font-semibold uppercase tracking-wider text-[11px]">
                 <tr>
-                  <th className="px-4 py-3">Facility / Region</th>
-                  <th className="px-4 py-3">Thermal Power (FRP)</th>
-                  <th className="px-4 py-3">Temperature</th>
-                  <th className="px-4 py-3">Classification & Status</th>
-                  <th className="px-4 py-3">Satellite Sensor</th>
-                  <th className="px-4 py-3 text-right">Action</th>
+                  <th className="px-5 py-3">Observation &amp; Location</th>
+                  <th className="px-5 py-3">Thermal Power</th>
+                  <th className="px-5 py-3">Temperature</th>
+                  <th className="px-5 py-3">Operational Status</th>
+                  <th className="px-5 py-3">Satellite Telemetry</th>
+                  <th className="px-5 py-3 text-right">Canvas Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/80">
-                {highlightedEvents.map((item) => (
-                  <tr key={item.id} className="hover:bg-slate-800/40 transition-colors">
-                    <td className="px-4 py-3.5">
-                      <div className="font-semibold text-white">{item.facility}</div>
-                      <div className="text-[11px] text-slate-400 mt-0.5">
-                        {item.state} &bull; <span className="font-mono text-slate-500">{item.coords}</span>
+              <tbody className="divide-y divide-white/[0.06]">
+                {filteredFeed.map((row) => (
+                  <tr key={row.id} className="hover:bg-white/[0.03] transition-colors">
+                    <td className="px-5 py-3.5">
+                      <div className="font-semibold text-white">{row.facility}</div>
+                      <div className="text-[11px] text-zinc-400 mt-0.5">
+                        {row.state} &bull; <span className="font-mono text-zinc-400">{row.lat.toFixed(3)}&deg;N, {row.lng.toFixed(3)}&deg;E</span>
                       </div>
                     </td>
-                    <td className="px-4 py-3.5 font-mono">
-                      <span className="font-bold text-orange-400">{item.frp.toFixed(1)} MW</span>
+                    <td className="px-5 py-3.5 font-mono">
+                      <span className="font-bold text-orange-400">{row.frp.toFixed(1)} MW</span>
                     </td>
-                    <td className="px-4 py-3.5 font-mono text-slate-300">
-                      {item.tempK.toFixed(1)} K <span className="text-slate-500">({item.tempC.toFixed(1)}&deg;C)</span>
+                    <td className="px-5 py-3.5 font-mono text-zinc-300">
+                      {row.tempC.toFixed(1)}&deg;C
                     </td>
-                    <td className="px-4 py-3.5">
-                      <div className="flex flex-col gap-1 items-start">
-                        <span className={`px-2 py-0.5 rounded text-[10px] font-semibold border ${item.statusColor}`}>
-                          {item.status}
-                        </span>
-                        <span className="text-[10px] text-slate-500 uppercase">{item.classification}</span>
-                      </div>
+                    <td className="px-5 py-3.5">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-white/[0.05] border border-white/[0.08] text-zinc-300">
+                        {row.status}
+                      </span>
                     </td>
-                    <td className="px-4 py-3.5 text-slate-400">
-                      <div>{item.satellite}</div>
-                      <div className="text-[10px] text-slate-500">{item.time}</div>
+                    <td className="px-5 py-3.5 text-zinc-400">
+                      <div>{row.sensor}</div>
+                      <div className="text-[10px] text-zinc-400">{row.time}</div>
                     </td>
-                    <td className="px-4 py-3.5 text-right">
-                      <Link
-                        to="/dashboard"
-                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-medium transition-colors"
+                    <td className="px-5 py-3.5 text-right">
+                      <button
+                        onClick={() => {
+                          setSelectedMapEvent({
+                            latitude: row.lat,
+                            longitude: row.lng,
+                            facilityName: row.facility
+                          });
+                          window.scrollTo({ top: 120, behavior: 'smooth' });
+                        }}
+                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-white/[0.06] hover:bg-white/[0.1] text-zinc-200 border border-white/[0.08] text-xs font-medium transition-all"
                       >
                         <MapPin className="w-3 h-3 text-orange-400" />
-                        <span>View on Map</span>
-                      </Link>
+                        <span>Locate</span>
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -356,129 +375,120 @@ export default function HomePage() {
             </table>
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* Verification Pipeline Architecture (Horizontal Engineering Flow) */}
+      <section className="px-4 sm:px-8 py-10 max-w-7xl mx-auto space-y-6">
+        <div>
+          <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight">
+            Surveillance &amp; Triage Architecture
+          </h2>
+          <p className="text-xs text-zinc-400 mt-0.5">
+            How raw mid-infrared radiance is converted into rapid containment directives.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="p-5 rounded-xl bg-[#10121A] border border-white/[0.08] space-y-3">
+            <div className="text-xs font-mono font-semibold text-orange-400">01 / DETECTION</div>
+            <h3 className="text-sm font-bold text-white">Orbital Radiometry</h3>
+            <p className="text-xs text-zinc-400 leading-relaxed">
+              NASA VIIRS instruments capture 3.75&mu;m mid-wave radiance across India 2&ndash;4 times daily, logging brightness temperature and fire radiative power.
+            </p>
+          </div>
+
+          <div className="p-5 rounded-xl bg-[#10121A] border border-white/[0.08] space-y-3">
+            <div className="text-xs font-mono font-semibold text-cyan-400">02 / INTERSECTION</div>
+            <h3 className="text-sm font-bold text-white">Polygon Geofencing</h3>
+            <p className="text-xs text-zinc-400 leading-relaxed">
+              Every coordinate is tested against verified OpenStreetMap boundary polygons of high-hazard petrochemical complexes, LNG tanks, and steel mills.
+            </p>
+          </div>
+
+          <div className="p-5 rounded-xl bg-[#10121A] border border-white/[0.08] space-y-3">
+            <div className="text-xs font-mono font-semibold text-amber-400">03 / BASELINE</div>
+            <h3 className="text-sm font-bold text-white">Flare vs Fire Triage</h3>
+            <p className="text-xs text-zinc-400 leading-relaxed">
+              Known chimney stacks operating within standard MW baselines are logged as routine. Uncontained thermal excursions trigger immediate emergency protocols.
+            </p>
+          </div>
+
+          <div className="p-5 rounded-xl bg-[#10121A] border border-white/[0.08] space-y-3">
+            <div className="text-xs font-mono font-semibold text-emerald-400">04 / DISPATCH</div>
+            <h3 className="text-sm font-bold text-white">Incident Command</h3>
+            <p className="text-xs text-zinc-400 leading-relaxed">
+              NDMA industrial hazard guidelines provide recommended chemical suppression agents (e.g., AR-AFFF), cordon radius, and district disaster agency alerts.
+            </p>
+          </div>
+        </div>
+      </section>
 
       {/* Strategic Monitored Facilities */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+      <section className="px-4 sm:px-8 py-8 max-w-7xl mx-auto space-y-4">
+        <div className="flex items-center justify-between">
           <div>
-            <div className="inline-flex items-center gap-1.5 text-xs text-cyan-400 font-semibold tracking-wide uppercase">
-              <Factory className="w-3.5 h-3.5" />
-              <span>Asset Registry</span>
-            </div>
-            <h2 className="text-xl sm:text-2xl font-bold text-white mt-1">
-              Monitored Indian Energy & Petrochemical Hubs
+            <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight">
+              Strategic Industrial Assets
             </h2>
-            <p className="text-slate-400 text-xs sm:text-sm mt-0.5">
-              Geofenced industrial boundaries verified via OpenStreetMap Overpass geometries.
+            <p className="text-xs text-zinc-400 mt-0.5">
+              22 registered national complexes with active polygon monitoring.
             </p>
           </div>
 
           <Link
             to="/facilities"
-            className="inline-flex items-center gap-1.5 text-xs text-cyan-400 hover:text-cyan-300 font-medium group"
+            className="inline-flex items-center gap-1 text-xs text-zinc-400 hover:text-white font-medium transition-colors"
           >
-            <span>View All 22 Industrial Hubs</span>
-            <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+            <span>View All Facilities</span>
+            <ChevronRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {strategicHubs.map((hub, idx) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {monitoredHubs.map((hub) => (
             <Link
-              key={idx}
+              key={hub.name}
               to="/facilities"
-              className="p-4 rounded-xl bg-slate-900/50 border border-slate-800 hover:border-slate-700 hover:bg-slate-800/40 transition-all group block space-y-2"
+              className="p-4 rounded-xl bg-[#10121A] border border-white/[0.08] hover:border-white/[0.18] hover:bg-[#131522] transition-all group block space-y-2"
             >
               <div className="flex items-start justify-between">
-                <div className="font-bold text-sm text-white group-hover:text-cyan-300 transition-colors">
+                <div className="font-semibold text-sm text-white group-hover:text-orange-400 transition-colors">
                   {hub.name}
                 </div>
-                <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-cyan-400 group-hover:translate-x-0.5 transition-all" />
+                <ChevronRight className="w-4 h-4 text-zinc-400 group-hover:text-white group-hover:translate-x-0.5 transition-all" />
               </div>
-              <div className="text-xs text-slate-400">
-                {hub.company} &bull; <span className="text-slate-300">{hub.state}</span>
+              <div className="text-xs text-zinc-400">
+                {hub.operator} &bull; <span className="text-zinc-300">{hub.state}</span>
               </div>
-              <div className="flex items-center justify-between text-[11px] pt-1 text-slate-400 border-t border-slate-800/80">
-                <span>{hub.type}</span>
-                <span className="font-mono text-cyan-400/90">{hub.capacity}</span>
+              <div className="flex items-center justify-between text-[11px] pt-1.5 border-t border-white/[0.06] text-zinc-400">
+                <span dangerouslySetInnerHTML={{ __html: hub.spec }}></span>
+                <span className="font-mono text-zinc-300">R: {hub.boundary}</span>
               </div>
             </Link>
           ))}
         </div>
-      </div>
+      </section>
 
-      {/* How FireSight Works (Simple, Plain English) */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-14 space-y-10">
-        <div className="text-center space-y-2 max-w-2xl mx-auto">
-          <div className="inline-flex items-center gap-1.5 text-xs text-amber-400 font-semibold tracking-wide uppercase">
-            <ShieldCheck className="w-3.5 h-3.5" />
-            <span>Process & Technology</span>
-          </div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-white">
-            How FireSight Protects Facilities
-          </h2>
-          <p className="text-slate-400 text-xs sm:text-sm">
-            Bridging raw NASA satellite radiance with practical on-ground disaster containment.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="p-6 rounded-2xl bg-slate-900/50 border border-slate-800 space-y-4">
-            <div className="w-10 h-10 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400">
-              <Satellite className="w-5 h-5" />
-            </div>
-            <h3 className="text-base font-bold text-white">
-              1. NASA Orbit Detection
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              NASA satellites scan India&apos;s landmass multiple times daily in the mid-wave infrared spectrum (3.75&mu;m). Each pass measures fire radiative power (MW) down to 375-meter ground pixels.
-            </p>
+      {/* Institutional Provenance Footer */}
+      <footer className="border-t border-white/[0.08] bg-[#07080C] px-4 sm:px-8 py-8 mt-12">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-400">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span className="font-medium text-zinc-300">FireSight Operational GIS</span>
+            <span>&mdash; Real-time Industrial Early Warning</span>
           </div>
 
-          <div className="p-6 rounded-2xl bg-slate-900/50 border border-slate-800 space-y-4">
-            <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
-              <Factory className="w-5 h-5" />
-            </div>
-            <h3 className="text-base font-bold text-white">
-              2. Industrial Geofencing
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              Every thermal coordinate is instantly cross-referenced against OpenStreetMap boundary polygons of high-risk petrochemical refineries, chemical terminals, and power plants.
-            </p>
-          </div>
-
-          <div className="p-6 rounded-2xl bg-slate-900/50 border border-slate-800 space-y-4">
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
-              <ShieldCheck className="w-5 h-5" />
-            </div>
-            <h3 className="text-base font-bold text-white">
-              3. Flare vs Fire Triage
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              Routine chimney flaring within baseline limits is cataloged as normal. Anomalous heat spikes trigger automated NDMA disaster guidelines, recommended suppression foam, and dispatch alerts.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Provenance & References Strip */}
-      <div className="border-t border-slate-800/80 bg-slate-950/60 px-4 sm:px-6 py-8">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
-          <div>
-            <span className="font-bold text-slate-200">FireSight GIS Platform</span> &mdash; Open Disaster Early-Warning
-          </div>
-          <div className="flex items-center gap-4 flex-wrap justify-center text-[11px]">
+          <div className="flex items-center gap-4 text-[11px] text-zinc-400 flex-wrap justify-center">
             <span>NASA FIRMS VIIRS 375m</span>
             <span>&bull;</span>
             <span>ESA Copernicus Sentinel-2</span>
             <span>&bull;</span>
-            <span>OpenStreetMap Perimeters</span>
+            <span>OpenStreetMap Overpass</span>
             <span>&bull;</span>
-            <span>NDMA Disaster Guidelines</span>
+            <span>NDMA Guidelines</span>
           </div>
         </div>
-      </div>
+      </footer>
     </div>
   );
 }
