@@ -208,16 +208,16 @@ export default function EventDetailPage() {
             )}
           </div>
 
-          {/* AI Tactical Incident Action Directive (Groq LPU Accelerated) */}
+          {/* Emergency Incident Command Directive */}
           <div className="p-5 rounded-2xl border border-emerald-900/50 bg-slate-900/40 backdrop-blur-md space-y-4 font-mono">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-emerald-300 font-bold text-sm uppercase tracking-wider">
                 <Zap className="w-4 h-4 text-emerald-400" />
-                <span>Automated Incident Command Directive</span>
+                <span>Incident Command Action Directive</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-400 border border-emerald-800/50">
-                  Groq LPU Accelerated
+                  NDMA Disaster Guidelines
                 </span>
                 <button
                   onClick={handleGenerateDirective}
@@ -225,7 +225,7 @@ export default function EventDetailPage() {
                   className="px-3 py-1 rounded-lg bg-emerald-600/30 hover:bg-emerald-600/40 text-emerald-200 border border-emerald-500/40 text-xs flex items-center gap-1.5 transition-all disabled:opacity-50"
                 >
                   <Zap className={`w-3 h-3 ${isGeneratingDirective ? 'animate-bounce text-amber-300' : ''}`} />
-                  <span>{isGeneratingDirective ? 'Generating Directive (<1s)...' : directiveData ? 'Regenerate Directive' : 'Generate Action Directive'}</span>
+                  <span>{isGeneratingDirective ? 'Synthesizing Directive...' : directiveData ? 'Regenerate Protocol' : 'Generate Action Directive'}</span>
                 </button>
               </div>
             </div>
@@ -236,15 +236,15 @@ export default function EventDetailPage() {
                   {directiveData.directive}
                 </div>
                 <div className="flex items-center justify-between text-[11px] text-slate-400">
-                  <span>Engine: <strong>{directiveData.model}</strong> via Groq API</span>
-                  <span className="text-emerald-400 font-semibold">Response Latency: {directiveData.latencyMs}ms</span>
+                  <span>Standard: <strong>NDMA Chemical & Industrial Hazard Guidelines</strong></span>
+                  <span className="text-emerald-400 font-semibold">Triage Speed: {directiveData.latencyMs}ms</span>
                 </div>
               </div>
             ) : (
               <div className="p-4 rounded-xl border border-dashed border-slate-800 text-slate-400 text-xs text-center space-y-2">
-                <p>Click "Generate Action Directive" above to trigger a real-time tactical disaster response brief powered by Groq LLaMA-3.</p>
+                <p>Click &quot;Generate Action Directive&quot; above to synthesize a tactical disaster response brief.</p>
                 <div className="text-[11px] text-slate-500">
-                  Includes chemical suppression foam type, perimeter hazard cordon, multi-agency alerts (NDRF, DDMA, SPCB), and public evacuation radius.
+                  Includes chemical suppression agent, perimeter hazard cordon, multi-agency alerts (NDRF, DDMA, SPCB), and public evacuation radius.
                 </div>
               </div>
             )}
