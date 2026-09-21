@@ -1,127 +1,153 @@
-import React, { useState, useEffect } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { NavLink, Link, useLocation } from 'react-router-dom';
 import {
   Flame,
-  Satellite,
+  Globe,
   RefreshCw,
   Search,
-  BookOpen,
-  BarChart3,
-  Factory,
-  Globe,
-  Compass
+  Menu,
+  X,
+  ArrowUpRight
 } from 'lucide-react';
+import fallbackData from '../../services/fallbackData.json';
 
-const navLinks = [
-  { path: '/', label: 'Overview', icon: Compass, end: true },
-  { path: '/dashboard', label: 'Live Map', icon: Globe },
-  { path: '/events', label: 'Thermal Events', icon: Flame },
-  { path: '/facilities', label: 'Industrial Hubs', icon: Factory },
-  { path: '/analytics', label: 'Analytics', icon: BarChart3 },
-  { path: '/guide', label: 'Guide', icon: BookOpen }
+const navItems = [
+  { path: '/dashboard', label: 'Live Map' },
+  { path: '/events', label: 'Thermal Events' },
+  { path: '/facilities', label: 'Industrial Hubs' },
+  { path: '/analytics', label: 'Analytics' },
+  { path: '/guide', label: 'Guide' }
 ];
 
 export default function TopBar({ onRefresh, isRefreshing }) {
-  const [timeStr, setTimeStr] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      setTimeStr(now.toTimeString().split(' ')[0] + ' IST');
-    };
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/events?search=${encodeURIComponent(searchQuery.trim())}`);
-    }
-  };
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const eventCount = fallbackData.events?.length || 828;
 
   return (
-    <header className="h-[52px] border-b border-white/[0.08] bg-[#090A0F]/90 backdrop-blur-md px-4 sm:px-6 flex items-center justify-between z-30 sticky top-0 shrink-0">
-      {/* Brand */}
-      <div className="flex items-center gap-6">
-        <NavLink to="/" className="flex items-center gap-2.5 group">
-          <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-orange-500/10 border border-orange-500/30 text-orange-400 shadow-sm group-hover:border-orange-500/50 transition-colors">
-            <Flame className="w-4 h-4" />
+    <header className="h-16 border-b border-white/[0.07] bg-[#090A0F]/80 backdrop-blur-xl sticky top-0 z-40 shrink-0">
+      <div className="max-w-7xl mx-auto h-full px-4 sm:px-8 flex items-center justify-between">
+        {/* Brand */}
+        <Link to="/" className="flex items-center gap-3 group">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center text-white shadow-md shadow-orange-950/40 group-hover:scale-105 transition-transform">
+            <Flame className="w-4.5 h-4.5" />
           </div>
-          <div className="flex items-baseline gap-2">
-            <span className="font-semibold text-sm tracking-tight text-white">
-              FireSight
-            </span>
-            <span className="text-[10px] text-zinc-400 font-medium px-1.5 py-0.5 rounded bg-white/[0.05] border border-white/[0.06] hidden sm:inline">
-              VIIRS 375m
+          <div className="flex flex-col">
+            <div className="flex items-center gap-1.5">
+              <span className="font-bold text-base tracking-tight text-white">
+                FireSight
+              </span>
+              <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
+            </div>
+            <span className="text-[10px] text-zinc-400 font-medium tracking-wide -mt-0.5 hidden sm:block">
+              Orbital Fire Intelligence
             </span>
           </div>
-        </NavLink>
+        </Link>
 
-        {/* Primary Navigation Tabs */}
-        <nav className="hidden lg:flex items-center gap-1">
-          {navLinks.map((link) => {
-            const Icon = link.icon;
-            return (
+        {/* Spacious Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-8">
+          {navItems.map((item) => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              className={({ isActive }) =>
+                `text-sm font-medium transition-colors relative py-1 ${
+                  isActive
+                    ? 'text-white font-semibold'
+                    : 'text-zinc-400 hover:text-zinc-200'
+                }`
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  <span>{item.label}</span>
+                  {isActive && (
+                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-orange-500 rounded-full" />
+                  )}
+                </>
+              )}
+            </NavLink>
+          ))}
+        </nav>
+
+        {/* Right Actions */}
+        <div className="hidden sm:flex items-center gap-4">
+          {/* Live Status Pill */}
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs text-zinc-300">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span className="font-medium text-zinc-200">{eventCount} Hotspots</span>
+          </div>
+
+          {/* Contextual Action Button */}
+          {location.pathname !== '/dashboard' ? (
+            <Link
+              to="/dashboard"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-500 text-white text-xs font-semibold shadow-sm transition-all hover:shadow-orange-950/40"
+            >
+              <Globe className="w-3.5 h-3.5" />
+              <span>Launch Map</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </Link>
+          ) : (
+            <button
+              onClick={onRefresh}
+              disabled={isRefreshing}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.1] text-zinc-300 text-xs font-medium transition-all disabled:opacity-50"
+              title="Refresh satellite telemetry"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-orange-400' : ''}`} />
+              <span>Refresh Feed</span>
+            </button>
+          )}
+        </div>
+
+        {/* Mobile Menu Trigger */}
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="md:hidden p-2 rounded-lg text-zinc-400 hover:text-white hover:bg-white/[0.06] transition-colors"
+          aria-label="Toggle Navigation Menu"
+        >
+          {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </button>
+      </div>
+
+      {/* Mobile Dropdown Menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden border-b border-white/[0.08] bg-[#0E1017] px-6 py-5 space-y-4 animate-in slide-in-from-top-2 duration-200">
+          <nav className="flex flex-col space-y-3">
+            {navItems.map((item) => (
               <NavLink
-                key={link.path}
-                to={link.path}
-                end={link.end}
+                key={item.path}
+                to={item.path}
+                onClick={() => setMobileMenuOpen(false)}
                 className={({ isActive }) =>
-                  `flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                    isActive
-                      ? 'bg-white/[0.08] text-white border border-white/[0.12] shadow-xs'
-                      : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04]'
+                  `text-sm font-medium py-1.5 transition-colors ${
+                    isActive ? 'text-orange-400 font-semibold' : 'text-zinc-300 hover:text-white'
                   }`
                 }
               >
-                <Icon className="w-3.5 h-3.5 text-zinc-400" />
-                <span>{link.label}</span>
+                {item.label}
               </NavLink>
-            );
-          })}
-        </nav>
-      </div>
+            ))}
+          </nav>
 
-      {/* Global Search Bar */}
-      <form onSubmit={handleSearchSubmit} className="hidden md:flex items-center relative max-w-xs w-full mx-4">
-        <Search className="w-3.5 h-3.5 text-zinc-500 absolute left-3 pointer-events-none" />
-        <input
-          type="text"
-          placeholder="Search facility, coordinates, or state..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full bg-[#12131A] border border-white/[0.08] rounded-lg pl-8 pr-3 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-white/25 focus:ring-1 focus:ring-white/10 font-sans transition-all"
-        />
-      </form>
+          <div className="pt-3 border-t border-white/[0.08] flex items-center justify-between">
+            <div className="flex items-center gap-2 text-xs text-zinc-400">
+              <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+              <span>{eventCount} Hotspots Active</span>
+            </div>
 
-      {/* Controls & Telemetry */}
-      <div className="flex items-center gap-2.5">
-        {/* Live Satellite Sensor Indicator */}
-        <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-[11px] font-sans">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-          <span className="text-emerald-400 font-medium">828 Hotspots Logged</span>
+            <Link
+              to="/dashboard"
+              onClick={() => setMobileMenuOpen(false)}
+              className="px-3.5 py-1.5 rounded-lg bg-orange-600 text-white text-xs font-semibold"
+            >
+              Launch Map
+            </Link>
+          </div>
         </div>
-
-        {/* Live Clock */}
-        <div className="hidden xl:block text-[11px] font-mono text-zinc-400 bg-[#12131A] border border-white/[0.08] px-2.5 py-1 rounded-md">
-          {timeStr}
-        </div>
-
-        {/* Refresh Feed */}
-        <button
-          onClick={onRefresh}
-          disabled={isRefreshing}
-          className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#12131A] hover:bg-zinc-800 text-zinc-300 border border-white/[0.08] text-xs transition-colors disabled:opacity-50"
-          title="Query latest NASA FIRMS satellite telemetry"
-        >
-          <RefreshCw className={`w-3 h-3 ${isRefreshing ? 'animate-spin text-orange-400' : ''}`} />
-          <span className="hidden sm:inline">Refresh</span>
-        </button>
-      </div>
+      )}
     </header>
   );
 }
