@@ -213,12 +213,12 @@ export default function GISMap({
 
   return (
     <div className="w-full h-full relative overflow-hidden bg-[#090A0F]">
-      {/* Center Floating GIS Toolbar (Region & Quick Filters) */}
-      <div className="absolute top-3 left-1/2 -translate-x-1/2 z-20 hidden md:flex items-center gap-2 max-w-[calc(100%-25rem)] pointer-events-auto">
+      {/* Top Right Floating GIS HUD (Region & Quick Filters) */}
+      <div className="absolute top-3 right-3 z-20 flex items-center gap-2 pointer-events-auto">
         {/* World Region Selector */}
-        <div className="bg-[#12131A]/90 border border-white/[0.1] rounded-lg p-1 flex items-center gap-1 shadow-xl backdrop-blur-md text-xs font-sans">
-          <span className="text-[11px] text-zinc-400 px-2 flex items-center gap-1 font-medium">
-            <Globe className="w-3.5 h-3.5 text-orange-400" />
+        <div className="bg-[#12131A]/95 border border-white/[0.12] rounded-xl p-1 flex items-center gap-1 shadow-2xl backdrop-blur-xl text-xs font-sans">
+          <span className="text-[11px] text-zinc-400 px-2 flex items-center gap-1 font-medium whitespace-nowrap">
+            <Globe className="w-3.5 h-3.5 text-orange-400 shrink-0" />
             <span className="hidden sm:inline">Region:</span>
           </span>
           {regions.map((reg) => (
@@ -228,7 +228,9 @@ export default function GISMap({
                 setActiveRegion(reg.name);
                 setTargetView({ center: reg.center, zoom: reg.zoom });
               }}
-              className={`px-2 py-1 rounded text-[11px] transition-colors ${
+              className={`px-2.5 py-1 rounded-lg text-[11px] whitespace-nowrap transition-colors ${
+                reg.name !== 'India' && reg.name !== 'Global' ? 'hidden xl:inline-block' : ''
+              } ${
                 activeRegion === reg.name
                   ? 'bg-orange-500/20 text-orange-300 border border-orange-500/30 font-semibold'
                   : 'text-zinc-300 hover:text-white hover:bg-white/[0.08]'
@@ -240,12 +242,12 @@ export default function GISMap({
         </div>
 
         {/* Quick Filter Mode */}
-        <div className="bg-[#12131A]/90 border border-white/[0.1] rounded-lg p-1 flex items-center gap-1 shadow-xl backdrop-blur-md text-xs font-sans">
+        <div className="bg-[#12131A]/95 border border-white/[0.12] rounded-xl p-1 flex items-center gap-1 shadow-2xl backdrop-blur-xl text-xs font-sans">
           <button
             onClick={() => setFilterMode('ALL')}
-            className={`px-2.5 py-1 rounded text-[11px] transition-colors ${
+            className={`px-2.5 py-1 rounded-lg text-[11px] whitespace-nowrap transition-colors ${
               filterMode === 'ALL'
-                ? 'bg-white/[0.1] text-white font-medium'
+                ? 'bg-white/[0.12] text-white font-semibold'
                 : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04]'
             }`}
           >
@@ -253,9 +255,9 @@ export default function GISMap({
           </button>
           <button
             onClick={() => setFilterMode('HIGH_FRP')}
-            className={`px-2.5 py-1 rounded text-[11px] transition-colors ${
+            className={`px-2.5 py-1 rounded-lg text-[11px] whitespace-nowrap transition-colors ${
               filterMode === 'HIGH_FRP'
-                ? 'bg-orange-500/20 text-orange-300 border border-orange-500/30 font-medium'
+                ? 'bg-orange-500/20 text-orange-300 border border-orange-500/30 font-semibold'
                 : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04]'
             }`}
           >
@@ -263,36 +265,56 @@ export default function GISMap({
           </button>
           <button
             onClick={() => setFilterMode('INDUSTRIAL')}
-            className={`px-2.5 py-1 rounded text-[11px] transition-colors ${
+            className={`px-2.5 py-1 rounded-lg text-[11px] whitespace-nowrap transition-colors ${
               filterMode === 'INDUSTRIAL'
-                ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-medium'
+                ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-semibold'
                 : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04]'
             }`}
           >
-            Industrial Perimeters
+            Industrial Only
           </button>
         </div>
       </div>
 
-      {/* Top Right Floating Layer & Basemap Controls */}
-      <div className="absolute top-3 right-3 z-20 flex items-center gap-2">
+      {/* Bottom Left Floating Layer & Basemap Dock */}
+      <div className="absolute bottom-4 left-4 z-20 flex items-center gap-2 pointer-events-auto">
+        {/* Basemap Switcher */}
+        <div className="bg-[#12131A]/95 border border-white/[0.12] rounded-xl p-1 flex items-center gap-1 shadow-2xl backdrop-blur-xl text-xs font-sans">
+          <button
+            onClick={() => setBaseMap('dark')}
+            className={`px-2.5 py-1 rounded-lg text-[11px] whitespace-nowrap transition-colors ${
+              baseMap === 'dark' ? 'bg-white/[0.12] text-white font-medium' : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04]'
+            }`}
+          >
+            Dark
+          </button>
+          <button
+            onClick={() => setBaseMap('satellite')}
+            className={`px-2.5 py-1 rounded-lg text-[11px] whitespace-nowrap transition-colors ${
+              baseMap === 'satellite' ? 'bg-white/[0.12] text-white font-medium' : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04]'
+            }`}
+          >
+            Satellite
+          </button>
+        </div>
+
         {/* Marker Symbol Toggle (Flame vs Pixel Footprint) */}
-        <div className="bg-[#12131A]/90 border border-white/[0.1] rounded-lg p-1 flex items-center gap-1 shadow-xl backdrop-blur-md text-xs font-sans">
+        <div className="bg-[#12131A]/95 border border-white/[0.12] rounded-xl p-1 flex items-center gap-1 shadow-2xl backdrop-blur-xl text-xs font-sans">
           <button
             onClick={() => setMarkerStyle('flame')}
-            className={`px-2 py-1 rounded text-[11px] flex items-center gap-1 transition-colors ${
+            className={`px-2.5 py-1 rounded-lg text-[11px] flex items-center gap-1.5 whitespace-nowrap transition-colors ${
               markerStyle === 'flame'
                 ? 'bg-orange-500/20 text-orange-300 border border-orange-500/30 font-medium'
                 : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04]'
             }`}
             title="Render crisp NASA FIRMS flame markers"
           >
-            <Flame className="w-3 h-3 text-orange-400" />
-            <span className="hidden sm:inline">Flames</span>
+            <Flame className="w-3.5 h-3.5 text-orange-400" />
+            <span>Flames</span>
           </button>
           <button
             onClick={() => setMarkerStyle('pixel')}
-            className={`px-2 py-1 rounded text-[11px] flex items-center gap-1 transition-colors ${
+            className={`px-2.5 py-1 rounded-lg text-[11px] flex items-center gap-1.5 whitespace-nowrap transition-colors ${
               markerStyle === 'pixel'
                 ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-medium'
                 : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04]'
@@ -300,27 +322,7 @@ export default function GISMap({
             title="Render classic 375m sensor pixel grid"
           >
             <span className="w-2.5 h-2.5 border border-current"></span>
-            <span className="hidden sm:inline">Pixels</span>
-          </button>
-        </div>
-
-        {/* Basemap Switcher */}
-        <div className="bg-[#12131A]/90 border border-white/[0.1] rounded-lg p-1 flex items-center gap-1 shadow-xl backdrop-blur-md text-xs font-sans">
-          <button
-            onClick={() => setBaseMap('dark')}
-            className={`px-2.5 py-1 rounded text-[11px] transition-colors ${
-              baseMap === 'dark' ? 'bg-white/[0.1] text-white font-medium' : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04]'
-            }`}
-          >
-            Dark
-          </button>
-          <button
-            onClick={() => setBaseMap('satellite')}
-            className={`px-2.5 py-1 rounded text-[11px] transition-colors ${
-              baseMap === 'satellite' ? 'bg-white/[0.1] text-white font-medium' : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04]'
-            }`}
-          >
-            Satellite
+            <span>Pixels</span>
           </button>
         </div>
       </div>
