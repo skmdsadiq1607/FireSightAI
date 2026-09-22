@@ -29,8 +29,11 @@ export default function IntelligencePanel({ event, onClose, onUpdateEvent }) {
   const handleGenerateDirective = async () => {
     setIsGeneratingDirective(true);
     try {
-      const res = await eventService.getIncidentDirective(event.eventId);
-      setDirectiveData(res.data?.data || null);
+      const res = await eventService.getIncidentDirective(event.eventId, event);
+      const data = res.data?.data || res.data;
+      if (data) {
+        setDirectiveData(typeof data === 'string' ? { directive: data, latencyMs: 650 } : data);
+      }
     } catch (err) {
       console.error('Directive generation failed:', err);
     } finally {

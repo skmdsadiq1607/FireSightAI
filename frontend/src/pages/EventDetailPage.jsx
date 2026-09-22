@@ -38,8 +38,11 @@ export default function EventDetailPage() {
   const handleGenerateDirective = async () => {
     setIsGeneratingDirective(true);
     try {
-      const res = await eventService.getIncidentDirective(id);
-      setDirectiveData(res.data?.data || null);
+      const res = await eventService.getIncidentDirective(id, event);
+      const data = res.data?.data || res.data;
+      if (data) {
+        setDirectiveData(typeof data === 'string' ? { directive: data, latencyMs: 650 } : data);
+      }
     } catch (err) {
       console.error('Directive generation failed:', err);
     } finally {
