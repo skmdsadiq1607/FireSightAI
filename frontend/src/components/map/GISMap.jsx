@@ -16,54 +16,136 @@ import {
   Info
 } from 'lucide-react';
 
-// Authentic NASA FIRMS marker generator
-const createCustomIcon = (frp = 10, riskLevel = 'LOW', classification = '', isSelected = false, markerStyle = 'flame') => {
-  // NASA FIRMS intensity color scale
+// Cache map for Leaflet divIcons to prevent thousands of DOM/SVG allocations on every render
+const ICON_CACHE = new Map();
+
+// Authentic NASA FIRMS marker generator (cached)
+const getCustomIcon = (frp = 10, riskLevel = 'LOW', classification = '', isSelected = false, markerStyle = 'flame') => {
+  // Quantize FRP into distinct buckets for maximum cache hits
+  let colorTier = 'low';
   let color = '#EAB308'; // < 5 MW (Yellow)
   let innerColor = '#FEF08A';
+
   if (frp >= 50 || riskLevel === 'CRITICAL' || classification === 'INDUSTRIAL FIRE') {
+    colorTier = 'critical';
     color = '#DC2626'; // Vivid Crimson Red
     innerColor = '#FDE047';
   } else if (frp >= 20 || riskLevel === 'HIGH' || classification === 'PERSISTENT THERMAL SOURCE') {
+    colorTier = 'high';
     color = '#EA580C'; // Bright Flame Orange
     innerColor = '#FED7AA';
   } else if (frp >= 5) {
+    colorTier = 'medium';
     color = '#F59E0B'; // Amber
     innerColor = '#FEF08A';
   }
 
+  const cacheKey = `${colorTier}_${isSelected ? 1 : 0}_${markerStyle}`;
+  if (ICON_CACHE.has(cacheKey)) {
+    return ICON_CACHE.get(cacheKey);
+  }
+
+  let iconInstance;
   if (markerStyle === 'pixel') {
-    const size = isSelected ? 13 : 8;
+    const size = isSelected ? 14 : 9;
     const svg = `
       <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 10 10">
-        <rect x="1" y="1" width="8" height="8" fill="${color}" fill-opacity="0.85" stroke="${isSelected ? '#FFFFFF' : 'rgba(0,0,0,0.5)'}" stroke-width="${isSelected ? '1.5' : '0.8'}"/>
+        <rect x="1" y="1" width="8" height="8" fill="${color}" fill-opacity="0.9" stroke="${isSelected ? '#FFFFFF' : 'rgba(0,0,0,0.5)'}" stroke-width="${isSelected ? '1.5' : '0.8'}"/>
       </svg>
     `;
-    return L.divIcon({
+    iconInstance = L.divIcon({
       html: svg,
       className: 'firms-marker-pixel',
       iconSize: [size, size],
       iconAnchor: [size / 2, size / 2],
       popupAnchor: [0, -size / 2]
     });
+  } else {
+    // Authentic NASA FIRMS dual-layer flame silhouette
+    const size = isSelected ? 26 : 15;
+    const svg = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24" style="filter: drop-shadow(0 1px 2px rgba(0,0,0,0.65));">
+        <path d="M12 2C10.5 4.5 8 7 8 10.5c0 2.5 1.5 4.5 2 5.5-1-.5-2-1.5-2.5-3-.5 1.5-.5 3.5.5 5 1.2 1.8 3.3 2.5 5 2.5 3 0 5-2.5 5-5.5 0-3.5-3-6-3.5-8.5C14 7.5 13.5 5 12 2z" fill="${color}" stroke="${isSelected ? '#FFFFFF' : 'rgba(0,0,0,0.35)'}" stroke-width="${isSelected ? '1.8' : '0.6'}"/>
+        <path d="M12 11c-.5 1-1.5 2-1.5 3.2 0 1.2.8 2.3 1.8 2.6.4-.6.7-1.3.7-2 0-1-.5-2.5-1-3.8z" fill="${innerColor}"/>
+      </svg>
+    `;
+    iconInstance = L.divIcon({
+      html: svg,
+      className: 'firms-marker-flame',
+      iconSize: [size, size],
+      iconAnchor: [size / 2, size],
+      popupAnchor: [0, -size]
+    });
   }
 
-  // Authentic NASA FIRMS dual-layer flame silhouette
-  const size = isSelected ? 24 : 14;
-  const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24" style="filter: drop-shadow(0 1px 2px rgba(0,0,0,0.65));">
-      <path d="M12 2C10.5 4.5 8 7 8 10.5c0 2.5 1.5 4.5 2 5.5-1-.5-2-1.5-2.5-3-.5 1.5-.5 3.5.5 5 1.2 1.8 3.3 2.5 5 2.5 3 0 5-2.5 5-5.5 0-3.5-3-6-3.5-8.5C14 7.5 13.5 5 12 2z" fill="${color}" stroke="${isSelected ? '#FFFFFF' : 'rgba(0,0,0,0.35)'}" stroke-width="${isSelected ? '1.8' : '0.6'}"/>
-      <path d="M12 11c-.5 1-1.5 2-1.5 3.2 0 1.2.8 2.3 1.8 2.6.4-.6.7-1.3.7-2 0-1-.5-2.5-1-3.8z" fill="${innerColor}"/>
-    </svg>
-  `;
-  return L.divIcon({
-    html: svg,
-    className: 'firms-marker-flame',
-    iconSize: [size, size],
-    iconAnchor: [size / 2, size],
-    popupAnchor: [0, -size]
-  });
+  ICON_CACHE.set(cacheKey, iconInstance);
+  return iconInstance;
 };
+
+// Memoized individual thermal marker to avoid re-rendering 840 markers on selection
+const ThermalMarker = React.memo(function ThermalMarker({ event, isSelected, markerStyle, onSelect }) {
+  const lat = event.latitude;
+  const lon = event.longitude;
+  if (!lat || !lon) return null;
+
+  const icon = getCustomIcon(event.frp, event.riskLevel, event.classification, isSelected, markerStyle);
+
+  return (
+    <Marker
+      position={[lat, lon]}
+      icon={icon}
+      eventHandlers={{
+        click: () => onSelect && onSelect(event)
+      }}
+    >
+      {isSelected && (
+        <Popup>
+          <div className="p-1 space-y-2 max-w-[260px] text-xs font-sans">
+            <div className="flex items-center justify-between border-b border-slate-700 pb-1.5">
+              <span className="font-bold text-white font-mono">{event.eventId}</span>
+              <RiskBadge level={event.riskLevel} score={event.riskScore} size="sm" />
+            </div>
+
+            <div className="space-y-1 text-slate-300">
+              <div className="flex items-center justify-between font-mono">
+                <span>Thermal Flux (FRP):</span>
+                <strong className="text-orange-400">{event.frp.toFixed(1)} MW</strong>
+              </div>
+              <div className="flex items-center justify-between font-mono text-[11px]">
+                <span>Brightness Temp:</span>
+                <span>{event.brightnessTemperature?.toFixed(1)} K</span>
+              </div>
+              <div className="flex items-center justify-between font-mono text-[11px]">
+                <span>Sensor:</span>
+                <span className="text-cyan-300">{event.satellite} VIIRS</span>
+              </div>
+              {event.facilityName && (
+                <div className="pt-1 text-[11px]">
+                  <span className="text-slate-400">Nearest Asset: </span>
+                  <strong className="text-amber-400">{event.facilityName}</strong>
+                </div>
+              )}
+            </div>
+
+            <div className="pt-1.5 flex items-center justify-between border-t border-slate-800">
+              <ClassificationBadge classification={event.classification} size="sm" />
+              <button
+                onClick={() => onSelect && onSelect(event)}
+                className="text-xs text-orange-400 hover:text-orange-300 font-medium flex items-center gap-1"
+              >
+                Inspect &rarr;
+              </button>
+            </div>
+          </div>
+        </Popup>
+      )}
+    </Marker>
+  );
+}, (prev, next) => {
+  return prev.event.eventId === next.event.eventId &&
+         prev.isSelected === next.isSelected &&
+         prev.markerStyle === next.markerStyle;
+});
 
 // Map controller for programmatic fly-to
 function MapController({ targetView, selectedEvent }) {
@@ -298,73 +380,16 @@ export default function GISMap({
           );
         })}
 
-        {/* Thermal Anomaly Event Markers */}
-        {showThermal && displayedEvents.map((event) => {
-          const lat = event.latitude;
-          const lon = event.longitude;
-          if (!lat || !lon) return null;
-
-          const isSelected = selectedEvent && selectedEvent.eventId === event.eventId;
-
-          return (
-            <Marker
-              key={event.eventId}
-              position={[lat, lon]}
-              icon={createCustomIcon(event.frp, event.riskLevel, event.classification, isSelected, markerStyle)}
-              eventHandlers={{
-                click: () => onSelectEvent && onSelectEvent(event)
-              }}
-            >
-              <Popup>
-                <div className="p-1 space-y-2 max-w-[260px] text-xs font-sans">
-                  <div className="flex items-center justify-between border-b border-slate-700 pb-1.5">
-                    <span className="font-bold text-white font-mono">{event.eventId}</span>
-                    <RiskBadge level={event.riskLevel} score={event.riskScore} size="sm" />
-                  </div>
-
-                  <div className="space-y-1 text-slate-300">
-                    <div className="flex items-center justify-between font-mono">
-                      <span>Thermal Flux (FRP):</span>
-                      <strong className="text-orange-400">{event.frp.toFixed(1)} MW</strong>
-                    </div>
-                    <div className="flex items-center justify-between font-mono text-[11px]">
-                      <span>Brightness Temp:</span>
-                      <span>{event.brightnessTemperature.toFixed(1)} K</span>
-                    </div>
-                    <div className="flex items-center justify-between font-mono text-[11px]">
-                      <span>Sensor:</span>
-                      <span className="text-cyan-300">{event.satellite} VIIRS</span>
-                    </div>
-                    <div className="flex items-center justify-between font-mono text-[11px]">
-                      <span>Acquisition:</span>
-                      <span>{event.acquisitionDate} {event.acquisitionTime} UTC</span>
-                    </div>
-
-                    {event.facilityName && (
-                      <div className="pt-1 text-[11px]">
-                        <span className="text-slate-400">Nearest Asset: </span>
-                        <strong className="text-amber-400">{event.facilityName}</strong>
-                        <div className="text-[10px] text-red-400 font-medium">
-                          {event.insideIndustrialBoundary ? 'Direct Perimeter Contact' : `${event.facilityDistance}m from fence`}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="pt-1.5 flex items-center justify-between border-t border-slate-800">
-                    <ClassificationBadge classification={event.classification} size="sm" />
-                    <button
-                      onClick={() => onSelectEvent && onSelectEvent(event)}
-                      className="text-xs text-orange-400 hover:text-orange-300 font-medium flex items-center gap-1"
-                    >
-                      Dossier &rarr;
-                    </button>
-                  </div>
-                </div>
-              </Popup>
-            </Marker>
-          );
-        })}
+        {/* Thermal Anomaly Event Markers (Optimized & Memoized) */}
+        {showThermal && displayedEvents.map((event) => (
+          <ThermalMarker
+            key={event.eventId}
+            event={event}
+            isSelected={selectedEvent?.eventId === event.eventId}
+            markerStyle={markerStyle}
+            onSelect={onSelectEvent}
+          />
+        ))}
       </MapContainer>
 
       {/* Clean Minimal NASA FIRMS Legend (Bottom-Left) */}

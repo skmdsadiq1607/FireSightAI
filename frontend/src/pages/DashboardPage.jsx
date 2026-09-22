@@ -98,6 +98,13 @@ export default function DashboardPage() {
     return true;
   });
 
+  // Non-blocking event selection using React.startTransition
+  const handleSelectEvent = React.useCallback((ev) => {
+    React.startTransition(() => {
+      setSelectedEvent(ev);
+    });
+  }, []);
+
   return (
     <div className="w-full h-full relative overflow-hidden bg-[#090A0F] font-sans">
       {/* 100% Full-Bleed Map Canvas */}
@@ -106,7 +113,7 @@ export default function DashboardPage() {
           events={events}
           facilities={facilities}
           selectedEvent={selectedEvent}
-          onSelectEvent={(ev) => setSelectedEvent(ev)}
+          onSelectEvent={handleSelectEvent}
           showFacilities={true}
           showThermal={true}
         />
@@ -208,7 +215,7 @@ export default function DashboardPage() {
                   return (
                     <div
                       key={ev.eventId}
-                      onClick={() => setSelectedEvent(ev)}
+                      onClick={() => handleSelectEvent(ev)}
                       className={`p-3 rounded-xl border transition-all cursor-pointer group ${
                         isSelected
                           ? 'bg-[#181B2C] border-orange-500 shadow-md shadow-orange-950/30'
