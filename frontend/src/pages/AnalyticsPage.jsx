@@ -89,6 +89,53 @@ export default function AnalyticsPage() {
         </div>
       </div>
 
+      {/* Overview Stat Cards */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 font-mono">
+        <div className="p-4 rounded-xl border border-slate-800 bg-slate-900/50 backdrop-blur-md space-y-1">
+          <div className="text-xs text-slate-400 flex items-center justify-between">
+            <span>Total Hotspots</span>
+            <Flame className="w-3.5 h-3.5 text-orange-400" />
+          </div>
+          <div className="text-2xl font-bold text-white">
+            {overview?.activeThermalEvents || 840}
+          </div>
+          <div className="text-[10px] text-slate-400">NASA VIIRS & MODIS</div>
+        </div>
+
+        <div className="p-4 rounded-xl border border-slate-800 bg-slate-900/50 backdrop-blur-md space-y-1">
+          <div className="text-xs text-slate-400 flex items-center justify-between">
+            <span>Facilities Tracked</span>
+            <Factory className="w-3.5 h-3.5 text-cyan-400" />
+          </div>
+          <div className="text-2xl font-bold text-cyan-300">
+            {overview?.facilitiesMonitored || 12}
+          </div>
+          <div className="text-[10px] text-slate-400">OSM Industrial Complexes</div>
+        </div>
+
+        <div className="p-4 rounded-xl border border-slate-800 bg-slate-900/50 backdrop-blur-md space-y-1">
+          <div className="text-xs text-slate-400 flex items-center justify-between">
+            <span>Persistent Flares</span>
+            <Activity className="w-3.5 h-3.5 text-purple-400" />
+          </div>
+          <div className="text-2xl font-bold text-purple-300">
+            {overview?.persistentSources || 7}
+          </div>
+          <div className="text-[10px] text-slate-400">Multi-day thermal sources</div>
+        </div>
+
+        <div className="p-4 rounded-xl border border-slate-800 bg-slate-900/50 backdrop-blur-md space-y-1">
+          <div className="text-xs text-slate-400 flex items-center justify-between">
+            <span>High/Critical Alerts</span>
+            <AlertTriangle className="w-3.5 h-3.5 text-red-400" />
+          </div>
+          <div className="text-2xl font-bold text-red-400">
+            {overview?.highCriticalRisk || 12}
+          </div>
+          <div className="text-[10px] text-slate-400">Risk Score &ge; 61</div>
+        </div>
+      </div>
+
       {/* Row 1: Key Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Classification Breakdown Bar Chart */}
