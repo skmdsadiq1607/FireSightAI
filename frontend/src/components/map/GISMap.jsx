@@ -178,6 +178,7 @@ export default function GISMap({
   const [markerStyle, setMarkerStyle] = useState('flame'); // 'flame' or 'pixel'
   const [targetView, setTargetView] = useState(null);
   const [filterMode, setFilterMode] = useState('ALL'); // 'ALL', 'HIGH_FRP', 'INDUSTRIAL'
+  const [activeRegion, setActiveRegion] = useState('India');
 
   const tileLayers = {
     dark: {
@@ -223,8 +224,15 @@ export default function GISMap({
           {regions.map((reg) => (
             <button
               key={reg.name}
-              onClick={() => setTargetView({ center: reg.center, zoom: reg.zoom })}
-              className="px-2 py-1 rounded text-[11px] text-zinc-300 hover:text-white hover:bg-white/[0.08] transition-colors"
+              onClick={() => {
+                setActiveRegion(reg.name);
+                setTargetView({ center: reg.center, zoom: reg.zoom });
+              }}
+              className={`px-2 py-1 rounded text-[11px] transition-colors ${
+                activeRegion === reg.name
+                  ? 'bg-orange-500/20 text-orange-300 border border-orange-500/30 font-semibold'
+                  : 'text-zinc-300 hover:text-white hover:bg-white/[0.08]'
+              }`}
             >
               {reg.name}
             </button>
@@ -423,13 +431,19 @@ export default function GISMap({
       </div>
 
       {/* Floating Status Bar (Bottom-Right) */}
-      <div className="absolute bottom-4 right-4 z-20 bg-[#0A0E1A]/95 border border-slate-800 px-3 py-1.5 rounded-lg shadow-xl text-[11px] text-slate-400 font-sans backdrop-blur-md flex items-center gap-3">
+      <div className="absolute bottom-4 right-4 z-20 bg-[#12131A]/95 border border-white/[0.1] px-3 py-1.5 rounded-lg shadow-xl text-[11px] text-zinc-400 font-sans backdrop-blur-md flex items-center gap-3">
         <div className="flex items-center gap-1.5">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span className="text-white font-medium">{displayedEvents.length} Active Hotspots</span>
+          <span className="text-white font-medium">
+            {activeRegion === 'India'
+              ? `India Territory: ${displayedEvents.length} Hotspots`
+              : activeRegion === 'Global'
+              ? `Global High-Intensity Sample: ${displayedEvents.length} Hotspots`
+              : `${activeRegion} Sector: ${displayedEvents.length} Hotspots`}
+          </span>
         </div>
-        <span className="text-slate-600">|</span>
-        <span>NASA Suomi-NPP VIIRS 375m</span>
+        <span className="text-zinc-600">|</span>
+        <span className="hidden sm:inline">NASA VIIRS 375m NRT</span>
       </div>
     </div>
   );
