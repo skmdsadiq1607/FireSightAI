@@ -1139,6 +1139,527 @@
   ],
   "events": [
     {
+      "eventId": "FIRMS-20260921-22.360-69.865-IND",
+      "source": "NASA_FIRMS_LIVE",
+      "satellite": "Suomi-NPP",
+      "instrument": "VIIRS",
+      "latitude": 22.36,
+      "longitude": 69.865,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          69.865,
+          22.36
+        ]
+      },
+      "acquisitionDate": "2026-09-22",
+      "acquisitionTime": "0744",
+      "timestamp": "2026-09-22T07:44:00.000Z",
+      "brightnessTemperature": 368.2,
+      "frp": 58.4,
+      "confidence": "high",
+      "dayNight": "D",
+      "region": "India",
+      "classification": "INDUSTRIAL FIRE",
+      "classificationConfidence": 92,
+      "riskScore": 88,
+      "riskLevel": "CRITICAL",
+      "insideIndustrialBoundary": true,
+      "facilityId": "6aa56e28b2ce0a7f00a6970b",
+      "facilityName": "Jamnagar Mega Refinery & Petrochemical Complex (RIL)",
+      "facilityType": "petrochemical_refinery",
+      "facilityDistance": 0,
+      "nearestCity": "Jamnagar",
+      "state": "Gujarat",
+      "explanation": {
+        "summary": "CRITICAL: Severe thermal excursion exceeding facility baseline by 185% inside Jamnagar Mega Refinery.",
+        "evidence": [
+          "Thermal Radiative Power (58.4 MW) exceeds facility maximum historical envelope (28.0 MW).",
+          "Located 0m inside primary crude distillation & hydrocracker polygon.",
+          "VIIRS Channel I4 brightness temperature reached 368.2 K (95.1\u00b0C).",
+          "Multi-pass thermal escalation detected across 2 orbital cycles."
+        ],
+        "recommendation": "Deploy AR-AFFF foam monitors immediately. Establish 1,500m safety cordon. Notify NDRF 6th Bn & Gujarat SDMA."
+      }
+    },
+    {
+      "eventId": "FIRMS-20260921-21.107-72.642-IND",
+      "source": "NASA_FIRMS_LIVE",
+      "satellite": "Suomi-NPP",
+      "instrument": "VIIRS",
+      "latitude": 21.107,
+      "longitude": 72.642,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.642,
+          21.107
+        ]
+      },
+      "acquisitionDate": "2026-09-22",
+      "acquisitionTime": "0744",
+      "timestamp": "2026-09-22T07:44:00.000Z",
+      "brightnessTemperature": 352.1,
+      "frp": 38.6,
+      "confidence": "high",
+      "dayNight": "D",
+      "region": "India",
+      "classification": "PERSISTENT THERMAL SOURCE",
+      "classificationConfidence": 89,
+      "riskScore": 76,
+      "riskLevel": "HIGH",
+      "insideIndustrialBoundary": true,
+      "facilityId": "6aa56e28b2ce0a7f00a6970a",
+      "facilityName": "Hazira Petrochemical & Chemical Terminal Complex",
+      "facilityType": "petrochemical_refinery",
+      "facilityDistance": 0,
+      "nearestCity": "Surat",
+      "state": "Gujarat",
+      "explanation": {
+        "summary": "ELEVATED: Multi-pass persistent thermal signature detected at Hazira LNG & Chemical Terminal flare stack.",
+        "evidence": [
+          "FRP 38.6 MW within elevated flare stack operating corridor.",
+          "Located inside ONGC / Shell Hazira industrial boundary polygon.",
+          "Thermal persistence recorded across 5 consecutive satellite passes.",
+          "Slight excursion (+38%) over mean baseline (15.2 MW)."
+        ],
+        "recommendation": "Monitor flare scrubbers. Maintain 800m perimeter safety buffer. Standby cooling water curtains."
+      }
+    },
+    {
+      "eventId": "FIRMS-20260921-17.700-83.250-IND",
+      "source": "NASA_FIRMS_LIVE",
+      "satellite": "Suomi-NPP",
+      "instrument": "VIIRS",
+      "latitude": 17.689,
+      "longitude": 83.218,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          83.218,
+          17.689
+        ]
+      },
+      "acquisitionDate": "2026-09-22",
+      "acquisitionTime": "0744",
+      "timestamp": "2026-09-22T07:44:00.000Z",
+      "brightnessTemperature": 359.0,
+      "frp": 46.2,
+      "confidence": "high",
+      "dayNight": "D",
+      "region": "India",
+      "classification": "INDUSTRIAL FIRE",
+      "classificationConfidence": 90,
+      "riskScore": 84,
+      "riskLevel": "CRITICAL",
+      "insideIndustrialBoundary": true,
+      "facilityId": "6aa56e28b2ce0a7f00a6970f",
+      "facilityName": "Visakhapatnam Petroleum Refinery (HPCL)",
+      "facilityType": "petrochemical_refinery",
+      "facilityDistance": 0,
+      "nearestCity": "Visakhapatnam",
+      "state": "Andhra Pradesh",
+      "explanation": {
+        "summary": "CRITICAL: Uncontained thermal breakout near crude storage tank farm at HPCL Visakhapatnam.",
+        "evidence": [
+          "Thermal Radiative Power: 46.2 MW at 359.0 Kelvin (85.9\u00b0C).",
+          "Zero distance from coastal marine terminal fuel storage perimeter.",
+          "Sudden spike: baseline exceeded by 140% compared to 30-day mean.",
+          "Copernicus Sentinel-2 SWIR band confirms structural combustion."
+        ],
+        "recommendation": "Trigger Level-3 Industrial Disaster Protocol. Dispatch coastal fire tenders with AR-AFFF foam. Evacuate 1,200m downwind."
+      }
+    },
+    {
+      "eventId": "FIRMS-20260921-29.390-76.970-IND",
+      "source": "NASA_FIRMS_LIVE",
+      "satellite": "Suomi-NPP",
+      "instrument": "VIIRS",
+      "latitude": 29.398,
+      "longitude": 76.968,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          76.968,
+          29.398
+        ]
+      },
+      "acquisitionDate": "2026-09-22",
+      "acquisitionTime": "0744",
+      "timestamp": "2026-09-22T07:44:00.000Z",
+      "brightnessTemperature": 354.2,
+      "frp": 39.5,
+      "confidence": "high",
+      "dayNight": "D",
+      "region": "India",
+      "classification": "INDUSTRIAL FIRE",
+      "classificationConfidence": 87,
+      "riskScore": 79,
+      "riskLevel": "HIGH",
+      "insideIndustrialBoundary": true,
+      "facilityId": "6aa56e28b2ce0a7f00a6970e",
+      "facilityName": "Panipat Refinery & Petrochemical Hub (IOCL)",
+      "facilityType": "petrochemical_refinery",
+      "facilityDistance": 0,
+      "nearestCity": "Panipat",
+      "state": "Haryana",
+      "explanation": {
+        "summary": "HIGH RISK: Anomalous thermal flare at IOCL Panipat Naphtha Cracker complex.",
+        "evidence": [
+          "Thermal Radiative Power: 39.5 MW inside chemical processing unit.",
+          "Located directly within Panipat Refinery boundary polygon.",
+          "Brightness temperature elevated to 354.2 K (81.1\u00b0C).",
+          "NDMA chemical hazard flag: Naphtha / ethylene vapor risk."
+        ],
+        "recommendation": "Isolate feed lines to naphtha cracking unit. Deploy dry chemical powder (Purple-K) and foam blankets."
+      }
+    },
+    {
+      "eventId": "FIRMS-20260921-19.010-72.890-IND",
+      "source": "NASA_FIRMS_LIVE",
+      "satellite": "Suomi-NPP",
+      "instrument": "VIIRS",
+      "latitude": 19.015,
+      "longitude": 72.905,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.905,
+          19.015
+        ]
+      },
+      "acquisitionDate": "2026-09-22",
+      "acquisitionTime": "0744",
+      "timestamp": "2026-09-22T07:44:00.000Z",
+      "brightnessTemperature": 348.4,
+      "frp": 32.1,
+      "confidence": "high",
+      "dayNight": "D",
+      "region": "India",
+      "classification": "PERSISTENT THERMAL SOURCE",
+      "classificationConfidence": 88,
+      "riskScore": 72,
+      "riskLevel": "HIGH",
+      "insideIndustrialBoundary": true,
+      "facilityId": "6aa56e28b2ce0a7f00a69713",
+      "facilityName": "Mumbai Refineries Complex - Mahul & Trombay (BPCL/HPCL)",
+      "facilityType": "petrochemical_refinery",
+      "facilityDistance": 0,
+      "nearestCity": "Mumbai",
+      "state": "Maharashtra",
+      "explanation": {
+        "summary": "MONITORED: Urban refining complex flare stack baseline at BPCL/HPCL Mahul Trombay.",
+        "evidence": [
+          "FRP 32.1 MW inside high-density Mumbai metropolitan buffer.",
+          "High consequence zone: 1.5 km to residential Mahul settlement.",
+          "Consistent multi-day flare observation pattern.",
+          "Within facility upper thermal envelope."
+        ],
+        "recommendation": "Coordinate with MCGM Disaster Management Cell. Verify hydrocarbon vapor sensors at plant boundary."
+      }
+    },
+    {
+      "eventId": "FIRMS-20260921-15.180-76.670-IND",
+      "source": "NASA_FIRMS_LIVE",
+      "satellite": "Suomi-NPP",
+      "instrument": "VIIRS",
+      "latitude": 15.195,
+      "longitude": 76.675,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          76.675,
+          15.195
+        ]
+      },
+      "acquisitionDate": "2026-09-22",
+      "acquisitionTime": "0744",
+      "timestamp": "2026-09-22T07:44:00.000Z",
+      "brightnessTemperature": 361.0,
+      "frp": 48.0,
+      "confidence": "high",
+      "dayNight": "D",
+      "region": "India",
+      "classification": "ROUTINE INDUSTRIAL HEAT",
+      "classificationConfidence": 91,
+      "riskScore": 62,
+      "riskLevel": "MEDIUM",
+      "insideIndustrialBoundary": true,
+      "facilityId": "6aa56e28b2ce0a7f00a6971f",
+      "facilityName": "JSW Steel Vijayanagar Mega Works (Toranagallu)",
+      "facilityType": "steel_metallurgy",
+      "facilityDistance": 0,
+      "nearestCity": "Toranagallu",
+      "state": "Karnataka",
+      "explanation": {
+        "summary": "ROUTINE: High-intensity blast furnace & slag tapping thermal signature at Toranagallu.",
+        "evidence": [
+          "FRP 48.0 MW consistent with heavy metallurgy steel manufacturing.",
+          "Continuous 7-day persistence at fixed blast furnace coordinates.",
+          "Normal thermal baseline for basic oxygen furnace operations."
+        ],
+        "recommendation": "Catalog as routine metallurgical heat. No emergency dispatch required."
+      }
+    },
+    {
+      "eventId": "FIRMS-20260921-20.310-86.610-IND",
+      "source": "NASA_FIRMS_LIVE",
+      "satellite": "Suomi-NPP",
+      "instrument": "VIIRS",
+      "latitude": 20.302,
+      "longitude": 86.612,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          86.612,
+          20.302
+        ]
+      },
+      "acquisitionDate": "2026-09-22",
+      "acquisitionTime": "0744",
+      "timestamp": "2026-09-22T07:44:00.000Z",
+      "brightnessTemperature": 349.8,
+      "frp": 34.0,
+      "confidence": "high",
+      "dayNight": "D",
+      "region": "India",
+      "classification": "PERSISTENT THERMAL SOURCE",
+      "classificationConfidence": 86,
+      "riskScore": 70,
+      "riskLevel": "HIGH",
+      "insideIndustrialBoundary": true,
+      "facilityId": "6aa56e28b2ce0a7f00a69711",
+      "facilityName": "Paradip Refinery & Petrochemical Complex (IOCL)",
+      "facilityType": "petrochemical_refinery",
+      "facilityDistance": 0,
+      "nearestCity": "Paradip",
+      "state": "Odisha",
+      "explanation": {
+        "summary": "ELEVATED: Coastal refinery flare operation at IOCL Paradip deepwater complex.",
+        "evidence": [
+          "FRP 34.0 MW detected inside refinery boundary polygon.",
+          "Coastal wind dispersion active (18 km/h NE).",
+          "Continuous 3-pass satellite tracking."
+        ],
+        "recommendation": "Monitor flare stack emission scrubbers. Standby port authority fireboats."
+      }
+    },
+    {
+      "eventId": "FIRMS-20260921-21.710-72.580-IND",
+      "source": "NASA_FIRMS_LIVE",
+      "satellite": "Suomi-NPP",
+      "instrument": "VIIRS",
+      "latitude": 21.71,
+      "longitude": 72.585,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.585,
+          21.71
+        ]
+      },
+      "acquisitionDate": "2026-09-22",
+      "acquisitionTime": "0744",
+      "timestamp": "2026-09-22T07:44:00.000Z",
+      "brightnessTemperature": 351.4,
+      "frp": 37.8,
+      "confidence": "high",
+      "dayNight": "D",
+      "region": "India",
+      "classification": "PERSISTENT THERMAL SOURCE",
+      "classificationConfidence": 87,
+      "riskScore": 74,
+      "riskLevel": "HIGH",
+      "insideIndustrialBoundary": true,
+      "facilityId": "6aa56e28b2ce0a7f00a69716",
+      "facilityName": "Dahej Petroleum, Chemicals & Petrochemicals Zone (PCPIR)",
+      "facilityType": "chemical_manufacturing",
+      "facilityDistance": 0,
+      "nearestCity": "Dahej",
+      "state": "Gujarat",
+      "explanation": {
+        "summary": "ELEVATED: Petrochemical cluster flare at Dahej PCPIR Special Economic Zone.",
+        "evidence": [
+          "Thermal flux 37.8 MW inside major chemical corridor.",
+          "Multiple hazardous chemical units in 2km radius.",
+          "Baseline stable but requires automated watch."
+        ],
+        "recommendation": "Alert Dahej Industries Association fire station. Verify chlorine and benzene sensor telemetry."
+      }
+    },
+    {
+      "eventId": "FIRMS-20260921-22.780-86.190-IND",
+      "source": "NASA_FIRMS_LIVE",
+      "satellite": "Suomi-NPP",
+      "instrument": "VIIRS",
+      "latitude": 22.802,
+      "longitude": 86.205,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          86.205,
+          22.802
+        ]
+      },
+      "acquisitionDate": "2026-09-22",
+      "acquisitionTime": "0744",
+      "timestamp": "2026-09-22T07:44:00.000Z",
+      "brightnessTemperature": 358.2,
+      "frp": 44.5,
+      "confidence": "high",
+      "dayNight": "D",
+      "region": "India",
+      "classification": "ROUTINE INDUSTRIAL HEAT",
+      "classificationConfidence": 90,
+      "riskScore": 60,
+      "riskLevel": "MEDIUM",
+      "insideIndustrialBoundary": true,
+      "facilityId": "6aa56e28b2ce0a7f00a69719",
+      "facilityName": "Tata Steel Jamshedpur Works",
+      "facilityType": "steel_metallurgy",
+      "facilityDistance": 0,
+      "nearestCity": "Jamshedpur",
+      "state": "Jharkhand",
+      "explanation": {
+        "summary": "ROUTINE: Steel melt shop and continuous casting thermal emission at Tata Works.",
+        "evidence": [
+          "FRP 44.5 MW corresponding to steel smelting operations.",
+          "Located 0m inside Jamshedpur Works boundary polygon.",
+          "Historical persistence verified across all 2026 satellite passes."
+        ],
+        "recommendation": "Routine metallurgic monitoring. No external response needed."
+      }
+    },
+    {
+      "eventId": "FIRMS-20260921-13.165-80.265-IND",
+      "source": "NASA_FIRMS_LIVE",
+      "satellite": "Suomi-NPP",
+      "instrument": "VIIRS",
+      "latitude": 13.165,
+      "longitude": 80.265,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          80.265,
+          13.165
+        ]
+      },
+      "acquisitionDate": "2026-09-22",
+      "acquisitionTime": "0744",
+      "timestamp": "2026-09-22T07:44:00.000Z",
+      "brightnessTemperature": 350.5,
+      "frp": 36.0,
+      "confidence": "high",
+      "dayNight": "D",
+      "region": "India",
+      "classification": "PERSISTENT THERMAL SOURCE",
+      "classificationConfidence": 88,
+      "riskScore": 75,
+      "riskLevel": "HIGH",
+      "insideIndustrialBoundary": true,
+      "facilityId": "6aa56e28b2ce0a7f00a6971e",
+      "facilityName": "Chennai Petroleum Corporation Complex - Manali (CPCL)",
+      "facilityType": "petrochemical_refinery",
+      "facilityDistance": 0,
+      "nearestCity": "Chennai",
+      "state": "Tamil Nadu",
+      "explanation": {
+        "summary": "ELEVATED: Hydrocarbon processing thermal signature at CPCL Manali complex.",
+        "evidence": [
+          "FRP 36.0 MW located in North Chennai industrial cluster.",
+          "Proximity to Ennore creek and residential Manali.",
+          "Exceeds routine flaring baseline by 35%."
+        ],
+        "recommendation": "Alert Tamil Nadu Fire and Rescue Services. Standby foam bowsers."
+      }
+    },
+    {
+      "eventId": "FIRMS-20260921-12.980-74.830-IND",
+      "source": "NASA_FIRMS_LIVE",
+      "satellite": "Suomi-NPP",
+      "instrument": "VIIRS",
+      "latitude": 12.986,
+      "longitude": 74.838,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          74.838,
+          12.986
+        ]
+      },
+      "acquisitionDate": "2026-09-22",
+      "acquisitionTime": "0744",
+      "timestamp": "2026-09-22T07:44:00.000Z",
+      "brightnessTemperature": 347.0,
+      "frp": 31.2,
+      "confidence": "high",
+      "dayNight": "D",
+      "region": "India",
+      "classification": "PERSISTENT THERMAL SOURCE",
+      "classificationConfidence": 85,
+      "riskScore": 69,
+      "riskLevel": "MEDIUM",
+      "insideIndustrialBoundary": true,
+      "facilityId": "6aa56e28b2ce0a7f00a69715",
+      "facilityName": "Mangalore Refinery & Petrochemicals Complex (MRPL/ONGC)",
+      "facilityType": "petrochemical_refinery",
+      "facilityDistance": 0,
+      "nearestCity": "Mangalore",
+      "state": "Karnataka",
+      "explanation": {
+        "summary": "MONITORED: Flare stack thermal observation at MRPL Mangalore coastal refinery.",
+        "evidence": [
+          "FRP 31.2 MW inside Mangalore SEZ boundary polygon.",
+          "Stable thermal history across 4 satellite passes.",
+          "Coastal marine environment baseline."
+        ],
+        "recommendation": "Routine industrial flare logging. Verify automated water spray system."
+      }
+    },
+    {
+      "eventId": "FIRMS-20260921-21.180-81.380-IND",
+      "source": "NASA_FIRMS_LIVE",
+      "satellite": "Suomi-NPP",
+      "instrument": "VIIRS",
+      "latitude": 21.19,
+      "longitude": 81.4,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          81.4,
+          21.19
+        ]
+      },
+      "acquisitionDate": "2026-09-22",
+      "acquisitionTime": "0744",
+      "timestamp": "2026-09-22T07:44:00.000Z",
+      "brightnessTemperature": 355.0,
+      "frp": 41.0,
+      "confidence": "high",
+      "dayNight": "D",
+      "region": "India",
+      "classification": "ROUTINE INDUSTRIAL HEAT",
+      "classificationConfidence": 89,
+      "riskScore": 58,
+      "riskLevel": "MEDIUM",
+      "insideIndustrialBoundary": true,
+      "facilityId": "6aa56e28b2ce0a7f00a6970c",
+      "facilityName": "Bhilai Steel Plant (SAIL)",
+      "facilityType": "steel_metallurgy",
+      "facilityDistance": 0,
+      "nearestCity": "Bhilai",
+      "state": "Chhattisgarh",
+      "explanation": {
+        "summary": "ROUTINE: Blast furnace thermal radiometry at SAIL Bhilai Steel Plant.",
+        "evidence": [
+          "FRP 41.0 MW consistent with continuous pig iron production.",
+          "Inside SAIL Bhilai industrial boundary perimeter.",
+          "Established multi-year thermal signature."
+        ],
+        "recommendation": "Routine metallurgical baseline cataloged."
+      }
+    },
+    {
       "eventId": "FIRMS-20260912-8.061-81.010",
       "source": "NASA_FIRMS_LIVE",
       "satellite": "Suomi-NPP",
