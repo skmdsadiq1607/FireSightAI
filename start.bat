@@ -9,7 +9,7 @@ echo.
 cd /d "%~dp0"
 
 echo [1/3] Starting Python Fast AI Inference Engine on port 8000...
-start "FireSight AI Service (FastAPI :8000)" cmd /k "cd ai-service && python -m uvicorn src.main:app --port 8000 --reload"
+start "FireSight AI Service (FastAPI :8000)" cmd /k "cd ai-service && python -m uvicorn app.main:app --port 8000 --reload"
 
 timeout /t 2 /nobreak >nul
 

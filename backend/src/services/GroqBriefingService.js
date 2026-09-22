@@ -3,7 +3,7 @@ const axios = require('axios');
 class GroqBriefingService {
   constructor() {
     this.apiUrl = 'https://api.groq.com/openai/v1/chat/completions';
-    this.model = 'openai/gpt-oss-20b';
+    this.model = process.env.GROQ_MODEL || 'qwen/qwen3.8-27b';
   }
 
   getApiKey() {
@@ -76,7 +76,10 @@ Evacuation guidance and windward shelter-in-place instructions.`;
       );
 
       const duration = Date.now() - startTime;
-      let text = response.data.choices[0]?.message?.content || 'No directive generated.';
+      const choice = response.data.choices[0]?.message;
+      let text = (choice?.content && choice.content.trim().length > 0)
+        ? choice.content
+        : (choice?.reasoning || 'No directive generated.');
       // Clean up think tags if present
       text = text.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
 

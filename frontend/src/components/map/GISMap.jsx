@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Circle, Polygon, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Circle, Polygon, useMap, ZoomControl } from 'react-leaflet';
 import L from 'leaflet';
 import RiskBadge from '../common/RiskBadge';
 import ClassificationBadge from '../common/ClassificationBadge';
@@ -213,8 +213,8 @@ export default function GISMap({
 
   return (
     <div className="w-full h-full relative overflow-hidden bg-[#090A0F]">
-      {/* Top Floating GIS Toolbar */}
-      <div className="absolute top-3 left-3 z-20 flex flex-wrap items-center gap-2 max-w-[calc(100%-1.5rem)]">
+      {/* Center Floating GIS Toolbar (Region & Quick Filters) */}
+      <div className="absolute top-3 left-1/2 -translate-x-1/2 z-20 hidden md:flex items-center gap-2 max-w-[calc(100%-25rem)] pointer-events-auto">
         {/* World Region Selector */}
         <div className="bg-[#12131A]/90 border border-white/[0.1] rounded-lg p-1 flex items-center gap-1 shadow-xl backdrop-blur-md text-xs font-sans">
           <span className="text-[11px] text-zinc-400 px-2 flex items-center gap-1 font-medium">
@@ -333,7 +333,10 @@ export default function GISMap({
         worldCopyJump={true}
         className="w-full h-full z-10"
         scrollWheelZoom={true}
+        zoomControl={false}
       >
+        <ZoomControl position="bottomright" />
+
         <TileLayer
           key={baseMap}
           attribution={tileLayers[baseMap].attribution}

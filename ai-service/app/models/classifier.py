@@ -101,9 +101,10 @@ class HybridThermalClassifier:
         p_days = feature_dict.get('persistence_days', 1.0)
         p_count = feature_dict.get('persistence_count', 1.0)
 
-        # Vector for scikit-learn
-        x_vec = np.array([[frp, bright, inside, dist, p_days, p_count]])
-        probs = self.model.predict_proba(x_vec)[0]
+        # Vector for scikit-learn with column names to prevent UserWarning
+        feature_names = ['frp', 'brightness', 'inside', 'dist', 'p_days', 'p_count']
+        x_df = pd.DataFrame([[frp, bright, inside, dist, p_days, p_count]], columns=feature_names)
+        probs = self.model.predict_proba(x_df)[0]
 
         best_idx = int(np.argmax(probs))
         confidence = int(np.round(probs[best_idx] * 100))

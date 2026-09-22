@@ -121,8 +121,8 @@ export default function DashboardPage() {
 
       {/* Floating Left Incident Stream Drawer */}
       <div
-        className={`absolute top-3 bottom-3 left-3 z-30 flex transition-all duration-300 pointer-events-none ${
-          sidebarOpen ? 'w-[360px] sm:w-[390px]' : 'w-10'
+        className={`absolute top-3 left-3 z-30 flex transition-all duration-300 pointer-events-none ${
+          sidebarOpen ? 'w-[360px] sm:w-[390px] bottom-3' : 'w-auto'
         }`}
       >
         {sidebarOpen ? (
@@ -291,12 +291,15 @@ export default function DashboardPage() {
           /* Collapsed Pill Button */
           <button
             onClick={() => setSidebarOpen(true)}
-            className="h-10 px-3 rounded-xl bg-[#0D0F17]/95 border border-white/[0.12] backdrop-blur-xl shadow-xl text-zinc-200 hover:text-white hover:border-white/[0.25] flex items-center gap-2 pointer-events-auto text-xs font-semibold transition-all"
+            className="h-10 px-3.5 rounded-xl bg-[#0D0F17]/95 border border-white/[0.15] backdrop-blur-xl shadow-2xl text-zinc-100 hover:text-white hover:border-orange-500/50 flex items-center gap-2 pointer-events-auto text-xs font-semibold whitespace-nowrap transition-all group"
             title="Expand Active Incident Feed"
           >
-            <Flame className="w-4 h-4 text-orange-400" />
-            <span className="hidden sm:inline">Active Incidents ({industrialEvents.length})</span>
-            <ChevronRight className="w-3.5 h-3.5 text-zinc-400" />
+            <Flame className="w-4 h-4 text-orange-400 group-hover:scale-110 transition-transform shrink-0" />
+            <span>Active Incidents</span>
+            <span className="px-1.5 py-0.5 rounded-md bg-orange-500/20 text-orange-300 font-mono text-[11px] font-bold border border-orange-500/30">
+              {industrialEvents.length}
+            </span>
+            <ChevronRight className="w-3.5 h-3.5 text-zinc-400 group-hover:translate-x-0.5 transition-transform" />
           </button>
         )}
       </div>

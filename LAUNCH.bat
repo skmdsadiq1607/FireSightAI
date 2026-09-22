@@ -7,18 +7,23 @@ echo ===================================================================
 echo.
 cd /d "%~dp0"
 
-echo [1/2] Starting Node.js + MongoDB Atlas Backend on port 5000...
+echo [1/3] Starting Python Fast AI Inference Engine on port 8000...
+start "FireSight AI Service (FastAPI :8000)" cmd /k "cd ai-service && python -m uvicorn app.main:app --port 8000 --reload"
+
+timeout /t 2 /nobreak >nul
+
+echo [2/3] Starting Node.js + MongoDB Atlas Backend on port 5000...
 start "FireSight Backend (:5000)" cmd /k "cd backend && node src/server.js"
 
 timeout /t 3 /nobreak >nul
 
-echo [2/2] Starting React Command Center on port 5173...
+echo [3/3] Starting React Command Center on port 5173...
 start "FireSight Frontend (:5173)" cmd /k "cd frontend && npm run dev"
 
 timeout /t 3 /nobreak >nul
 
 echo.
-echo [3/3] Launching your web browser to http://localhost:5173 ...
+echo Launching your web browser to http://localhost:5173 ...
 start http://localhost:5173
 
 echo.

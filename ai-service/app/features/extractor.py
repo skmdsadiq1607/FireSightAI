@@ -27,6 +27,8 @@ def extract_features(data: dict) -> dict:
     proximity_decay = np.exp(-facility_dist_m / 2500.0)
     
     # Industrial persistence interaction term
+    ind_persistence = inside_boundary * persistence_days
+    
     latitude = float(data.get("latitude", 0.0))
     longitude = float(data.get("longitude", 0.0))
     event_id = str(data.get("eventId", ""))

@@ -23,15 +23,8 @@ class LiveFirmsProvider extends FirmsProvider {
     this.baseUrl = 'https://firms.modaps.eosdis.nasa.gov/api/area/csv';
   }
 
-  async fetchAnomalies(options = {}) {
-    if (!this.apiKey || this.apiKey === 'demo_firms_key' || this.apiKey.startsWith('YOUR_')) {
-      throw new Error('Valid FIRMS_MAP_KEY required for LiveFirmsProvider');
-    }
-
-    const source = options.source || 'VIIRS_SNPP_NRT';
-    const days = options.days || 1;
+  async fetchSingleSource(source, days) {
     const url = `${this.baseUrl}/${this.apiKey}/${source}/${this.regionBbox}/${days}`;
-
     let attempts = 0;
     const maxAttempts = 3;
     let delay = 1000;
@@ -41,7 +34,7 @@ class LiveFirmsProvider extends FirmsProvider {
         attempts++;
         console.log(`[NASA FIRMS] Querying live thermal feed (attempt ${attempts}/${maxAttempts}): ${source}`);
         const response = await axios.get(url, {
-          timeout: 12000,
+          timeout: 15000,
           headers: { 'User-Agent': 'FireSightAI/1.0 (Disaster-Management-SIH2026)' }
         });
 
@@ -51,12 +44,42 @@ class LiveFirmsProvider extends FirmsProvider {
 
         return this.parseCsv(response.data, source);
       } catch (err) {
-        console.warn(`[NASA FIRMS] Attempt ${attempts} failed: ${err.message}`);
-        if (attempts >= maxAttempts) throw err;
+        console.warn(`[NASA FIRMS] Attempt ${attempts} for ${source} failed: ${err.message}`);
+        if (attempts >= maxAttempts) return [];
         await new Promise((res) => setTimeout(res, delay));
-        delay *= 2; // exponential backoff
+        delay *= 2;
       }
     }
+    return [];
+  }
+
+  async fetchAnomalies(options = {}) {
+    if (!this.apiKey || this.apiKey === 'demo_firms_key' || this.apiKey.startsWith('YOUR_')) {
+      throw new Error('Valid FIRMS_MAP_KEY required for LiveFirmsProvider');
+    }
+
+    const days = options.days || 1;
+    if (options.source && options.source !== 'ALL') {
+      return this.fetchSingleSource(options.source, days);
+    }
+
+    // Default: Query all 4 active NASA satellite constellations across India
+    const sources = ['VIIRS_SNPP_NRT', 'VIIRS_NOAA20_NRT', 'VIIRS_NOAA21_NRT', 'MODIS_NRT'];
+    console.log(`[NASA FIRMS] Initiating multi-satellite constellation sweep (${sources.length} sources)...`);
+    const results = await Promise.all(sources.map(s => this.fetchSingleSource(s, days)));
+    const merged = results.flat();
+
+    // Deduplicate by eventId
+    const seen = new Set();
+    const deduped = [];
+    for (const event of merged) {
+      if (!seen.has(event.eventId)) {
+        seen.add(event.eventId);
+        deduped.push(event);
+      }
+    }
+    console.log(`[NASA FIRMS] Multi-satellite sweep complete: ${deduped.length} unique live thermal hotspots detected.`);
+    return deduped;
   }
 
   parseCsv(csvData, sourceName) {
