@@ -282,7 +282,7 @@ export default function EventDetailPage() {
                 className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-red-950/50 transition-all shrink-0"
               >
                 <Radio className="w-3.5 h-3.5 text-white animate-pulse" />
-                <span>Transmit Authority Alert</span>
+                <span>Transmit Emergency Broadcast / Alert</span>
               </button>
             </div>
           </div>

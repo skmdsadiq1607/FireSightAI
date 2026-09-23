@@ -186,7 +186,7 @@ Dispatched by FireSight AI & NDMA Emergency Network`;
                 </span>
               </div>
               <h2 className="text-sm font-semibold text-white truncate max-w-md">
-                Priority Authority SMS Broadcast — {facilityName}
+                Emergency Broadcast & Authority Dispatch — {facilityName}
               </h2>
             </div>
           </div>
@@ -449,10 +449,12 @@ Dispatched by FireSight AI & NDMA Emergency Network`;
             <Send className="w-3.5 h-3.5" />
             <span>
               {dispatchStatus === 'delivered' 
-                ? 'Re-broadcast SMS Alert' 
+                ? (isBroadcast ? 'Re-broadcast Live Alerts' : 'Re-transmit Alert Now') 
                 : dispatchStatus === 'transmitting' 
                 ? 'Dispatching Payload...' 
-                : 'Transmit Emergency SMS Now'}
+                : isBroadcast 
+                ? 'Transmit Live Multi-Carrier Broadcast Now' 
+                : (channel === 'WHATSAPP' ? 'Transmit WhatsApp Alert Now' : 'Transmit Emergency SMS Now')}
             </span>
           </button>
         </div>

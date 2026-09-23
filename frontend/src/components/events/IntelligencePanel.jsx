@@ -207,7 +207,7 @@ export default function IntelligencePanel({ event, onClose, onUpdateEvent }) {
             className="w-full py-2 rounded-lg bg-red-600/20 hover:bg-red-600/30 text-red-300 border border-red-500/40 text-xs font-semibold flex items-center justify-center gap-2 transition-all shadow-sm shadow-red-950/40 hover:scale-[1.01]"
           >
             <Radio className="w-3.5 h-3.5 text-red-400 animate-pulse" />
-            <span>Dispatch Authority SMS Alert ({event.riskScore || 88}/100)</span>
+            <span>Dispatch Emergency Broadcast / Alert ({event.riskScore || 88}/100)</span>
           </button>
         </div>
 
