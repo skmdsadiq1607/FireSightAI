@@ -62,7 +62,63 @@ DOSSIER: https://firesightai-puce.vercel.app/events/${eventId}`;
 
   // Use Twilio REST API via standard fetch (built into Node 18+)
   try {
-    const authHeader = 'Basic ' + Buffer.from(`${sid}:${token}`).toString('base64');
+    const REGISTERED_SUBSCRIBERS = [
+      '+919441921812',
+      '+918187057917',
+      '+919949344786',
+      '+918688125767',
+      '+916305161612',
+      '+919390083934',
+      '+919392562340',
+      '+919642424311',
+      '+919390602742',
+      '+916301561276'
+    ];
+
+    if (req.body?.isBroadcast) {
+      const broadcastResults = [];
+      const twilioUrl = `https://api.twilio.com/2010-04-01/Accounts/${sid}/Messages.json`;
+
+      for (const phone of REGISTERED_SUBSCRIBERS) {
+        try {
+          const params = new URLSearchParams();
+          params.append('Body', smsText);
+          params.append('From', `whatsapp:${fromWhatsApp}`);
+          params.append('To', `whatsapp:${phone}`);
+
+          const twilioResp = await fetch(twilioUrl, {
+            method: 'POST',
+            headers: {
+              'Authorization': authHeader,
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: params.toString()
+          });
+          const twData = await twilioResp.json();
+          broadcastResults.push({ phone, success: twilioResp.ok, sid: twData.sid });
+        } catch (bErr) {
+          broadcastResults.push({ phone, success: false, error: bErr.message });
+        }
+      }
+
+      res.status(200).json({
+        success: true,
+        data: {
+          mode: 'LIVE_TWILIO_BROADCAST',
+          messageId: `BROADCAST-${Date.now().toString(36).toUpperCase()}`,
+          recipient: `All ${REGISTERED_SUBSCRIBERS.length} Registered Sandbox Subscribers`,
+          phoneNumber: `${REGISTERED_SUBSCRIBERS.length} Mobile Devices`,
+          smsText,
+          status: 'DELIVERED',
+          carrier: 'Twilio Multi-Device WhatsApp Broadcast',
+          latencyMs: Date.now() - startTime,
+          broadcastResults,
+          timestamp: new Date().toISOString()
+        }
+      });
+      return;
+    }
+
     const params = new URLSearchParams();
     params.append('Body', smsText);
 

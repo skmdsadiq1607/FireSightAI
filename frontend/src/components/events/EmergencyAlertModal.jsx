@@ -75,6 +75,7 @@ export default function EmergencyAlertModal({ event, isOpen, onClose }) {
 
   // Dispatch state
   const [channel, setChannel] = useState('WHATSAPP'); // 'WHATSAPP' | 'SMS'
+  const [isBroadcast, setIsBroadcast] = useState(true); // Default to broadcasting to all sandbox members
   const [dispatchStatus, setDispatchStatus] = useState('idle'); // idle | transmitting | delivered | error
   const [deliveryReceipt, setDeliveryReceipt] = useState(null);
 
@@ -111,10 +112,13 @@ DOSSIER: https://firesightai-puce.vercel.app/events/${event.eventId}`;
         coordinates: [lon, lat],
         frp,
         recommendation: event.explanation?.recommendation || 'Deploy AR-AFFF foam. Enforce 1,500m cordon.',
-        recipientName: useCustomPhone ? 'Designated Authority Contact' : selectedAuthority,
+        recipientName: isBroadcast 
+          ? 'ALL_SANDBOX_MEMBERS' 
+          : (useCustomPhone ? 'Designated Authority Contact' : selectedAuthority),
         phoneNumber: activePhone,
         smsText: smsBody,
-        channel
+        channel,
+        isBroadcast: channel === 'WHATSAPP' && isBroadcast
       });
 
       setTimeout(() => {
@@ -214,12 +218,47 @@ DOSSIER: https://firesightai-puce.vercel.app/events/${event.eventId}`;
             )}
           </div>
 
-          {/* Recipient Authority Selection */}
-          <div className="space-y-2">
-            <label className="text-slate-300 font-semibold flex items-center gap-1.5">
-              <Radio className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Select Emergency Authority Recipient:</span>
-            </label>
+          {/* Broadcast to All Sandbox Members Option */}
+          {channel === 'WHATSAPP' && (
+            <div 
+              onClick={() => setIsBroadcast(!isBroadcast)}
+              className={`p-3 rounded-xl border cursor-pointer transition-all ${
+                isBroadcast 
+                  ? 'border-emerald-500 bg-emerald-950/30 text-white' 
+                  : 'border-slate-800 bg-slate-900/40 text-slate-400 hover:border-slate-700'
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <input 
+                    type="checkbox" 
+                    checked={isBroadcast} 
+                    onChange={() => {}} 
+                    className="w-4 h-4 accent-emerald-500 rounded cursor-pointer" 
+                  />
+                  <div>
+                    <div className="font-bold text-white text-xs flex items-center gap-2">
+                      <span>📢 Mass Broadcast to ALL Sandbox Members</span>
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono font-bold">
+                        10 Phones Active
+                      </span>
+                    </div>
+                    <div className="text-[11px] text-slate-400">
+                      Dispatches live WhatsApp alerts to all numbers that texted &quot;join soft-peace&quot;
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Recipient Authority Selection (Shown when not in mass broadcast) */}
+          {(!isBroadcast || channel === 'SMS') && (
+            <div className="space-y-2">
+              <label className="text-slate-300 font-semibold flex items-center gap-1.5">
+                <Radio className="w-3.5 h-3.5 text-cyan-400" />
+                <span>Select Target Recipient / Authority:</span>
+              </label>
 
             <div className="space-y-1.5">
               {authorities.map((auth) => (
@@ -292,6 +331,7 @@ DOSSIER: https://firesightai-puce.vercel.app/events/${event.eventId}`;
               </div>
             </div>
           </div>
+          )}
 
           {/* Formatted Message Preview */}
           <div className="space-y-1.5">
