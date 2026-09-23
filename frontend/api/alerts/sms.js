@@ -88,24 +88,7 @@ Dispatched by FireSight AI & NDMA Emergency Network`;
   const authHeader = 'Basic ' + Buffer.from(`${sid}:${token}`).toString('base64');
 
   try {
-    const baseSubscribers = [
-      '+919441921812',
-      '+918187057917',
-      '+919949344786',
-      '+918688125767',
-      '+916305161612',
-      '+919390083934',
-      '+919392562340',
-      '+919642424311',
-      '+919390602742',
-      '+916301561276'
-    ];
-    const REGISTERED_SUBSCRIBERS = [
-      ...new Set([
-        ...baseSubscribers,
-        ...(cleanPhone && cleanPhone.length >= 10 ? [cleanPhone] : [])
-      ])
-    ];
+    const REGISTERED_SUBSCRIBERS = ['+918187057917'];
 
     if (req.body?.isBroadcast) {
       const twilioUrl = `https://api.twilio.com/2010-04-01/Accounts/${sid}/Messages.json`;

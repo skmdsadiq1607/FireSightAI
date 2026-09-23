@@ -31,7 +31,7 @@ export default function EmergencyAlertModal({ event, isOpen, onClose }) {
   const getDefaultAuthorities = () => {
     const verifiedContact = { 
       name: 'Primary Disaster Officer on Duty (Verified)', 
-      phone: '+91-9441921812', 
+      phone: '+91-8187057917', 
       role: 'Registered Emergency Responder (Twilio Live)' 
     };
 
@@ -81,7 +81,7 @@ export default function EmergencyAlertModal({ event, isOpen, onClose }) {
 
   const activePhone = useCustomPhone 
     ? customPhone 
-    : authorities.find(a => a.name === selectedAuthority)?.phone || '+91-79-23259283';
+    : authorities.find(a => a.name === selectedAuthority)?.phone || '+91-8187057917';
 
   const isCritical = (Number(riskScore) || 0) >= 80 || riskLevel === 'CRITICAL';
   const isHigh = (Number(riskScore) || 0) >= 60 || riskLevel === 'HIGH';
@@ -266,13 +266,13 @@ Dispatched by FireSight AI & NDMA Emergency Network`;
                   />
                   <div>
                     <div className="font-bold text-white text-xs flex items-center gap-2">
-                      <span>📢 Mass Broadcast to ALL Sandbox Members</span>
+                      <span>📢 Automated WhatsApp Alert Dispatch</span>
                       <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono font-bold">
-                        10 Phones Active
+                        +91 81870 57917 Active
                       </span>
                     </div>
                     <div className="text-[11px] text-slate-400">
-                      Dispatches live WhatsApp alerts to all numbers that texted &quot;join soft-peace&quot;
+                      Dispatches live Twilio WhatsApp disaster advisory directly to verified responder (+91 81870 57917)
                     </div>
                   </div>
                 </div>
