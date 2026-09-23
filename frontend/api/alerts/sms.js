@@ -1,7 +1,7 @@
-// Vercel Serverless Function: /api/alerts/sms
+// Vercel Serverless Function: /api/alerts/sms (ES Module for frontend/api)
 // Dispatches Real Twilio SMS or Twilio WhatsApp in the cloud
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -33,10 +33,10 @@ module.exports = async function handler(req, res) {
     recommendation = 'Deploy AR-AFFF foam immediately. Enforce 1,500m safety cordon.',
     recipientName = 'Gujarat State Disaster Management Authority (G-SDMA)',
     phoneNumber = '+91-79-23259283',
-    channel = 'SMS'
+    channel = 'WHATSAPP'
   } = req.body || {};
 
-  const [lon, lat] = Array.isArray(coordinates) ? coordinates : [coordinates.lon, coordinates.lat];
+  const [lon, lat] = Array.isArray(coordinates) ? coordinates : [coordinates?.lon, coordinates?.lat];
   
   // Format E.164 phone
   let cleanPhone = (phoneNumber || '+917923259283').replace(/[^0-9+]/g, '');
@@ -87,7 +87,6 @@ Dispatched by FireSight AI & NDMA Emergency Network`;
   const fromWhatsApp = process.env.TWILIO_WHATSAPP_NUMBER || '+14155238886';
   const authHeader = 'Basic ' + Buffer.from(`${sid}:${token}`).toString('base64');
 
-  // Use Twilio REST API via standard fetch (built into Node 18+)
   try {
     const baseSubscribers = [
       '+919441921812',
@@ -111,7 +110,7 @@ Dispatched by FireSight AI & NDMA Emergency Network`;
     if (req.body?.isBroadcast) {
       const twilioUrl = `https://api.twilio.com/2010-04-01/Accounts/${sid}/Messages.json`;
 
-      // Parallel concurrent dispatch to all 10 registered sandbox phones (< 1.5s)
+      // Parallel concurrent dispatch to all registered sandbox phones (< 1.5s)
       const broadcastResults = await Promise.all(
         REGISTERED_SUBSCRIBERS.map(async (phone) => {
           try {
@@ -235,4 +234,4 @@ Dispatched by FireSight AI & NDMA Emergency Network`;
       }
     });
   }
-};
+}
