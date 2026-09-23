@@ -39,6 +39,22 @@ export default function HomePage() {
     { name: 'Panipat (IOCL)', lat: 29.39, lng: 76.97 }
   ];
 
+  // Non-blocking quick jump callback for map bookmarks
+  const handleQuickJump = React.useCallback((b) => {
+    React.startTransition(() => {
+      setSelectedMapEvent({ latitude: b.lat, longitude: b.lng, facilityName: b.name });
+    });
+  }, []);
+
+  const handleSelectMapEvent = React.useCallback((ev) => {
+    React.startTransition(() => {
+      setSelectedMapEvent(ev);
+    });
+  }, []);
+
+  const showcaseEvents = React.useMemo(() => fallbackData.events?.slice(0, 400) || [], []);
+  const showcaseFacilities = React.useMemo(() => fallbackData.facilities || [], []);
+
   // Authentic live telemetry rows
   const observationFeed = [
     {
@@ -213,9 +229,7 @@ export default function HomePage() {
                 {facilityBookmarks.map((b) => (
                   <button
                     key={b.name}
-                    onClick={() => {
-                      setSelectedMapEvent({ latitude: b.lat, longitude: b.lng, facilityName: b.name });
-                    }}
+                    onClick={() => handleQuickJump(b)}
                     className="shrink-0 px-2.5 py-1 rounded-md bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] text-zinc-300 text-xs font-medium transition-all"
                   >
                     {b.name}
@@ -226,10 +240,10 @@ export default function HomePage() {
               {/* Interactive GIS Map */}
               <div className="w-full h-[480px] sm:h-[540px] relative bg-[#090A0F]">
                 <GISMap
-                  events={fallbackData.events?.slice(0, 400) || []}
-                  facilities={fallbackData.facilities || []}
+                  events={showcaseEvents}
+                  facilities={showcaseFacilities}
                   selectedEvent={selectedMapEvent}
-                  onSelectEvent={(ev) => setSelectedMapEvent(ev)}
+                  onSelectEvent={handleSelectMapEvent}
                   showFacilities={true}
                   showThermal={true}
                 />

@@ -148,9 +148,61 @@ const ThermalMarker = React.memo(function ThermalMarker({ event, isSelected, mar
          prev.markerStyle === next.markerStyle;
 });
 
-// Map controller for programmatic fly-to
-function MapController({ targetView, selectedEvent }) {
+// Memoized individual facility component to prevent re-reconciling 50+ polygons on every state change
+const FacilityItem = React.memo(function FacilityItem({ facility }) {
+  const isPolygon = facility.geometry?.type === 'Polygon' && Array.isArray(facility.geometry.coordinates);
+  const centroid = facility.centroid?.coordinates || (isPolygon ? facility.geometry.coordinates[0][0] : facility.geometry?.coordinates);
+  if (!centroid) return null;
+
+  return (
+    <React.Fragment key={facility._id || facility.osmId || facility.name}>
+      {isPolygon ? (
+        <Polygon
+          positions={facility.geometry.coordinates[0].map(([lon, lat]) => [lat, lon])}
+          pathOptions={{
+            color: '#06B6D4',
+            weight: 1.5,
+            dashArray: '3, 4',
+            fillColor: '#06B6D4',
+            fillOpacity: 0.12
+          }}
+        >
+          <Popup>
+            <div className="text-xs p-1 space-y-1 font-sans">
+              <div className="font-bold text-cyan-300">{facility.name}</div>
+              <div className="text-slate-400 capitalize">{facility.facilityType?.replace(/_/g, ' ')}</div>
+              <div className="text-[11px] text-slate-400">
+                Criticality: <strong className="text-amber-400">{facility.criticalityLevel}</strong>
+              </div>
+            </div>
+          </Popup>
+        </Polygon>
+      ) : (
+        <Circle
+          center={[centroid[1], centroid[0]]}
+          radius={facility.boundaryRadiusMeters || 2000}
+          pathOptions={{
+            color: '#06B6D4',
+            weight: 1,
+            dashArray: '3, 4',
+            fillColor: '#06B6D4',
+            fillOpacity: 0.08
+          }}
+        />
+      )}
+    </React.Fragment>
+  );
+});
+
+// Map controller for programmatic fly-to and map instance capture
+function MapController({ selectedEvent, mapRef }) {
   const map = useMap();
+
+  useEffect(() => {
+    if (mapRef) {
+      mapRef.current = map;
+    }
+  }, [map, mapRef]);
 
   useEffect(() => {
     if (selectedEvent && selectedEvent.latitude && selectedEvent.longitude) {
@@ -158,16 +210,10 @@ function MapController({ targetView, selectedEvent }) {
     }
   }, [selectedEvent, map]);
 
-  useEffect(() => {
-    if (targetView) {
-      map.flyTo(targetView.center, targetView.zoom, { duration: 1.2 });
-    }
-  }, [targetView, map]);
-
   return null;
 }
 
-export default function GISMap({
+function GISMap({
   events = [],
   facilities = [],
   selectedEvent = null,
@@ -175,11 +221,42 @@ export default function GISMap({
   showFacilities = true,
   showThermal = true
 }) {
+  const mapRef = React.useRef(null);
   const [baseMap, setBaseMap] = useState('dark');
   const [markerStyle, setMarkerStyle] = useState('flame'); // 'flame' or 'pixel'
-  const [targetView, setTargetView] = useState(null);
   const [filterMode, setFilterMode] = useState('ALL'); // 'ALL', 'HIGH_FRP', 'INDUSTRIAL'
   const [activeRegion, setActiveRegion] = useState('India');
+
+  // Non-blocking region change: immediate active UI highlight, deferred map flyTo (prevents INP blocking)
+  const handleRegionChange = React.useCallback((reg) => {
+    setActiveRegion(reg.name);
+    requestAnimationFrame(() => {
+      if (mapRef.current) {
+        mapRef.current.flyTo(reg.center, reg.zoom, { duration: 1.2 });
+      }
+    });
+  }, []);
+
+  // Non-blocking filter change with startTransition
+  const handleFilterModeChange = React.useCallback((mode) => {
+    React.startTransition(() => {
+      setFilterMode(mode);
+    });
+  }, []);
+
+  // Non-blocking basemap change with startTransition
+  const handleBaseMapChange = React.useCallback((mode) => {
+    React.startTransition(() => {
+      setBaseMap(mode);
+    });
+  }, []);
+
+  // Non-blocking marker style change with startTransition
+  const handleMarkerStyleChange = React.useCallback((style) => {
+    React.startTransition(() => {
+      setMarkerStyle(style);
+    });
+  }, []);
 
   const tileLayers = {
     dark: {
@@ -205,12 +282,13 @@ export default function GISMap({
     { name: 'Australia', center: [-25, 134], zoom: 4 }
   ];
 
-  // Filter events based on active quick filter
-  const displayedEvents = events.filter((ev) => {
-    if (filterMode === 'HIGH_FRP') return ev.frp >= 20;
-    if (filterMode === 'INDUSTRIAL') return ev.insideIndustrialBoundary || (ev.facilityDistance && ev.facilityDistance < 15000);
-    return true;
-  });
+  // Memoize event filtering to eliminate expensive recalculations on re-render
+  const displayedEvents = React.useMemo(() => {
+    if (filterMode === 'HIGH_FRP') return events.filter(ev => ev.frp >= 20);
+    if (filterMode === 'INDUSTRIAL') return events.filter(ev => ev.insideIndustrialBoundary || (ev.facilityDistance && ev.facilityDistance < 15000));
+    return events;
+  }, [events, filterMode]);
+
 
   return (
     <div className="w-full h-full relative overflow-hidden bg-[#090A0F]">
@@ -219,7 +297,7 @@ export default function GISMap({
         {/* Basemap Switcher (Dark vs Satellite) */}
         <div className="bg-[#12131A]/95 border border-white/[0.12] rounded-xl p-1 flex items-center gap-1 shadow-2xl backdrop-blur-xl text-xs font-sans">
           <button
-            onClick={() => setBaseMap('dark')}
+            onClick={() => handleBaseMapChange('dark')}
             className={`px-2.5 py-1 rounded-lg text-[11px] font-medium whitespace-nowrap transition-colors ${
               baseMap === 'dark'
                 ? 'bg-white/[0.14] text-white shadow-sm font-semibold'
@@ -229,7 +307,7 @@ export default function GISMap({
             Dark Canvas
           </button>
           <button
-            onClick={() => setBaseMap('satellite')}
+            onClick={() => handleBaseMapChange('satellite')}
             className={`px-2.5 py-1 rounded-lg text-[11px] flex items-center gap-1.5 whitespace-nowrap transition-colors ${
               baseMap === 'satellite'
                 ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm font-semibold'
@@ -244,7 +322,7 @@ export default function GISMap({
         {/* Marker Symbol Toggle (Flame vs Pixel Footprint) */}
         <div className="bg-[#12131A]/95 border border-white/[0.12] rounded-xl p-1 flex items-center gap-1 shadow-2xl backdrop-blur-xl text-xs font-sans">
           <button
-            onClick={() => setMarkerStyle('flame')}
+            onClick={() => handleMarkerStyleChange('flame')}
             className={`px-2.5 py-1 rounded-lg text-[11px] flex items-center gap-1.5 whitespace-nowrap transition-colors ${
               markerStyle === 'flame'
                 ? 'bg-orange-500/20 text-orange-300 border border-orange-500/30 font-medium'
@@ -256,7 +334,7 @@ export default function GISMap({
             <span className="hidden sm:inline">Flames</span>
           </button>
           <button
-            onClick={() => setMarkerStyle('pixel')}
+            onClick={() => handleMarkerStyleChange('pixel')}
             className={`px-2.5 py-1 rounded-lg text-[11px] flex items-center gap-1.5 whitespace-nowrap transition-colors ${
               markerStyle === 'pixel'
                 ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-medium'
@@ -272,7 +350,7 @@ export default function GISMap({
         {/* Quick Filter Mode */}
         <div className="bg-[#12131A]/95 border border-white/[0.12] rounded-xl p-1 flex items-center gap-1 shadow-2xl backdrop-blur-xl text-xs font-sans">
           <button
-            onClick={() => setFilterMode('ALL')}
+            onClick={() => handleFilterModeChange('ALL')}
             className={`px-2.5 py-1 rounded-lg text-[11px] whitespace-nowrap transition-colors ${
               filterMode === 'ALL'
                 ? 'bg-white/[0.12] text-white font-semibold'
@@ -282,7 +360,7 @@ export default function GISMap({
             All ({events.length})
           </button>
           <button
-            onClick={() => setFilterMode('HIGH_FRP')}
+            onClick={() => handleFilterModeChange('HIGH_FRP')}
             className={`px-2.5 py-1 rounded-lg text-[11px] whitespace-nowrap transition-colors ${
               filterMode === 'HIGH_FRP'
                 ? 'bg-orange-500/20 text-orange-300 border border-orange-500/30 font-semibold'
@@ -292,7 +370,7 @@ export default function GISMap({
             High Heat (&gt;20 MW)
           </button>
           <button
-            onClick={() => setFilterMode('INDUSTRIAL')}
+            onClick={() => handleFilterModeChange('INDUSTRIAL')}
             className={`px-2.5 py-1 rounded-lg text-[11px] whitespace-nowrap transition-colors ${
               filterMode === 'INDUSTRIAL'
                 ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-semibold'
@@ -312,10 +390,7 @@ export default function GISMap({
           {regions.map((reg) => (
             <button
               key={reg.name}
-              onClick={() => {
-                setActiveRegion(reg.name);
-                setTargetView({ center: reg.center, zoom: reg.zoom });
-              }}
+              onClick={() => handleRegionChange(reg)}
               className={`px-2.5 py-1 rounded-lg text-[11px] whitespace-nowrap transition-colors ${
                 reg.name !== 'India' && reg.name !== 'Global' ? 'hidden 2xl:inline-block' : ''
               } ${
@@ -348,53 +423,15 @@ export default function GISMap({
           url={tileLayers[baseMap].url}
         />
 
-        <MapController targetView={targetView} selectedEvent={selectedEvent} />
+        <MapController selectedEvent={selectedEvent} mapRef={mapRef} />
 
-        {/* Industrial Facilities Perimeters & Polygons */}
-        {showFacilities && facilities.map((facility) => {
-          const isPolygon = facility.geometry?.type === 'Polygon' && Array.isArray(facility.geometry.coordinates);
-          const centroid = facility.centroid?.coordinates || (isPolygon ? facility.geometry.coordinates[0][0] : facility.geometry?.coordinates);
-          if (!centroid) return null;
-
-          return (
-            <React.Fragment key={facility._id || facility.osmId}>
-              {isPolygon ? (
-                <Polygon
-                  positions={facility.geometry.coordinates[0].map(([lon, lat]) => [lat, lon])}
-                  pathOptions={{
-                    color: '#06B6D4',
-                    weight: 1.5,
-                    dashArray: '3, 4',
-                    fillColor: '#06B6D4',
-                    fillOpacity: 0.12
-                  }}
-                >
-                  <Popup>
-                    <div className="text-xs p-1 space-y-1 font-sans">
-                      <div className="font-bold text-cyan-300">{facility.name}</div>
-                      <div className="text-slate-400 capitalize">{facility.facilityType?.replace(/_/g, ' ')}</div>
-                      <div className="text-[11px] text-slate-400">
-                        Criticality: <strong className="text-amber-400">{facility.criticalityLevel}</strong>
-                      </div>
-                    </div>
-                  </Popup>
-                </Polygon>
-              ) : (
-                <Circle
-                  center={[centroid[1], centroid[0]]}
-                  radius={facility.boundaryRadiusMeters || 2000}
-                  pathOptions={{
-                    color: '#06B6D4',
-                    weight: 1,
-                    dashArray: '3, 4',
-                    fillColor: '#06B6D4',
-                    fillOpacity: 0.08
-                  }}
-                />
-              )}
-            </React.Fragment>
-          );
-        })}
+        {/* Industrial Facilities Perimeters & Polygons (Memoized) */}
+        {showFacilities && facilities.map((facility) => (
+          <FacilityItem
+            key={facility._id || facility.osmId || facility.name}
+            facility={facility}
+          />
+        ))}
 
         {/* Thermal Anomaly Event Markers (Optimized & Memoized) */}
         {showThermal && displayedEvents.map((event) => (
@@ -456,3 +493,5 @@ export default function GISMap({
     </div>
   );
 }
+
+export default React.memo(GISMap);

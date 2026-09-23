@@ -77,26 +77,36 @@ export default function DashboardPage() {
     }
   }, [searchParams, events]);
 
-  // Industrial & High Priority Events for Left Radar
-  const industrialEvents = events.filter(e => e.insideIndustrialBoundary || (e.facilityDistance && e.facilityDistance <= 15000));
+  // Industrial & High Priority Events for Left Radar (Memoized)
+  const industrialEvents = React.useMemo(() => {
+    return events.filter(e => e.insideIndustrialBoundary || (e.facilityDistance && e.facilityDistance <= 15000));
+  }, [events]);
   
-  const displayedSidebarEvents = industrialEvents.filter(e => {
-    if (sidebarFilter === 'INDUSTRIAL_FIRES') {
-      return e.classification === 'INDUSTRIAL FIRE' || e.riskLevel === 'CRITICAL';
-    }
-    if (sidebarFilter === 'FLARES') {
-      return e.classification === 'PERSISTENT THERMAL SOURCE' || e.classification === 'ROUTINE INDUSTRIAL HEAT';
-    }
-    if (sidebarSearch.trim()) {
-      const q = sidebarSearch.toLowerCase();
-      return (
-        (e.facilityName && e.facilityName.toLowerCase().includes(q)) ||
-        (e.eventId && e.eventId.toLowerCase().includes(q)) ||
-        (e.state && e.state.toLowerCase().includes(q))
-      );
-    }
-    return true;
-  });
+  const displayedSidebarEvents = React.useMemo(() => {
+    return industrialEvents.filter(e => {
+      if (sidebarFilter === 'INDUSTRIAL_FIRES') {
+        return e.classification === 'INDUSTRIAL FIRE' || e.riskLevel === 'CRITICAL';
+      }
+      if (sidebarFilter === 'FLARES') {
+        return e.classification === 'PERSISTENT THERMAL SOURCE' || e.classification === 'ROUTINE INDUSTRIAL HEAT';
+      }
+      if (sidebarSearch.trim()) {
+        const q = sidebarSearch.toLowerCase();
+        return (
+          (e.facilityName && e.facilityName.toLowerCase().includes(q)) ||
+          (e.eventId && e.eventId.toLowerCase().includes(q)) ||
+          (e.state && e.state.toLowerCase().includes(q))
+        );
+      }
+      return true;
+    });
+  }, [industrialEvents, sidebarFilter, sidebarSearch]);
+
+  const handleSidebarFilterChange = React.useCallback((filter) => {
+    React.startTransition(() => {
+      setSidebarFilter(filter);
+    });
+  }, []);
 
   // Non-blocking event selection using React.startTransition
   const handleSelectEvent = React.useCallback((ev) => {
@@ -156,7 +166,7 @@ export default function DashboardPage() {
             <div className="p-3 border-b border-white/[0.06] bg-[#0E1019] space-y-2 shrink-0">
               <div className="grid grid-cols-3 gap-1 bg-[#141624] p-1 rounded-lg text-xs">
                 <button
-                  onClick={() => setSidebarFilter('ALL')}
+                  onClick={() => handleSidebarFilterChange('ALL')}
                   className={`py-1 rounded-md text-[11px] font-medium transition-all ${
                     sidebarFilter === 'ALL'
                       ? 'bg-white/[0.1] text-white shadow-xs'
@@ -166,7 +176,7 @@ export default function DashboardPage() {
                   All ({industrialEvents.length})
                 </button>
                 <button
-                  onClick={() => setSidebarFilter('INDUSTRIAL_FIRES')}
+                  onClick={() => handleSidebarFilterChange('INDUSTRIAL_FIRES')}
                   className={`py-1 rounded-md text-[11px] font-medium transition-all ${
                     sidebarFilter === 'INDUSTRIAL_FIRES'
                       ? 'bg-red-500/20 text-red-300 border border-red-500/30'
@@ -176,7 +186,7 @@ export default function DashboardPage() {
                   Critical Fires
                 </button>
                 <button
-                  onClick={() => setSidebarFilter('FLARES')}
+                  onClick={() => handleSidebarFilterChange('FLARES')}
                   className={`py-1 rounded-md text-[11px] font-medium transition-all ${
                     sidebarFilter === 'FLARES'
                       ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
