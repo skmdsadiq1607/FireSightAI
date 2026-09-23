@@ -303,10 +303,17 @@ export const configService = {
 export const alertService = {
   dispatchEmergencyAlert: async (payload) => {
     try {
-      const res = await api.post('/alerts/sms', payload);
+      const res = await api.post('/alerts/sms', payload, { timeout: 25000 });
       if (res.data?.success) return res;
-      throw new Error('Fallback required');
-    } catch {
+      throw new Error('Primary /alerts/sms failed');
+    } catch (err1) {
+      console.warn('[AlertService] Primary /alerts/sms error, trying /sms:', err1.message);
+      try {
+        const res2 = await api.post('/sms', payload, { timeout: 25000 });
+        if (res2.data?.success) return res2;
+      } catch (err2) {
+        console.warn('[AlertService] Secondary /sms error:', err2.message);
+      }
       const simulatedMsgId = `FSA-DLT-${Date.now().toString(36).toUpperCase()}-${Math.floor(Math.random() * 8999 + 1000)}`;
       return {
         data: {
