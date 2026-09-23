@@ -44,15 +44,41 @@ class AlertService {
     const [lon, lat] = Array.isArray(coordinates) ? coordinates : [coordinates.lon, coordinates.lat];
     const targetPhone = this.sanitizePhoneNumber(phoneNumber);
 
-    // Format NDMA-compliant tactical SMS body (< 320 characters for multi-part SMS or WhatsApp)
+    const isCritical = (Number(riskScore) || 0) >= 80 || riskLevel === 'CRITICAL';
+    const isHigh = (Number(riskScore) || 0) >= 60 || riskLevel === 'HIGH';
+    const cordon = isCritical ? 'Mandatory 1,500m evacuation zone downwind' : (isHigh ? '800m active exclusion perimeter' : 'Localized monitoring buffer');
+    const hazardType = isCritical ? 'Toxic Hydrocarbon / VOCs, Benzene & Heavy Chemical Smoke' : (isHigh ? 'Dense PM2.5 / PM10 & Carbon Monoxide' : 'Elevated Biomass Smoke');
+    const agent = isCritical ? 'Alcohol-Resistant AFFF Foam (AR-AFFF) monitors. STRICTLY FORBID plain water on crude oil pools.' : 'Standard dry chemical ABC powder / water deluge curtain.';
+
+    // Format NDMA-compliant tactical incident alert & civilian safety advisory
     const smsText = 
-`🚨 CRITICAL NDMA INCIDENT ALERT [FIRESIGHT-AI] 🚨
-SEVERITY: ${riskLevel} (${riskScore}/100)
-FACILITY: ${facilityName}
-LOCATION: ${locationName} (${lat?.toFixed(3)}°N, ${lon?.toFixed(3)}°E)
-THERMAL: ${frp} MW FRP (Severe Baseline Surge)
-DIRECTIVE: ${recommendation}
-DOSSIER: https://firesightai-puce.vercel.app/events/${eventId}`;
+`🚨 CRITICAL NDMA DISASTER ALERT [FIRESIGHT-AI] 🚨
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📍 INCIDENT TELEMETRY
+• Target: ${facilityName}
+• Location: ${locationName} (${lat?.toFixed ? lat.toFixed(3) : lat}°N, ${lon?.toFixed ? lon.toFixed(3) : lon}°E)
+• Severity: ${riskLevel} [${riskScore}/100 Risk Score]
+• Thermal Radiance: ${frp} MW FRP | VIIRS Satellite Sensor
+• Containment: ${payload.insideIndustrialBoundary ? 'DIRECT HIT (0m Inside Polygon)' : 'Industrial Asset Vicinity'}
+
+🚒 TACTICAL RESPONSE DIRECTIVE
+• Threat: Rapid Hydrocarbon / Chemical Excursion
+• Suppression Protocol: ${agent}
+• Cooling Action: Activate automated water cooling sprays on adjacent LPG spheres & storage tanks.
+• Inter-Agency Dispatch: SDMA Emergency Desk & NDRF Battalion mobilized on Priority 1.
+
+🛡️ MANDATORY CIVILIAN PRECAUTIONS & HEALTH ADVISORY
+1. EVACUATION CORDON: ${cordon}. Move perpendicular to prevailing wind, never directly downwind.
+2. RESPIRATORY PROTECTION: Wear N95/FFP2 respirator or multi-layer damp cloth over nose/mouth. Plume contains ${hazardType}.
+3. INDOOR SHELTER-IN-PLACE: If within 1.5km–3.5km buffer, seal doors & windows with damp towels. TURN OFF air conditioners & exhaust fans immediately.
+4. WATER & FOOD SAFETY: Do NOT consume open well water or rooftop tank water due to toxic fallout. Drink sealed bottled/boiled water only.
+5. VULNERABLE CITIZENS: Urgent priority indoor shelter for infants, elderly, pregnant women, and asthma/respiratory patients.
+6. EMERGENCY HELPLINES: Dial 112 (Disaster/Police) | 108 (Ambulance) | 1077 (District Disaster DEOC).
+
+🔗 LIVE SATELLITE DOSSIER:
+https://firesightai-puce.vercel.app/events/${eventId}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Dispatched by FireSight AI & National Disaster Management Authority`;
 
     const sid = process.env.TWILIO_ACCOUNT_SID;
     const token = process.env.TWILIO_AUTH_TOKEN;

@@ -22,14 +22,33 @@ async function broadcastAlert() {
   const fromWhatsApp = process.env.TWILIO_WHATSAPP_NUMBER || '+14155238886';
   
   const alertText = 
-`🚨 CRITICAL NDMA INCIDENT ALERT [FIRESIGHT-AI] 🚨
-SEVERITY: CRITICAL (88/100)
-FACILITY: Jamnagar Mega Refinery & Petrochem Complex (RIL)
-LOCATION: Jamnagar, Gujarat (22.360°N, 69.865°E)
-THERMAL: 58.4 MW FRP | VIIRS Satellite Sensor
-STATUS: INSIDE Critical Industrial Polygon (0m)
-PROTOCOL: Evacuate 1,500m radius downwind. Deploy AR-AFFF foam monitors immediately.
-DOSSIER: https://firesightai-puce.vercel.app/events/FIRMS-20260921-22.360-69.865-IND`;
+`🚨 CRITICAL NDMA DISASTER ALERT [FIRESIGHT-AI] 🚨
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📍 INCIDENT TELEMETRY
+• Target: Jamnagar Mega Refinery & Petrochem Complex (RIL)
+• Location: Jamnagar, Gujarat (22.360°N, 69.865°E)
+• Severity: CRITICAL [88/100 Risk Score]
+• Thermal Radiance: 58.4 MW FRP | VIIRS Satellite Sensor
+• Containment: DIRECT HIT (0m Inside Polygon)
+
+🚒 TACTICAL RESPONSE DIRECTIVE
+• Threat: Rapid Hydrocarbon / Chemical Excursion
+• Suppression Protocol: Alcohol-Resistant AFFF Foam (AR-AFFF) monitors. STRICTLY FORBID plain water on crude oil pools.
+• Cooling Action: Activate automated water cooling sprays on adjacent LPG spheres & storage tanks.
+• Inter-Agency Dispatch: SDMA Emergency Desk & NDRF Battalion mobilized on Priority 1.
+
+🛡️ MANDATORY CIVILIAN PRECAUTIONS & HEALTH ADVISORY
+1. EVACUATION CORDON: Mandatory 1,500m evacuation zone downwind. Move perpendicular to prevailing wind, never directly downwind.
+2. RESPIRATORY PROTECTION: Wear N95/FFP2 respirator or multi-layer damp cloth over nose/mouth. Plume contains Toxic Hydrocarbon / VOCs, Benzene & Heavy Chemical Smoke.
+3. INDOOR SHELTER-IN-PLACE: If within 1.5km–3.5km buffer, seal doors & windows with damp towels. TURN OFF air conditioners & exhaust fans immediately.
+4. WATER & FOOD SAFETY: Do NOT consume open well water or rooftop tank water due to toxic fallout. Drink sealed bottled/boiled water only.
+5. VULNERABLE CITIZENS: Urgent priority indoor shelter for infants, elderly, pregnant women, and asthma/respiratory patients.
+6. EMERGENCY HELPLINES: Dial 112 (Disaster/Police) | 108 (Ambulance) | 1077 (District Disaster DEOC).
+
+🔗 LIVE SATELLITE DOSSIER:
+https://firesightai-puce.vercel.app/events/FIRMS-20260921-22.360-69.865-IND
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Dispatched by FireSight AI & National Disaster Management Authority`;
 
   const results = [];
 
