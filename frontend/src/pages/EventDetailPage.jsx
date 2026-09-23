@@ -14,12 +14,15 @@ import {
   PhoneCall,
   RefreshCw,
   ExternalLink,
-  Zap
+  Zap,
+  Radio,
+  ShieldAlert
 } from 'lucide-react';
 import { ResponsiveContainer, LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 import RiskBadge from '../components/common/RiskBadge';
 import ClassificationBadge from '../components/common/ClassificationBadge';
 import DataProvenanceTag from '../components/common/DataProvenanceTag';
+import EmergencyAlertModal from '../components/events/EmergencyAlertModal';
 import { eventService } from '../services/api';
 
 import fallbackData from '../services/fallbackData.json';
@@ -34,6 +37,7 @@ export default function EventDetailPage() {
   const [isVerifyingSat, setIsVerifyingSat] = useState(false);
   const [directiveData, setDirectiveData] = useState(null);
   const [isGeneratingDirective, setIsGeneratingDirective] = useState(false);
+  const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
 
   const handleGenerateDirective = async () => {
     setIsGeneratingDirective(true);
@@ -153,6 +157,14 @@ export default function EventDetailPage() {
 
         <div className="flex items-center gap-3">
           <button
+            onClick={() => setIsAlertModalOpen(true)}
+            className="px-4 py-2 rounded-xl bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white font-mono text-xs flex items-center gap-2 shadow-lg shadow-red-950/50 transition-all"
+          >
+            <Radio className="w-4 h-4 text-white animate-pulse" />
+            <span>Dispatch Authority SMS Alert</span>
+          </button>
+
+          <button
             onClick={handleVerifySatellite}
             disabled={isVerifyingSat}
             className="px-4 py-2 rounded-xl border border-indigo-500/40 bg-indigo-950/30 hover:bg-indigo-900/40 text-indigo-300 font-mono text-xs flex items-center gap-2 transition-all disabled:opacity-50"
@@ -251,6 +263,27 @@ export default function EventDetailPage() {
                 </div>
               </div>
             )}
+
+            {/* Direct Authority Alert Broadcast Trigger */}
+            <div className="p-3 rounded-xl border border-red-900/40 bg-red-950/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="space-y-0.5">
+                <div className="text-xs font-bold text-red-300 flex items-center gap-1.5">
+                  <ShieldAlert className="w-3.5 h-3.5 text-red-400" />
+                  <span>Immediate Escalation to State & National Response Command</span>
+                </div>
+                <div className="text-[11px] text-slate-400 font-sans">
+                  Transmit NDMA Common Alerting Protocol (CAP) SMS payload directly to SDMA & NDRF control desks.
+                </div>
+              </div>
+
+              <button
+                onClick={() => setIsAlertModalOpen(true)}
+                className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-red-950/50 transition-all shrink-0"
+              >
+                <Radio className="w-3.5 h-3.5 text-white animate-pulse" />
+                <span>Transmit Authority Alert</span>
+              </button>
+            </div>
           </div>
 
           {/* Temporal Observation History Chart */}
@@ -464,6 +497,13 @@ export default function EventDetailPage() {
           </div>
         </div>
       </div>
+
+      {/* Emergency SMS & Authority Alert Modal */}
+      <EmergencyAlertModal
+        event={event}
+        isOpen={isAlertModalOpen}
+        onClose={() => setIsAlertModalOpen(false)}
+      />
     </div>
   );
 }

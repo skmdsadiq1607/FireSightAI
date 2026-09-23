@@ -17,6 +17,7 @@ const analyticsRoutes = require('./routes/analytics');
 const monitoringRoutes = require('./routes/monitoring');
 const configRoutes = require('./routes/config');
 const ingestionRoutes = require('./routes/ingestion');
+const alertRoutes = require('./routes/alerts');
 const IngestionPipeline = require('./services/IngestionPipeline');
 const Facility = require('./models/Facility');
 const ThermalEvent = require('./models/ThermalEvent');
@@ -64,6 +65,7 @@ app.use('/api/analytics', analyticsRoutes);
 app.use('/api/monitoring', monitoringRoutes);
 app.use('/api/config', configRoutes);
 app.use('/api/ingestion', ingestionRoutes);
+app.use('/api/alerts', alertRoutes);
 
 // Global Error Handler
 app.use((err, req, res, next) => {
