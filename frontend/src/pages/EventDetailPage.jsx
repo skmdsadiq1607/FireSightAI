@@ -23,6 +23,7 @@ import RiskBadge from '../components/common/RiskBadge';
 import ClassificationBadge from '../components/common/ClassificationBadge';
 import DataProvenanceTag from '../components/common/DataProvenanceTag';
 import EmergencyAlertModal from '../components/events/EmergencyAlertModal';
+import CivilianSafetySection from '../components/events/CivilianSafetySection';
 import { eventService } from '../services/api';
 
 import fallbackData from '../services/fallbackData.json';
@@ -285,6 +286,9 @@ export default function EventDetailPage() {
               </button>
             </div>
           </div>
+
+          {/* Civilian Safety Measures, Public Health & Local Precautions */}
+          <CivilianSafetySection event={event} />
 
           {/* Temporal Observation History Chart */}
           <div className="p-5 rounded-2xl border border-slate-800 bg-slate-900/40 backdrop-blur-md space-y-4">

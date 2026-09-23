@@ -19,6 +19,7 @@ import {
 import RiskBadge from '../common/RiskBadge';
 import ClassificationBadge from '../common/ClassificationBadge';
 import EmergencyAlertModal from './EmergencyAlertModal';
+import CivilianSafetySection from './CivilianSafetySection';
 import { eventService } from '../../services/api';
 
 export default function IntelligencePanel({ event, onClose, onUpdateEvent }) {
@@ -209,6 +210,9 @@ export default function IntelligencePanel({ event, onClose, onUpdateEvent }) {
             <span>Dispatch Authority SMS Alert ({event.riskScore || 88}/100)</span>
           </button>
         </div>
+
+        {/* Civilian Safety Measures & Public Precautions */}
+        <CivilianSafetySection event={event} isCompact={true} />
       </div>
 
       {/* Footer Action */}
