@@ -83,6 +83,9 @@ export default function EmergencyAlertModal({ event, isOpen, onClose }) {
     ? customPhone 
     : authorities.find(a => a.name === selectedAuthority)?.phone || '+91-79-23259283';
 
+  const isCritical = (Number(riskScore) || 0) >= 80 || riskLevel === 'CRITICAL';
+  const isHigh = (Number(riskScore) || 0) >= 60 || riskLevel === 'HIGH';
+
   const cordon = isCritical ? '1,500m cordon downwind. Move perpendicular to wind.' : (isHigh ? '800m active exclusion zone.' : 'Localized monitoring buffer.');
   const hazardType = isCritical ? 'toxic VOCs & benzene smoke' : (isHigh ? 'dense PM2.5/PM10 smoke' : 'biomass smoke');
   const agent = isCritical ? 'AR-AFFF Foam monitors. FORBID water on crude oil.' : 'Dry chemical powder / deluge curtain.';
