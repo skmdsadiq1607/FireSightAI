@@ -302,34 +302,50 @@ export const configService = {
 
 export const alertService = {
   dispatchEmergencyAlert: async (payload) => {
+    // 1. Direct fetch to relative /api/alerts/sms
+    try {
+      const fetchRes = await fetch('/api/alerts/sms', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (fetchRes.ok) {
+        const data = await fetchRes.json();
+        return { data };
+      }
+    } catch (e1) {
+      console.warn('[AlertService] Relative fetch failed, trying cloud URL:', e1.message);
+    }
+
+    // 2. Direct fetch to deployed Vercel cloud function
+    try {
+      const fetchRes2 = await fetch('https://firesightai-puce.vercel.app/api/alerts/sms', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (fetchRes2.ok) {
+        const data2 = await fetchRes2.json();
+        return { data: data2 };
+      }
+    } catch (e2) {
+      console.warn('[AlertService] Cloud fetch failed, trying axios:', e2.message);
+    }
+
+    // 3. Fallback to axios instance
     try {
       const res = await api.post('/alerts/sms', payload, { timeout: 25000 });
-      if (res.data?.success) return res;
-      throw new Error('Primary /alerts/sms failed');
-    } catch (err1) {
-      console.warn('[AlertService] Primary /alerts/sms error, trying /sms:', err1.message);
-      try {
-        const res2 = await api.post('/sms', payload, { timeout: 25000 });
-        if (res2.data?.success) return res2;
-      } catch (err2) {
-        console.warn('[AlertService] Secondary /sms error:', err2.message);
-      }
-      const simulatedMsgId = `FSA-DLT-${Date.now().toString(36).toUpperCase()}-${Math.floor(Math.random() * 8999 + 1000)}`;
+      return res;
+    } catch (err) {
+      console.error('[AlertService] All dispatch routes failed:', err);
       return {
         data: {
-          success: true,
+          success: false,
+          error: 'Connection timeout',
           data: {
-            mode: 'EMERGENCY_DLT_GATEWAY',
-            messageId: simulatedMsgId,
-            dltEntityId: '1401582910000045192',
-            senderHeader: 'GOV-NDMA',
-            recipient: payload.recipientName || 'Disaster Management Authority',
-            phoneNumber: payload.phoneNumber || '+91-79-23259283',
-            smsText: payload.smsText,
-            status: 'DELIVERED',
-            networkRoute: 'TRAI Priority Emergency Push (Tier-1 Telecom)',
-            latencyMs: 980 + Math.floor(Math.random() * 300),
-            timestamp: new Date().toISOString()
+            mode: 'NETWORK_ERROR',
+            status: 'FAILED',
+            errorMessage: 'Emergency gateway connection error. Please use direct WhatsApp.'
           }
         }
       };

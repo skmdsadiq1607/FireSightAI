@@ -145,10 +145,14 @@ Dispatched by FireSight AI & NDMA Emergency Network`;
         isBroadcast: channel === 'WHATSAPP' && isBroadcast
       });
 
-      setTimeout(() => {
-        setDeliveryReceipt(response.data.data);
+      const receipt = response.data?.data || response.data;
+      setDeliveryReceipt(receipt);
+
+      if (response.data?.success === false || receipt?.status === 'FAILED') {
+        setDispatchStatus('error');
+      } else {
         setDispatchStatus('delivered');
-      }, 950);
+      }
     } catch {
       setDispatchStatus('error');
     }
@@ -413,6 +417,33 @@ Dispatched by FireSight AI & NDMA Emergency Network`;
               <Zap className="w-4 h-4 text-amber-400 animate-bounce" />
               <div className="text-xs">
                 Transmitting priority encrypted payload through TRAI DLT Emergency Telecom Gateway...
+              </div>
+            </div>
+          )}
+
+          {dispatchStatus === 'error' && (
+            <div className="p-3.5 rounded-xl border border-red-500/40 bg-red-950/40 text-red-200 space-y-2 animate-in zoom-in-95 duration-200">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-xs font-bold text-red-400">
+                  <AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />
+                  <span>TWILIO NOTICE: DAILY TRIAL LIMIT (50 MSGS) REACHED</span>
+                </div>
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-red-500/20 text-red-300 border border-red-500/40 font-mono font-bold">
+                  ERROR 63038
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-300 leading-relaxed font-sans">
+                {deliveryReceipt?.errorMessage || 'Twilio free trial daily limit (50 messages) has been reached for today on this sandbox account.'}
+              </p>
+              <div className="pt-1 flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handleWhatsApp}
+                  className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-md shadow-emerald-950"
+                >
+                  <MessageSquare className="w-3.5 h-3.5" />
+                  <span>Send Directly via WhatsApp (No Daily Limit)</span>
+                </button>
               </div>
             </div>
           )}

@@ -135,6 +135,35 @@ Dispatched by FireSight AI & NDMA Emergency Network`;
         })
       );
 
+      const anySuccess = broadcastResults.some(r => r.success);
+      const limitExceeded = broadcastResults.some(r => r.error && (r.error.includes('50 daily') || r.error.includes('63038') || r.error.includes('limit')));
+
+      if (!anySuccess) {
+        const errorMsg = limitExceeded
+          ? 'Twilio Free Trial Daily Limit (50 messages) has been reached on this account (Error 63038). Twilio resets this daily, or you can provide a fresh Twilio Account SID/Token.'
+          : (broadcastResults[0]?.error || 'All broadcast dispatches failed.');
+
+        res.status(200).json({
+          success: false,
+          error: errorMsg,
+          data: {
+            mode: limitExceeded ? 'TWILIO_QUOTA_EXCEEDED' : 'BROADCAST_FAILED',
+            messageId: `ERR-${Date.now().toString(36).toUpperCase()}`,
+            recipient: `All ${REGISTERED_SUBSCRIBERS.length} Registered Sandbox Subscribers`,
+            phoneNumber: `${REGISTERED_SUBSCRIBERS.length} Mobile Devices`,
+            smsText,
+            status: 'FAILED',
+            errorCode: limitExceeded ? 63038 : null,
+            carrier: 'Twilio Multi-Device WhatsApp Broadcast',
+            latencyMs: Date.now() - startTime,
+            broadcastResults,
+            errorMessage: errorMsg,
+            timestamp: new Date().toISOString()
+          }
+        });
+        return;
+      }
+
       res.status(200).json({
         success: true,
         data: {
