@@ -4,6 +4,10 @@
   "framework": "vite",
   "rewrites": [
     {
+      "source": "/api/alerts/sms",
+      "destination": "/api/alerts/sms.js"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

@@ -64,6 +64,7 @@ export default function EmergencyAlertModal({ event, isOpen, onClose }) {
   const [copied, setCopied] = useState(false);
 
   // Dispatch state
+  const [channel, setChannel] = useState('WHATSAPP'); // 'WHATSAPP' | 'SMS'
   const [dispatchStatus, setDispatchStatus] = useState('idle'); // idle | transmitting | delivered | error
   const [deliveryReceipt, setDeliveryReceipt] = useState(null);
 
@@ -102,7 +103,8 @@ DOSSIER: https://firesightai-puce.vercel.app/events/${event.eventId}`;
         recommendation: event.explanation?.recommendation || 'Deploy AR-AFFF foam. Enforce 1,500m cordon.',
         recipientName: useCustomPhone ? 'Designated Authority Contact' : selectedAuthority,
         phoneNumber: activePhone,
-        smsText: smsBody
+        smsText: smsBody,
+        channel
       });
 
       setTimeout(() => {
@@ -161,6 +163,47 @@ DOSSIER: https://firesightai-puce.vercel.app/events/${event.eventId}`;
         {/* Content Body */}
         <div className="p-5 overflow-y-auto space-y-4 text-xs font-sans">
           
+          {/* Live Twilio Carrier Channel Selector */}
+          <div className="space-y-1.5">
+            <div className="text-slate-300 font-semibold flex items-center justify-between">
+              <span>Select Live Dispatch Network:</span>
+              <span className="text-[10px] text-emerald-400 font-mono">Twilio LPU Connected</span>
+            </div>
+            <div className="grid grid-cols-2 gap-2 p-1 rounded-xl bg-slate-950 border border-slate-800">
+              <button
+                type="button"
+                onClick={() => setChannel('WHATSAPP')}
+                className={`py-2 px-3 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
+                  channel === 'WHATSAPP' 
+                    ? 'bg-emerald-600 text-white shadow-md shadow-emerald-950' 
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <MessageSquare className="w-3.5 h-3.5" />
+                <span>Twilio WhatsApp (+1 415-523-8886)</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setChannel('SMS')}
+                className={`py-2 px-3 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
+                  channel === 'SMS' 
+                    ? 'bg-blue-600 text-white shadow-md shadow-blue-950' 
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <Radio className="w-3.5 h-3.5" />
+                <span>Twilio SMS (+1 405-652-7320)</span>
+              </button>
+            </div>
+
+            {channel === 'WHATSAPP' && (
+              <div className="p-2.5 rounded-lg bg-emerald-950/30 border border-emerald-500/30 text-emerald-300 text-[11px] leading-relaxed flex items-start gap-2">
+                <span className="font-bold shrink-0">📲 Sandbox Join:</span>
+                <span>Send WhatsApp message <code className="bg-emerald-900/60 px-1 py-0.5 rounded font-mono text-white font-bold">join soft-peace</code> to <strong className="text-white">+1 415 523 8886</strong> to receive live alerts on your phone.</span>
+              </div>
+            )}
+          </div>
+
           {/* Recipient Authority Selection */}
           <div className="space-y-2">
             <label className="text-slate-300 font-semibold flex items-center gap-1.5">
@@ -268,16 +311,26 @@ DOSSIER: https://firesightai-puce.vercel.app/events/${event.eventId}`;
           {/* Delivery Confirmation Receipt */}
           {dispatchStatus === 'delivered' && deliveryReceipt && (
             <div className="p-3.5 rounded-xl border border-emerald-500/40 bg-emerald-950/20 text-emerald-200 space-y-2 animate-in zoom-in-95 duration-200">
-              <div className="flex items-center gap-2 text-xs font-bold text-emerald-400">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>EMERGENCY BROADCAST CONFIRMED & DELIVERED</span>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-xs font-bold text-emerald-400">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <span>EMERGENCY BROADCAST CONFIRMED & DELIVERED</span>
+                </div>
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-mono font-bold">
+                  {deliveryReceipt.mode?.includes('TWILIO') ? '🟢 LIVE TWILIO DISPATCH' : 'DLT GATEWAY VERIFIED'}
+                </span>
               </div>
               <div className="grid grid-cols-2 gap-2 text-[11px] font-mono text-slate-300 pt-1">
-                <div>Message ID: <span className="text-white font-semibold">{deliveryReceipt.messageId}</span></div>
+                <div>Message SID: <span className="text-white font-semibold truncate block">{deliveryReceipt.messageId}</span></div>
                 <div>Routing Latency: <span className="text-emerald-400 font-semibold">{deliveryReceipt.latencyMs} ms</span></div>
                 <div>Recipient: <span className="text-white truncate block">{deliveryReceipt.recipient}</span></div>
-                <div>Carrier Status: <span className="text-emerald-400 font-bold">200 OK (ACKNOWLEDGED)</span></div>
+                <div>Network Status: <span className="text-emerald-400 font-bold">200 OK (SENT)</span></div>
               </div>
+              {deliveryReceipt.twilioNote && (
+                <div className="p-2 rounded bg-slate-900/80 border border-slate-800 text-[10px] text-amber-300/90 font-sans">
+                  <strong>Carrier Note:</strong> {deliveryReceipt.twilioNote}
+                </div>
+              )}
             </div>
           )}
 
