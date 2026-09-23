@@ -29,8 +29,15 @@ export default function EmergencyAlertModal({ event, isOpen, onClose }) {
 
   // Pre-configured government disaster response authorities based on location
   const getDefaultAuthorities = () => {
+    const verifiedContact = { 
+      name: 'Primary Disaster Officer on Duty (Verified)', 
+      phone: '+91-9441921812', 
+      role: 'Registered Emergency Responder (Twilio Live)' 
+    };
+
     if (state.toLowerCase().includes('gujarat') || facilityName.toLowerCase().includes('jamnagar') || facilityName.toLowerCase().includes('hazira')) {
       return [
+        verifiedContact,
         { name: 'Gujarat SDMA Emergency Ops Center', phone: '+91-79-23259283', role: 'State Disaster Management Authority' },
         { name: 'NDRF 6th Battalion Command (Vadodara)', phone: '+91-265-2830491', role: 'National Disaster Response Force' },
         { name: 'Jamnagar Municipal Fire Control Room', phone: '+91-288-2550101', role: 'District Fire & Rescue Command' }
@@ -38,6 +45,7 @@ export default function EmergencyAlertModal({ event, isOpen, onClose }) {
     }
     if (state.toLowerCase().includes('haryana') || facilityName.toLowerCase().includes('panipat')) {
       return [
+        verifiedContact,
         { name: 'Haryana SDMA Control Room', phone: '+91-172-2545938', role: 'State Disaster Management' },
         { name: 'Panipat District Emergency Cell', phone: '+91-180-2652100', role: 'District Emergency Command' },
         { name: 'NDRF 8th Battalion (Ghaziabad)', phone: '+91-120-2766618', role: 'NDRF Regional Response' }
@@ -45,12 +53,14 @@ export default function EmergencyAlertModal({ event, isOpen, onClose }) {
     }
     if (state.toLowerCase().includes('andhra') || facilityName.toLowerCase().includes('visakhapatnam')) {
       return [
+        verifiedContact,
         { name: 'Andhra Pradesh SDMA Emergency Desk', phone: '+91-863-2377000', role: 'State Disaster Authority' },
         { name: 'NDRF 10th Battalion (Vijayawada)', phone: '+91-867-6257000', role: 'NDRF Response Force' },
         { name: 'Visakhapatnam Fire & Disaster Control', phone: '+91-891-2565101', role: 'Municipal Fire Services' }
       ];
     }
     return [
+      verifiedContact,
       { name: 'National Emergency Operations Centre (NEOC)', phone: '+91-11-26701728', role: 'NDMA Central Command' },
       { name: 'NDRF HQ Disaster Control Room', phone: '+91-11-24363260', role: 'National Response Force' },
       { name: 'State Disaster Management Cell', phone: '+91-11-1070', role: 'State Emergency Services' }
